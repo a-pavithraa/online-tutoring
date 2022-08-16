@@ -1,0 +1,109 @@
+.App {
+  
+  overflow-x: hidden;
+}
+
+
+
+.App-header {
+  background-color: #f1f3f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  
+ 
+  font-size: calc(10px + 2vmin);
+  color: #031121;
+}
+
+.App-link {
+  color: #61dafb;
+}
+.table-cell-trucate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.MuiAppBar-colorPrimary {
+  color: #fff;
+  background-color: #3f51b5!important;
+}
+.MuiButton-textPrimary {
+  color: #fff;
+  font-weight: bolder;
+}
+.MuiTableRow-root {
+  color: inherit;
+  display: table-row;
+  outline: 0;
+  vertical-align: middle;
+  font-size: 13px;
+  &:hover{
+    background-color: #74899c;
+  }
+}
+
+[class^="Component-horizontalScrollContainer-"] ::-webkit-scrollbar-thumb {
+  border: 0.5px solid #afcef1;
+  border-radius: 0.5px;
+  background-color: rgba(105, 99, 99, 0.3);
+}
+.MuiTab-root.Mui-selected {
+  color: #ea2330!important;
+  border-bottom-color: #ea2330;
+  border-bottom-style: double;
+  border-bottom-width: thick;
+  margin-right:10px;
+}
+
+
+
+.MuiRadio-root.MuiRadio-colorPrimary{
+  color: white;
+}
+.MuiRadio-root.MuiRadio-colorPrimary.Mui-checked{
+  color: white;
+}
+
+.smallFont{
+  font-weight:800;
+  font-size:15px;
+}
+.underlinedBoldText{
+  font-weight: 600;
+  text-decoration: underline;
+  font-size: 15px;
+}
+.link{
+  color: antiquewhite;
+}
+.rightAlign{
+  float:right;
+}
+.MuiCardContent-root {  
+  padding: 5px 5px 1px 20px!important;
+}
+.standardMargin{
+  margin-left: 20px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #9562e7;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(67, 6, 235);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

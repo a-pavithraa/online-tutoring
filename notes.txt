@@ -1,0 +1,4 @@
+Teacher Login
+My classes -> When you clickon each class, test history and future tests, notes, , classes can have students sub menu
+My students -> Marks, Papers, Profile
+
