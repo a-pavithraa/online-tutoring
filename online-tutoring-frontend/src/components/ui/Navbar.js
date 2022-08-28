@@ -53,7 +53,7 @@ const NavBar = () => {
   };
 
   
-  let appBarContent = <Typography component="div" variant="h4" sx={{ paddingLeft: "10px" }}>SIKSHA APP </Typography>
+  let appBarContent = <Typography component="div" variant="h4" sx={{ paddingLeft: "10px" }}>SHIKSHA </Typography>
 
 
 

@@ -1,0 +1,32 @@
+server:
+  port: 9090
+jwt.aws.userPoolId: us-east-1_DUfDYLnmA
+jwt.aws.region: us-east-1
+---
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+              allowedOrigins: "*"
+              allowedMethods: "*"
+              allowedHeaders: "*"
+     
+      routes:
+        - id: user
+          uri: http://localhost:8082/
+          predicates:
+            - Path=/user/**
+         
+        - id: notification
+          uri: http://localhost:8083/
+          predicates:
+            - Path=/notification/**
+            
+        - id: s3
+          uri: http://localhost:8088/
+          predicates:
+            - Path=/documents/*

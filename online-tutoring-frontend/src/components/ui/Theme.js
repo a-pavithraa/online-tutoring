@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import { Box } from '@mui/system';
 import { blue, grey, dark, lightGreen, red, green, lightBlue } from '@mui/material/colors';
-import { Paper, TextField } from '@mui/material';
+import { InputBase, Paper, TextField } from '@mui/material';
 export const lightTheme = createTheme({
 
   palette: {
@@ -85,6 +85,7 @@ export const lightTheme = createTheme({
         root: {
          color:"#031121",
          fontSize: "1.1em",
+         paddingBottom:"",
           
           '& h6': {
             color: 'red'
@@ -96,7 +97,7 @@ export const lightTheme = createTheme({
             top: "-1 !important",
           }),
         }),
-        focused:{
+        '&.Mui-focused':{
           fontSize: "1.4em"
         }
 
@@ -179,6 +180,44 @@ export const LoginTextField = styled(TextField)(({ theme }) => ({
     },
     '&.Mui-focused fieldset': {
       borderBottomColor: 'green',
+    },
+  },
+}));
+
+export const BootstrapInput = styled(InputBase)(({ theme }) => ({
+  'label + &': {
+    float:'left',
+    width:'100%',
+   padding:theme.spacing(1)
+    
+  },
+  '& .MuiInputBase-input': {
+    borderRadius: 4,
+    display: 'block',
+    borderBottom: '1px solid black',
+    backgroundColor: 'transparent',
+   // border: '1px solid #ced4da',
+    fontSize: 16,
+   // padding: '2px 2px 2px 2px',
+    float:'left',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    '&:focus': {
+      borderRadius: 4,
+      //borderColor: '#80bdff',
+    //  boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
     },
   },
 }));
