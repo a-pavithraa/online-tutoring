@@ -47,76 +47,6 @@ insert
 values(3,
 'VIII');
 
-CREATE TABLE subject_grade_map(
-   id bigint AUTO_INCREMENT PRIMARY KEY,
-   grade_id bigint,
-   subject_id bigint,
-   FOREIGN KEY (grade_id)
-           REFERENCES grade(id)
-           ON
-DELETE
-	CASCADE,
-	FOREIGN KEY (subject_id)
-   	        REFERENCES subject(id)
-           ON
-	DELETE
-		CASCADE
-
-);
-
-insert
-	into
-	subject_grade_map(id,
-	grade_id,
-	subject_id)
-values(1,
-1,
-1);
-
-insert
-	into
-	subject_grade_map(id,
-	grade_id,
-	subject_id)
-values(2,
-1,
-2);
-
-insert
-	into
-	subject_grade_map(id,
-	grade_id,
-	subject_id)
-values(3,
-2,
-1);
-
-insert
-	into
-	subject_grade_map(id,
-	grade_id,
-	subject_id)
-values(4,
-2,
-2);
-
-insert
-	into
-	subject_grade_map(id,
-	grade_id,
-	subject_id)
-values(5,
-3,
-1);
-
-insert
-	into
-	subject_grade_map(id,
-	grade_id,
-	subject_id)
-values(6,
-3,
-2);
 
 CREATE TABLE student(
 id bigint AUTO_INCREMENT PRIMARY KEY,
@@ -164,18 +94,26 @@ updated_at timestamp
 
 );
 
-create table teacher_student_grade_map(
-id bigint AUTO_INCREMENT PRIMARY KEY,
+create table teacher_subject_grade_map(
    teacher_id bigint,
-   subject_grade_id bigint,
+    grade_id bigint,
+   subject_id bigint,
    FOREIGN KEY (teacher_id)
            REFERENCES teacher(id)
            ON
 DELETE
 	CASCADE,
-	FOREIGN KEY (subject_grade_id)
-   	        REFERENCES subject_grade_map(id)
-           ON
-	DELETE
-		CASCADE
+	
+		
+		   FOREIGN KEY (grade_id)
+		           REFERENCES grade(id)
+		           ON
+		DELETE
+			CASCADE,
+			FOREIGN KEY (subject_id)
+		   	        REFERENCES subject(id)
+		           ON
+			DELETE
+		CASCADE,
+		primary key (teacher_id,subject_id,grade_id)
 ); 

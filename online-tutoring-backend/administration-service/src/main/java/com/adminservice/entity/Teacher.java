@@ -1,14 +1,10 @@
 package com.adminservice.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -39,5 +35,11 @@ public class Teacher {
 	private LocalDateTime createdAt;
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
+	@OneToMany(
+			mappedBy = "teacher",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true
+	)
+	private List<TeacherSubjectGradeMap> subjectGradeMapping = new ArrayList<>();
 
 }

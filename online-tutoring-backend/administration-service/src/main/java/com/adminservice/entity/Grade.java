@@ -42,9 +42,13 @@ public class Grade {
 	private LocalDateTime updatedAt;
 	@OneToMany(mappedBy = "grade", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Student> students;
-
-	@OneToMany(mappedBy = "grade", cascade = CascadeType.ALL, orphanRemoval = true)
-	@Builder.Default
-	private List<SubjectGradeMapping> subjectGradeMapping = new ArrayList<>();
+	@OneToMany(
+			mappedBy = "grade",
+			cascade = CascadeType.ALL,
+			orphanRemoval = true,
+			fetch = FetchType.LAZY
+	)
+	private List<TeacherSubjectGradeMap> teacherSubjectMapping = new ArrayList<>();
+	
 
 }
