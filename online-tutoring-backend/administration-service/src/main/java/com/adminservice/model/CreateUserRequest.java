@@ -3,7 +3,7 @@ package com.adminservice.model;
 import javax.validation.constraints.NotEmpty;
 
 
-import com.adminservice.util.Utilties.RoleGroupMapping;
+import com.adminservice.util.Utilties.Roles;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +23,8 @@ public class CreateUserRequest {
 	private String role;
 	private String address;
 	private String phoneNo;
+	private int gradeId;
+	private String[] subjects;
 	
 
 }

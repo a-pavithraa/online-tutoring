@@ -3,21 +3,17 @@ package com.adminservice.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.adminservice.CognitoClientConfiguration;
-import com.adminservice.entity.Users;
-import com.adminservice.model.CreateUserRequest;
-import com.adminservice.repo.UserRepository;
-import com.adminservice.util.Utilties.RoleGroupMapping;
 
-import lombok.AllArgsConstructor;
+import com.adminservice.model.CreateUserRequest;
+
+import com.adminservice.util.Utilties.Roles;
+
 import lombok.RequiredArgsConstructor;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminAddUserToGroupRequest;
@@ -30,7 +26,7 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.SignUpRespo
 public class UserService {
 
 	private CognitoIdentityProviderClient identityProviderClient;
-	private UserRepository userRepo;
+	//private UserRepository userRepo;
 	@Value("${cognito.app.clientid}")
 	private String clientId;
 	@Value("${jwt.aws.userPoolId}")
@@ -43,9 +39,9 @@ public class UserService {
 	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 	
 	@Autowired
-	public UserService(CognitoIdentityProviderClient identityProviderClient,UserRepository userRepo) {
+	public UserService(CognitoIdentityProviderClient identityProviderClient) {
 		this.identityProviderClient=identityProviderClient;
-		this.userRepo = userRepo;
+		//this.userRepo = userRepo;
 	}
 
 	public void createUser(CreateUserRequest createUserRequest) {
@@ -67,20 +63,20 @@ public class UserService {
 
 		        SignUpResponse response= identityProviderClient.signUp(signUpRequest);
 		        logger.debug("user confirmed=={}",response);
-		        String groupName = RoleGroupMapping.TEACHER==RoleGroupMapping.valueOf(createUserRequest.getRole())?teacherGroup:studentGroup;
+		        Roles passedRole = Roles.valueOf(createUserRequest.getRole());
+		        String groupName = Roles.TEACHER==passedRole?teacherGroup:studentGroup;
 		        AdminAddUserToGroupRequest adminGroupRequest = AdminAddUserToGroupRequest.builder()
 		        		.username(createUserRequest.getUserName())
 		        		.userPoolId(userPoolId)
 		        		.groupName(groupName).build();
 		        identityProviderClient.adminAddUserToGroup(adminGroupRequest);
-		        Users user = Users.builder()
-		        		.userName(createUserRequest.getUserName())
-		        		.email(createUserRequest.getEmailId())
-		        		.cognitoId(response.userSub())
-		        		.phoneNo(createUserRequest.getEmailId())
-		        		.address(createUserRequest.getAddress())
-		        		.build();
-		        userRepo.save(user);
+				/*
+				 * Users user = Users.builder() .userName(createUserRequest.getUserName())
+				 * .email(createUserRequest.getEmailId()) .cognitoId(response.userSub())
+				 * .phoneNo(createUserRequest.getEmailId())
+				 * .address(createUserRequest.getAddress()) .build();
+				 */
+		       // userRepo.persistAndFlush(user);
 		     
 		        
 		     

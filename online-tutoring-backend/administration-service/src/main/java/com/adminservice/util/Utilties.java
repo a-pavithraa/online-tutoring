@@ -5,7 +5,7 @@ package com.adminservice.util;
 public class Utilties {
 
 	
-	public enum RoleGroupMapping {
+	public enum Roles {
 	    STUDENT,
 	    TEACHER;	
 	}
