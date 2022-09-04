@@ -2,6 +2,7 @@ package com.adminservice.entity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -44,11 +45,11 @@ public class Grade {
 	private Set<Student> students;
 	@OneToMany(
 			mappedBy = "grade",
+			fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL,
-			orphanRemoval = true,
-			fetch = FetchType.LAZY
+			orphanRemoval = true
 	)
-	private List<TeacherSubjectGradeMap> teacherSubjectMapping = new ArrayList<>();
+	private Set<TeacherSubjectGradeMap> teacherSubjectMapping = new HashSet<>();
 	
 
 }

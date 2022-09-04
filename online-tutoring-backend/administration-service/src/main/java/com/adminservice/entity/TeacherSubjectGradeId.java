@@ -6,7 +6,8 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class TeacherSubjectGradeId implements Serializable {

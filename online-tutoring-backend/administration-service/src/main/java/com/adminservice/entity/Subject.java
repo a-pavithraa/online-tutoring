@@ -41,11 +41,11 @@ public class Subject {
     private Set<Student> students = new HashSet<>();
     @OneToMany(
             mappedBy = "subject",
+            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
+            orphanRemoval = true
     )
-    private List<TeacherSubjectGradeMap> teacherGradeMapping = new ArrayList<>();
+    private Set<TeacherSubjectGradeMap> teacherGradeMapping = new HashSet<>();
 
 
     public void addStudent(Student student) {

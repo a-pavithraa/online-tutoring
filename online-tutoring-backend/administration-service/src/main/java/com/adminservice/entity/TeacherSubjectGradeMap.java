@@ -3,13 +3,14 @@ package com.adminservice.entity;
 import lombok.*;
 
 import javax.persistence.*;
-
+//https://vladmihalcea.com/the-best-way-to-map-a-many-to-many-association-with-extra-columns-when-using-jpa-and-hibernate/
 @Entity
 @Table(name="teacher_subject_grade_map")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 public class TeacherSubjectGradeMap {
     @EmbeddedId
     private TeacherSubjectGradeId id;
