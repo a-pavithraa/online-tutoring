@@ -1,38 +1,38 @@
 package com.adminservice.service;
 
 import com.adminservice.entity.*;
+import com.adminservice.model.DropdownRecord;
 import com.adminservice.model.RegisterTeacherMappingRequest;
+import com.adminservice.model.StudentRecord;
 import com.adminservice.model.TeacherRecord;
-import com.adminservice.repo.GradeRepository;
-import com.adminservice.repo.SubjectRepository;
-import com.adminservice.repo.TeacherRepository;
-import com.adminservice.repo.TeacherSubjectGradeRepository;
+import com.adminservice.repo.*;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
+@RequiredArgsConstructor
 public class CourseRegistrationService {
-    private GradeRepository gradeRepo;
-    private SubjectRepository subjectRepo;
-    private TeacherRepository teacherRepository;
-    private TeacherSubjectGradeRepository teacherSubjectGradeRepository;
+    private final  GradeRepository gradeRepo;
+    private final  SubjectRepository subjectRepo;
+    private final  TeacherRepository teacherRepository;
+
+    private final  StudentRepository studentRepository;
+    private final  TeacherSubjectGradeRepository teacherSubjectGradeRepository;
     private static final Logger logger = LoggerFactory.getLogger(CourseRegistrationService.class);
 
-    public CourseRegistrationService(GradeRepository gradeRepo, SubjectRepository subjectRepo, TeacherRepository teacherRepository, TeacherSubjectGradeRepository teacherSubjectGradeRepository) {
-        this.gradeRepo = gradeRepo;
-        this.subjectRepo = subjectRepo;
-        this.teacherRepository = teacherRepository;
-        this.teacherSubjectGradeRepository = teacherSubjectGradeRepository;
-    }
+
 
     @Transactional
     public void mapTeacherToSubjectAndGrade(RegisterTeacherMappingRequest registerTeacherMappingRequest){
         // even though we pass the id, added these lines to check whether id actually exists in db
         Grade grade = gradeRepo.findById(registerTeacherMappingRequest.getGrade()).orElseThrow();
         Subject subject = subjectRepo.findById(registerTeacherMappingRequest.getSubject()).orElseThrow();
-        Teacher teacher = teacherRepository.findByName(registerTeacherMappingRequest.getUserName());
+        Teacher teacher = teacherRepository.findByUserName(registerTeacherMappingRequest.getUserName());
         TeacherSubjectGradeId teacherSubjectGradeId = new TeacherSubjectGradeId(teacher.getId(), grade.getId(), subject.getId());
         logger.debug("teacher id=={}",teacher.getId());
         logger.debug("grade id=={}",grade.getId());
@@ -58,4 +58,31 @@ public class CourseRegistrationService {
         return teacherRecord;
 
     }
+
+
+    @Transactional(readOnly = true)
+    public List<StudentRecord> getStudentsOfTeacher(Long teacherId,Long gradeId, Long subjectId){
+
+        List<StudentRecord> studentRecords = studentRepository.getAllStudentsOfTeacher(teacherId,gradeId,subjectId);
+        return studentRecords;
+
+    }
+    @Transactional(readOnly = true)
+    public List<DropdownRecord> getAllSubjects(){
+
+        List<DropdownRecord> subjects = subjectRepo.getAllSubjects();
+        return subjects;
+
+    }
+
+    @Transactional(readOnly = true)
+    public List<DropdownRecord> getAllGrades(){
+
+        List<DropdownRecord> grades = gradeRepo.getAllGrades();
+        return grades;
+
+    }
+
+
+
 }

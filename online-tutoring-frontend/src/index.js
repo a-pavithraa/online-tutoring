@@ -6,14 +6,18 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 
 import { AuthContextProvider } from './store/auth-context';
-
+import { QueryClient, QueryClientProvider } from "react-query";
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const queryClient = new QueryClient();
 root.render(
-  <BrowserRouter>
+  <QueryClientProvider client={queryClient}>
+  <BrowserRouter> 
   <AuthContextProvider>
     <App />
     </AuthContextProvider>
+    
   </BrowserRouter>
+  </QueryClientProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

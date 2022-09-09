@@ -28,7 +28,8 @@ public class Teacher {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	private Long id;
-	private String name;
+	private String fullName;
+	private String userName;
 	private String email;
 	private String address;
 	private String phoneNo;

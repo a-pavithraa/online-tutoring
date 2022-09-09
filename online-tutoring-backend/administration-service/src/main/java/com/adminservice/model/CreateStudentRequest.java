@@ -16,6 +16,8 @@ import java.util.List;
 public class CreateStudentRequest {
 	@NotEmpty(message = "Use Name should not be empty")
 	private String userName;
+	@NotEmpty(message = "Full Name should not be empty")
+	private String fullName;
 	@NotEmpty(message = "Email should not be empty")
 	private String emailId;
 	@NotEmpty(message = "Password should not be empty")

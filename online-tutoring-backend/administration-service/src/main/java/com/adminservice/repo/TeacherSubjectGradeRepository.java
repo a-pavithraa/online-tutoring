@@ -23,7 +23,7 @@ public interface TeacherSubjectGradeRepository extends JpaRepository<TeacherSubj
     @Query("""
     select new com.adminservice.model.TeacherRecord(
         t.id as id,
-        t.name as name,
+        t.userName as name,
         t.email as email
     ) 
     FROM Teacher t , TeacherSubjectGradeMap tsg  

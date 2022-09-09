@@ -8,6 +8,8 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.zalando.problem.ProblemModule;
 import org.zalando.problem.validation.ConstraintViolationProblemModule;
 
@@ -29,6 +31,15 @@ public class AdministrationServiceApplication {
 		// In this example, stack traces support is enabled by default.
 		// If you want to disable stack traces just use new ProblemModule() instead of new ProblemModule().withStackTraces()
 		return new ObjectMapper().registerModules(new ProblemModule(), new ConstraintViolationProblemModule());
+	}
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("*").allowedOrigins("*").allowedMethods("*").allowedHeaders("*");
+			}
+		};
 	}
 }
 

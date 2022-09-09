@@ -9,4 +9,10 @@ public class Utilties {
 	    STUDENT,
 	    TEACHER;	
 	}
+
+	public  enum StudentSearchTypes{
+		ALL,
+		GRADE,
+		SUBJECT
+	}
 }

@@ -51,7 +51,8 @@ values(3,
 CREATE TABLE student(
 id bigint AUTO_INCREMENT PRIMARY KEY,
 email varchar(255) NOT NULL, 
-name varchar(200) NOT NULL,
+user_name varchar(200) NOT NULL,
+full_name varchar(200) NOT NULL,
    
 address varchar(500),
 phone_no varchar(30),
@@ -85,7 +86,8 @@ DELETE
 CREATE TABLE teacher(
 id bigint AUTO_INCREMENT PRIMARY KEY,
 email varchar(255) NOT NULL, 
-name varchar(200) NOT NULL,   
+user_name varchar(200) NOT NULL,
+full_name varchar(200) NOT NULL,
 address varchar(500),
 phone_no varchar(30),
 cognito_id varchar(100),

@@ -57,12 +57,42 @@ export const lightTheme = createTheme({
         }
       }
     },
+    MuiOutlinedInput:{
+      styleOverrides: {
+        root: {
+          backgroundColor: blue[50],
+          
+        }
+      }
+
+    },
     MuiPaginationItem:{
       ul: {
         "& .MuiPaginationItem-root": {
           color: "#fff"
         }
       }
+    },
+    MuiAutoCompletePopper:{
+      styleOverrides: {
+        root: {
+          zIndex: 1200,
+          background: blue[200]
+
+          
+        }
+      }
+
+    },
+    MuiPopper:{
+        styleOverrides: {
+        root: {
+          zIndex: 9999,
+          background: blue[100]
+          
+        }
+      }
+
     },
     MuiInputLabel: {
       defaultProps: {
@@ -127,7 +157,7 @@ export const InputFieldsBox = styled(Box)(({ theme }) => ({
   boxShadow:'0 8px 16px 2px rgba(200, 198, 207, 0.2)',
   height: `calc(100% - 22px)`,
 
-  backgroundColor: blue[100],
+  backgroundColor: "#f6f7fe",
   display: 'flex', alignItems: 'center'
 
 }));

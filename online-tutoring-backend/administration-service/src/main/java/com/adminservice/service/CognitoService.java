@@ -1,6 +1,7 @@
 package com.adminservice.service;
 
 import com.adminservice.util.Utilties;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,9 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CognitoService {
 
-    private CognitoIdentityProviderClient identityProviderClient;
+    private final  CognitoIdentityProviderClient identityProviderClient;
     // private UserRepository userRepo;
     @Value("${cognito.app.clientid}")
     private String clientId;
@@ -27,9 +29,6 @@ public class CognitoService {
 
     private static final Logger logger = LoggerFactory.getLogger(CognitoService.class);
 
-    public CognitoService(CognitoIdentityProviderClient identityProviderClient){
-        this.identityProviderClient = identityProviderClient;
-    }
 
 
     public String createCognitoUser(String userName,String password,String emailId, Utilties.Roles role) {

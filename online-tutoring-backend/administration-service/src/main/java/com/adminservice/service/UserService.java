@@ -31,25 +31,12 @@ import javax.persistence.PersistenceContext;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private StudentRepository studentRepo;
-    private GradeRepository gradeRepo;
-    private SubjectRepository subjectRepo;
-    private TeacherRepository teacherRepository;
+    private final StudentRepository studentRepo;
+    private final  GradeRepository gradeRepo;
+    private final  SubjectRepository subjectRepo;
+    private final  TeacherRepository teacherRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
-
-
-    @Autowired
-    public UserService(StudentRepository studentRepo, GradeRepository gradeRepo, SubjectRepository subjectRepo,TeacherRepository teacherRepository) {
-
-        this.studentRepo = studentRepo;
-        this.gradeRepo = gradeRepo;
-        this.subjectRepo = subjectRepo;
-        this.teacherRepository = teacherRepository;
-
-    }
-
-
 
     @Transactional
     public void createStudent(CreateStudentRequest createStudentRequest, String cognitoId) {
@@ -61,7 +48,7 @@ public class UserService {
         List<Subject> subjects = subjectRepo.findByIdIn(createStudentRequest.getSubjects());
         logger.debug("subjects:{}", subjects);
         logger.debug("Creating student!!");
-        Student student = Student.builder().name(createStudentRequest.getUserName()).email(createStudentRequest.getEmailId())
+        Student student = Student.builder().userName(createStudentRequest.getUserName()).fullName(createStudentRequest.getFullName()).email(createStudentRequest.getEmailId())
                 .cognitoId(cognitoId).phoneNo(createStudentRequest.getEmailId()).grade(grade).parentName(createStudentRequest.getParentName())
                 .address(createStudentRequest.getAddress()).build();
         studentRepo.persist(student);
@@ -75,7 +62,7 @@ public class UserService {
     @Transactional
     public void createTeacher(CreateTeacherRequest createTeacherRequest, String cognitoId) {
 
-        Teacher teacher = Teacher.builder().name(createTeacherRequest.getUserName()).email(createTeacherRequest.getEmailId())
+        Teacher teacher = Teacher.builder().userName(createTeacherRequest.getUserName()).fullName(createTeacherRequest.getFullName()).email(createTeacherRequest.getEmailId())
                 .cognitoId(cognitoId).phoneNo(createTeacherRequest.getEmailId())
                 .address(createTeacherRequest.getAddress()).build();
         teacherRepository.persist(teacher);
@@ -83,7 +70,7 @@ public class UserService {
 
     @Transactional
     public void deleteTeacher(String userName){
-        Long teacherId = teacherRepository.findIdByName(userName).orElseThrow();
+        Long teacherId = teacherRepository.findIdByUserName(userName).orElseThrow();
         teacherRepository.deleteById(teacherId);
 
     }
