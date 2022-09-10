@@ -1,10 +1,7 @@
 package com.adminservice.service;
 
 import com.adminservice.entity.*;
-import com.adminservice.model.DropdownRecord;
-import com.adminservice.model.RegisterTeacherMappingRequest;
-import com.adminservice.model.StudentRecord;
-import com.adminservice.model.TeacherRecord;
+import com.adminservice.model.*;
 import com.adminservice.repo.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -82,7 +79,13 @@ public class CourseRegistrationService {
         return grades;
 
     }
+    @Transactional(readOnly = true)
+    public List<GradeAndSubjectMappingRecord> getGradesAndSubjectsOfTeacher(long teacherId){
 
+        List<GradeAndSubjectMappingRecord> gradeAndSubjectMappingForTeacher = teacherSubjectGradeRepository.getGradeAndSubjectMappingForTeacher(teacherId);
+        return gradeAndSubjectMappingForTeacher;
+
+    }
 
 
 }

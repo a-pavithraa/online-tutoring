@@ -20,6 +20,21 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, Hiberna
     @Query("select id from Teacher where name=:name")
     public Optional<Long> findIdByUserName(@Param("name") String name);
 
+    @Query("""
+    select new com.adminservice.model.TeacherRecord(
+        t.id as id,
+        t.fullName ,
+        t.email 
+    ) 
+    FROM Teacher t
+    
+    """)
+    public List<TeacherRecord> getAllTeachers();
+
+
+
+
+
 
 
 

@@ -3,6 +3,7 @@ package com.adminservice.repo;
 import com.adminservice.entity.Teacher;
 import com.adminservice.entity.TeacherSubjectGradeId;
 import com.adminservice.entity.TeacherSubjectGradeMap;
+import com.adminservice.model.GradeAndSubjectMappingRecord;
 import com.adminservice.model.TeacherRecord;
 import com.vladmihalcea.spring.repository.HibernateRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -31,4 +33,14 @@ public interface TeacherSubjectGradeRepository extends JpaRepository<TeacherSubj
     
     """)
     TeacherRecord getTeacherForGradeAndSubject( long subjectId, long gradeId);
+
+    @Query("""
+    select new com.adminservice.model.GradeAndSubjectMappingRecord(
+    g.id,g.name,s.id,s.name
+    ) 
+    FROM Subject s , TeacherSubjectGradeMap tsg, Grade g
+    WHERE s.id = tsg.id.subjectId and g.id = tsg.id.gradeId AND tsg.id.teacherId=?1 
+    
+    """)
+    List<GradeAndSubjectMappingRecord> getGradeAndSubjectMappingForTeacher(long teacherId);
 }

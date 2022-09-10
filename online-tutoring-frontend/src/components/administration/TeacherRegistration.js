@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { Formik, Form, useField } from 'formik';
+import React, {  } from 'react';
+import { Formik, Form } from 'formik';
 
 import * as yup from 'yup';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import { MySelect, TextInput,ReactSelect } from '../ui/FormInputs';
-import { FormControl, Grid, MenuItem, Typography } from '@mui/material';
-import { BootstrapInput, InputFieldsBox, Item } from '../ui/Theme';
+import { TextInput } from '../ui/FormInputs';
+import { Grid } from '@mui/material';
+import { Header, InputFieldsBox, Item } from '../ui/Theme';
 import moduleClasses from './Registration.module.scss';
 import httpClient from '../util/http-client';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 
 
@@ -32,17 +30,16 @@ async function getRefData(urlSuffix) {
    return res.data;
 
 }
-async function createStudent(studentData){
-    await httpClient.post("/admin/student" ,studentData);  
+async function createTeacher(teacherData){
+    await httpClient.post("/admin/teacher" ,teacherData);  
 
 }
-const StudentRegistration = () => {
+const TeacherRegistration = () => {
     // const grades =[{id: 1, value:"one"},{id: 2, value:"two"},{id: 3, value:"three"}];
   
     const queryClient = useQueryClient();
-     const { status:subjectsFetchedStatus, data:subjects , error:subError, isFetching:subjectsFetching }  = useQuery('subjects', ()=>getRefData('subjects'),{ staleTime: Infinity }); 
-     const { status:gradesFetchedStatus, data:grades , error:gradeError, isFetching:gradesFetching }  = useQuery('grades', ()=>getRefData('grades'),{ staleTime: Infinity }); 
-     const { mutate, isLoading } = useMutation(createStudent, {
+   
+     const { mutate, isLoading } = useMutation(createTeacher, {
         onSuccess: data => {
            console.log(data);
            const message = "success"
@@ -62,11 +59,8 @@ const StudentRegistration = () => {
             <Formik
                 initialValues={{
                     fullName: '',
-                    password:'',
-                    parentName:'',
-                    emailId: '',
-                    grade: {},
-                    subjects:'',
+                    password:'',                  
+                    emailId: '',                  
                     phoneNo: ''
 
                 }}
@@ -77,10 +71,10 @@ const StudentRegistration = () => {
                    
                     const studentData = JSON.stringify(values, null, 2);
                     console.log(studentData);
-                    const subjectsSelected = values.subjects.map(subject=>subject.value);
+                  
                     const newData = {
                         ...values,
-                        subjects:subjectsSelected,
+                       
                         userName: values.emailId
 
 
@@ -91,13 +85,13 @@ const StudentRegistration = () => {
             >
           {props =>  
                  <Form className={moduleClasses.formCls}>
-                    <Typography variant="h4" component="h2">STUDENT REGISTRATION</Typography>
+                    <Header variant="h4" component="h2">TEACHER REGISTRATION</Header>
                     <Grid container sx={{ paddingBottom: "10px" }} >
-                        <Grid item xs={6} className={moduleClasses.textInput}>
+                        <Grid item xs={12} className={moduleClasses.textInput}>
                             <Item>
                                 <TextInput
                                     fullWidth
-                                    label="Student Name"
+                                    label="Teacher Name"
                                     name="fullName"
                                     type="text"
                                     variant="outlined"
@@ -105,19 +99,7 @@ const StudentRegistration = () => {
                                 />
                             </Item>
                         </Grid>
-                        <Grid item xs={6} className={moduleClasses.textInput}>
-                            <Item>
-                                <TextInput
-                                    fullWidth
-                                    label="Parent Name"
-                                    name="parentName"
-                                    type="text"
-                                    variant="outlined"
-                                    placeholder="Name"
-                                />
-                            </Item>
-                        </Grid>
-                      
+                        
                         
                         <Grid item xs={12} className={moduleClasses.textInput}>
                             <Item>
@@ -126,7 +108,6 @@ const StudentRegistration = () => {
                                     name="emailId"
                                     type="email"
                                     placeholder="Email"
-
                                     variant="outlined"
                                 />
                             </Item>
@@ -153,32 +134,7 @@ const StudentRegistration = () => {
                                 />
                             </Item>
                         </Grid>
-                        <Grid item xs={6} className={moduleClasses.textInput}>
-                            <Item>
-
-                                <ReactSelect                                
-                                    label="Grade"
-                                    name="grade"                                                              
-                                    onChange={value=>props.setFieldValue('grade',value.value)}
-                                    value={props.values.grade}                        
-                                    options={grades}
-                                />
-                                                    
-                            </Item>
-                        </Grid>
-                        <Grid item xs={6} className={moduleClasses.textInput}>
-                            <Item>
-                            <ReactSelect                                
-                                label="Subjects"
-                                name="subjects"
-                                onChange={values=>props.setFieldValue('subjects',values.map(val=>val))}
-                                value={props.values.subjects}      
-                                isMulti="true"
-                               
-                                options={subjects}
-                            />
-                            </Item>
-                        </Grid>
+                       
                       
 
                     </Grid>
@@ -191,4 +147,4 @@ const StudentRegistration = () => {
     );
 };
 
-export default StudentRegistration;
+export default TeacherRegistration;

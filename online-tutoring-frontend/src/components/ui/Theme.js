@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import { Box } from '@mui/system';
 import { blue, grey, dark, lightGreen, red, green, lightBlue } from '@mui/material/colors';
-import { InputBase, Paper, TextField } from '@mui/material';
+import { InputBase, Paper, TextField, Typography } from '@mui/material';
 export const lightTheme = createTheme({
 
   palette: {
@@ -166,8 +166,18 @@ export const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   textAlign: 'center',
   color: theme.palette.text.secondary,
+  
 
 }));
+
+export const Header = (styled)(Typography)(({ theme }) => ({
+  
+  fontWeight: 'bolder',
+  color: theme.palette.text.secondary,
+  marginBottom: '10px'
+
+}));
+
 
 export const NormalParagraph = styled(Paper)(({ theme }) => ({
   background: 'transparent',

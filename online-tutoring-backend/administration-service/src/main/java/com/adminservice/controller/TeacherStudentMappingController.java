@@ -1,5 +1,6 @@
 package com.adminservice.controller;
 
+import com.adminservice.model.GradeAndSubjectMappingRecord;
 import com.adminservice.model.RegisterTeacherMappingRequest;
 import com.adminservice.model.StudentRecord;
 import com.adminservice.model.TeacherRecord;
@@ -38,6 +39,10 @@ public class TeacherStudentMappingController {
         return courseRegistrationService.getStudentsOfTeacher(teacherId,gradeId,subjectId);
     }
 
+    @GetMapping("/gradeAndSubjectsOfTeacher")
+    public List<GradeAndSubjectMappingRecord> getGradeAndSubjectsOfTeacher(@RequestParam("teacherId") long teacherId){
+        return courseRegistrationService.getGradesAndSubjectsOfTeacher(teacherId);
+    }
 
 
 }

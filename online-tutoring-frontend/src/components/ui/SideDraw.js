@@ -23,7 +23,7 @@ export const SideDraw = (props)=>{
     }
     return <div>     
     <List>
-      {['Classes', 'Documents', 'Notification', 'Registration','Assessments','Submissions'].map((text, index) => (
+      {['Classes','Students', 'Documents', 'Notification', 'Administration','Assessments','Submissions'].map((text, index) => (
         <ListItem key={text} disablePadding selected={selectedIndex === index}>
           <ListItemButton   onClick={(event) => displayPage(event, {index},{text})}>
             <ListItemIcon>

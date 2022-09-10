@@ -5,7 +5,8 @@ import { Route, Routes, Navigate, Link } from 'react-router-dom';
 import { Home } from './pages/Home';
 import { Classes } from './pages/Classes';
 import { Documents } from './pages/Documents';
-import Registration from './pages/Registration';
+
+import Administration from './pages/Administration';
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/Classes" element={<Classes />} />
       <Route path="/Documents" element={<Documents />} />
-      <Route path="/Registration" element={<Registration />} />
+      <Route path="/Administration" element={<Administration />} />
    
    
      </Routes>

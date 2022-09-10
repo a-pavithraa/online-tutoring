@@ -6,6 +6,7 @@ import java.util.List;
 import com.adminservice.entity.*;
 import com.adminservice.model.CreateTeacherRequest;
 import com.adminservice.model.RegisterTeacherMappingRequest;
+import com.adminservice.model.TeacherRecord;
 import com.adminservice.repo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,6 +81,10 @@ public class UserService {
         Long studentId = studentRepo.findIdByName(userName).orElseThrow();
         studentRepo.deleteById(studentId);
 
+    }
+
+    public List<TeacherRecord> getAllTeachers(){
+        return teacherRepository.getAllTeachers();
     }
 
 

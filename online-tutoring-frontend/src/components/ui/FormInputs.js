@@ -68,11 +68,12 @@ const customStyles = {
 export const ComboBox = ({ label, ...props }) => {
   const [field, state, meta] = useField(props);
 
-  console.log("Combobox!!!!!!");
+  
   const { options } = props;
   return (
+    <div className={moduleClasses.left}>
     <Autocomplete
-      id="country-select-demo"
+     
       disablePortal
       {...field}
       {...props}
@@ -81,7 +82,7 @@ export const ComboBox = ({ label, ...props }) => {
       getOptionLabel={(option) => option && option.label}
       
       onChange={(e, value) => {
-        console.log(value);
+     
         props.onChange(value);
       }}
       renderInput={(params) => (
@@ -95,6 +96,11 @@ export const ComboBox = ({ label, ...props }) => {
         />
       )}
     />
+     
+      {meta.touched && meta.error ? (
+        <div className={moduleClasses.error}>{meta.error}</div>
+      ) : null}
+    </div>
   );
 };
 

@@ -3,16 +3,16 @@ package com.adminservice.controller;
 import javax.validation.Valid;
 
 import com.adminservice.entity.Teacher;
-import com.adminservice.model.CreateTeacherRequest;
-import com.adminservice.model.RegisterTeacherMappingRequest;
+import com.adminservice.model.*;
 import com.adminservice.service.CognitoService;
 import com.adminservice.util.Utilties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import com.adminservice.model.CreateStudentRequest;
 import com.adminservice.service.UserService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/mdm/admin")
@@ -52,6 +52,11 @@ public class AdminServiceController {
 	public void deleteStudent(@PathVariable("studentName") String studentName){
 		userService.deleteStudent(studentName);
 		cognitoService.deleteCognitoUser(studentName);
+	}
+
+	@GetMapping("/teachers")
+	public List<TeacherRecord> getAllTeachers(){
+		return userService.getAllTeachers();
 	}
 
 
