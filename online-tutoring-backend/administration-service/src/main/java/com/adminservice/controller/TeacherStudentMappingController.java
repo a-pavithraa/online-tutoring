@@ -1,9 +1,6 @@
 package com.adminservice.controller;
 
-import com.adminservice.model.GradeAndSubjectMappingRecord;
-import com.adminservice.model.RegisterTeacherMappingRequest;
-import com.adminservice.model.StudentRecord;
-import com.adminservice.model.TeacherRecord;
+import com.adminservice.model.*;
 import com.adminservice.service.CourseRegistrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -42,6 +39,13 @@ public class TeacherStudentMappingController {
     @GetMapping("/gradeAndSubjectsOfTeacher")
     public List<GradeAndSubjectMappingRecord> getGradeAndSubjectsOfTeacher(@RequestParam("teacherId") long teacherId){
         return courseRegistrationService.getGradesAndSubjectsOfTeacher(teacherId);
+    }
+
+    @PostMapping("/mapTeacherToGradeAndSubject")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void mapTeacherToGradeAndSubject(@RequestBody @Valid MapTeacherGradeSubjectRequest mapTeacherGradeSubjectRequest){
+
+        courseRegistrationService.mapTeacherToSubjectAndGrade(mapTeacherGradeSubjectRequest);
     }
 
 

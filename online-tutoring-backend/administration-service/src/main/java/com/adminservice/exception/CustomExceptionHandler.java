@@ -38,6 +38,16 @@ public class CustomExceptionHandler implements
                 .build();
         return create(problem, request);
     }
+    @ExceptionHandler
+    public ResponseEntity<Problem> handle(MappingAlreadyExistsException e, NativeWebRequest request) {
+
+        logger.debug(e.toString());
+        ThrowableProblem problem = Problem.builder().withStatus(Status.CONFLICT)
+                .withTitle("Mapping Exception")
+                .withDetail(e.getMessage())
+                .build();
+        return create(problem, request);
+    }
 
     @Override
     public boolean isCausalChainsEnabled() {

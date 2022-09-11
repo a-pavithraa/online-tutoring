@@ -41,12 +41,12 @@ function mapperFn(data) {
   const mapObj = [];
   data.forEach((x) => {
     let subjectObj = { value: x.subjectId, label: x.subjectName };
-    const collection = mapObj.find((obj) => x.gradeId == obj.gradeId)?.subjects;
+    const collection = mapObj.find((obj) => x.gradeId == obj.grade.value)?.subjects;
 
     if (collection) {
       collection.push(subjectObj);
     } else {
-      let gradeObj = { gradeId: x.gradeId, subjects: [subjectObj] };
+      let gradeObj = { grade:{value: x.gradeId, label:x.gradeName}, subjects: [subjectObj] };
       mapObj.push(gradeObj);
     }
   });
@@ -109,7 +109,22 @@ const TeacherMappingModal = (props) => {
                 //validationSchema={validationSchema}
                 onSubmit={(values) =>
                   setTimeout(() => {
-                    alert(JSON.stringify(values, null, 2));
+                  
+                   
+                    
+                    const postRequests = [];
+                    if(values.gradeSubjectMappings.length>0){
+                      values.gradeSubjectMappings.forEach(gradeSubjectObj=>{
+                        gradeSubjectObj.subjects.forEach(subject=>{
+                          const postRequest ={gradeId:gradeSubjectObj.grade.value,subjectId:subject.value}
+                          postRequests.push(postRequest);
+                        })
+                      })
+
+                    }
+                    const mapTeacherRequest = {teacherId:props.id,gradeAndSubjectMappingRequestList:postRequests}
+                    console.log(JSON.stringify(mapTeacherRequest));
+                    
                   }, 500)
                 }
               >
@@ -143,23 +158,17 @@ const TeacherMappingModal = (props) => {
                                       >
                                         <Item>
                                           <ComboBox
-                                            name={`gradeSubjectMappings[${index}].gradeId`}
+                                            name={`gradeSubjectMappings[${index}].grade`}
                                             label="Grade"
-                                            value={
-                                              grades
-                                                ? grades.find(
-                                                    (option) =>
-                                                      option.value ===
-                                                      props.values
-                                                        .gradeSubjectMappings[
-                                                        index
-                                                      ].gradeId
-                                                  )
-                                                : ""
-                                            }
+                                            isOptionEqualToValue={(
+                                              option,
+                                              value
+                                            ) => option.value === value.value}
+                                           
                                             onChange={(value) => {
+                                             
                                               props.setFieldValue(
-                                                `gradeSubjectMappings[${index}].gradeId`,
+                                                `gradeSubjectMappings[${index}].grade`,
                                                 value
                                               );
                                             }}
@@ -203,6 +212,7 @@ const TeacherMappingModal = (props) => {
                                         <Button
                                           color="secondary"
                                           variant="contained"
+                                          sx={{marginLeft:2}}
                                           onClick={() =>
                                             arrayHelpers.remove(index)
                                           } // remove a friend from the list
@@ -220,7 +230,7 @@ const TeacherMappingModal = (props) => {
                                 type="button"
                                 onClick={() =>
                                   arrayHelpers.push({
-                                    gradeId: "1",
+                                    grade: grades[0],
                                     subjects: [],
                                   })
                                 } // insert an empty string at a position
