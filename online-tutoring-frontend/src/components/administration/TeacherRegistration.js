@@ -4,7 +4,7 @@ import { Formik, Form } from 'formik';
 import * as yup from 'yup';
 import Button from '@mui/material/Button';
 import { TextInput } from '../ui/FormInputs';
-import { Grid } from '@mui/material';
+import { CircularProgress, Grid } from '@mui/material';
 import { Header, InputFieldsBox, Item } from '../ui/Theme';
 import moduleClasses from './Registration.module.scss';
 import httpClient from '../util/http-client';
@@ -138,8 +138,12 @@ const TeacherRegistration = () => {
                       
 
                     </Grid>
-
+                    {isLoading ? (
+              <CircularProgress />
+            ) : (
                     <Button type="submit" variant="contained" color="success" >Submit</Button>
+            )}
+
                 </Form>}
           
             </Formik>

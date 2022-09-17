@@ -15,13 +15,16 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
 
     private static final ListResultTransformer transformer = (tuple, aliases) -> {
         int i = 0;
+        long id =tuple[i]==null?0: ((Number) tuple[i++]).longValue();
+
         return new StudentRecord(
-                ((Number) tuple[i++]).longValue(),
+                id,
                 (String) tuple[i++],
                 (String) tuple[i++],
                 (String) tuple[i++],
                 (String) tuple[i++],
-                ((Number) tuple[i++]).longValue()
+                (String) tuple[i++],
+                (String) tuple[i++]
         );
     };
 
@@ -34,7 +37,7 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
 
         String query ="""
                         SELECT
-                                	distinct s.id as id, s.name as name, s.email as email, s.parent_name as parentName,s.grade_id as gradeId
+                                	distinct s.id , s.user_name ,s.full_name , s.email , s.parent_name ,s.phone_no,s.address 
                                 from
                                 	student s ,
                                 	student_subject_map ssm ,

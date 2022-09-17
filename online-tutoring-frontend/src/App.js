@@ -7,6 +7,7 @@ import { Classes } from './pages/Classes';
 import { Documents } from './pages/Documents';
 
 import Administration from './pages/Administration';
+import Students from './pages/Students';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path="/Classes" element={<Classes />} />
       <Route path="/Documents" element={<Documents />} />
       <Route path="/Administration" element={<Administration />} />
+      <Route path="/Students" element={<Students />} />
    
    
      </Routes>

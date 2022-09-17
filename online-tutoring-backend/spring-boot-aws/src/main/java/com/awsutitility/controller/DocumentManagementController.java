@@ -1,23 +1,22 @@
 package com.awsutitility.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 
+import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
-import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
-import software.amazon.awssdk.services.s3.model.S3Object;
+import software.amazon.awssdk.services.s3.model.*;
 
 @RestController
 @RequestMapping("/documents")
@@ -27,7 +26,7 @@ public class DocumentManagementController {
 	
 	private String bucketName;
 	private static final Logger logger = LoggerFactory.getLogger(DocumentManagementController.class);
-	public DocumentManagementController(S3Client s3Client, @Value("${student.bucket.name}") String bucketName) {
+	public DocumentManagementController(S3Client s3Client, @Value("${questionpaper.bucket.name}") String bucketName) {
 		this.s3Client=s3Client;
 		this.bucketName=bucketName;
 		
@@ -59,6 +58,26 @@ public class DocumentManagementController {
 	 //convert bytes to kbs.
     private static long calKb(Long val) {
         return val/1024;
+    }
+
+    @PostMapping(path="/uploadQuestionPaper",consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public void uploadQuestionPaper(@RequestParam("assignmentId") long assignmentId, @RequestParam("file") MultipartFile file) throws IOException {
+    logger.info("assignment id={}",assignmentId);
+        logger.info("getOriginalFilename name={}",file.getOriginalFilename());
+        logger.info(" name={}",file.getName());
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("x-amz-meta-assignmentid", String.valueOf(assignmentId));
+        String fileName = file.getOriginalFilename();
+        String extension =fileName.substring(fileName.lastIndexOf("."));
+        String newFileName = "QnPaper_"+assignmentId+"_"+UUID.randomUUID()+extension;
+        PutObjectRequest putOb = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(newFileName)
+                .metadata(metadata)
+                .build();
+        byte[]   bytesArray = file.getBytes();
+        PutObjectResponse response = s3Client.putObject(putOb, RequestBody.fromBytes(bytesArray));
+
     }
 
 }

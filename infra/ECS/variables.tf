@@ -3,8 +3,12 @@ variable "region_name" {
 }
 
 variable "prefix" {
-  default = "online-training-service"
+  default = "shiksha"
 }
 variable "domain_name" {
 
+}
+variable "bucket_name" {
+  default = "assessment"
+  
 }

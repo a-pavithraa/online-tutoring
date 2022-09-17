@@ -4,7 +4,7 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import httpClient from "../util/http-client";
 import { CircularProgress, Grid } from "@mui/material";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Header, InputFieldsBox, Item } from "../ui/Theme";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { ComboBox } from "../ui/FormInputs";
@@ -53,6 +53,9 @@ function mapperFn(data) {
 
   return mapObj;
 }
+async function mapTeacherToSubjectAndGrade(mappingData) {
+  await httpClient.post("/mapping/mapTeacherToGradeAndSubject", mappingData);
+}
 const validationSchema =Yup.object({
   gradeSubjectMappings: Yup.array().of(
     Yup.object().shape({
@@ -73,6 +76,20 @@ const TeacherMappingModal = (props) => {
       select: mapperFn,
     }
   );
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutation(mapTeacherToSubjectAndGrade, {
+    onSuccess: data => {
+       console.log(data);
+       const message = "success"
+       alert(message)
+ },
+   onError: () => {
+        alert("there was an error")
+ },
+   onSettled: () => {
+      queryClient.invalidateQueries('create')
+ }
+ });
   const {
     status: subjectsFetchedStatus,
     data: subjects,
@@ -123,7 +140,9 @@ const TeacherMappingModal = (props) => {
 
                     }
                     const mapTeacherRequest = {teacherId:props.id,gradeAndSubjectMappingRequestList:postRequests}
-                    console.log(JSON.stringify(mapTeacherRequest));
+                    const jsonData = JSON.stringify(mapTeacherRequest)
+                    console.log(jsonData);
+                    mutate(jsonData);
                     
                   }, 500)
                 }
@@ -237,6 +256,9 @@ const TeacherMappingModal = (props) => {
                               >
                                 ADD
                               </Button>
+                              {isLoading ? (
+              <CircularProgress />
+            ) : (
                               <Button
                                 variant="contained"
                                 color="success"
@@ -245,6 +267,7 @@ const TeacherMappingModal = (props) => {
                               >
                                 Submit
                               </Button>
+            )}
                               &nbsp;
                             </div>
                           </>

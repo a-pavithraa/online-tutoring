@@ -1,4 +1,4 @@
-package com.adminservice.model;
+package com.studentassessment.model;
 
 public record StudentRecord(
         long id,

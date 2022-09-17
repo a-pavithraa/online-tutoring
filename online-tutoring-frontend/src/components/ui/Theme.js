@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import { Box } from '@mui/system';
 import { blue, grey, dark, lightGreen, red, green, lightBlue } from '@mui/material/colors';
-import { InputBase, Paper, TextField, Typography } from '@mui/material';
+import { InputBase, Paper, TableCell, tableCellClasses, TableRow, TextField, Typography } from '@mui/material';
 export const lightTheme = createTheme({
 
   palette: {
@@ -259,5 +259,25 @@ export const BootstrapInput = styled(InputBase)(({ theme }) => ({
       //borderColor: '#80bdff',
     //  boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
     },
+  },
+}));
+
+export const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+export const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 1,
   },
 }));
