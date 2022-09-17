@@ -22,6 +22,7 @@ public class AssessmentService {
         Assessment assessment=Assessment.builder()
                 .subjectId(createAssessmentRequest.getSubjectId())
                 .gradeId(createAssessmentRequest.getGradeId())
+                .teacherId(createAssessmentRequest.getTeacherId())
                 .assessmentDate(assessmentDate)
                 .build();
         assessmentRepo.persist(assessment);

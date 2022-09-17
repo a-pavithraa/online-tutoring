@@ -27,6 +27,7 @@ public class Assessment {
     private Long id;
     private Long gradeId;
     private Long subjectId;
+    private Long teacherId;
     private String documentUrl;
     private LocalDateTime assessmentDate;
     @CreationTimestamp

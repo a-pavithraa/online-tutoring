@@ -56,12 +56,5 @@ public class SQSUploadListener {
 
 
     }
-   /* @SqsListener("${questionpaper.queue.name}")
-    public void readMsg(S3EventNotification message) throws Exception{
-        LOG.info("message:{}",message);
-       *//* ObjectMapper mapper = new ObjectMapper();
-       S3EventNotification eventNotification= mapper.readValue(message, S3EventNotification.class);
-        LOG.info("S3EventNotification:{}",eventNotification);*//*
-    }
-*/
+
 }

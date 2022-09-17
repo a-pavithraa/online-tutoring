@@ -2,6 +2,7 @@ create table assessment(
 id bigint AUTO_INCREMENT PRIMARY KEY,
    subject_id bigint,
    grade_id bigint,
+   teacher_id bigint,
    assessment_date timestamp,
    created_at timestamp ,
    updated_at timestamp ,
@@ -15,7 +16,12 @@ DELETE
    	        REFERENCES grade(id)
            ON
 	DELETE
-		CASCADE
+		CASCADE,
+		 FOREIGN KEY (teacher_id)
+                   REFERENCES teacher(id)
+                   ON
+        DELETE
+        	CASCADE
 );
 create table student_assessment_mapping(
 
