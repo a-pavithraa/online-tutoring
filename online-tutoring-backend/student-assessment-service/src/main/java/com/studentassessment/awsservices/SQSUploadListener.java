@@ -1,7 +1,10 @@
 package com.studentassessment.awsservices;
 
 
+import com.studentassessment.model.AssessmentRecord;
 import com.studentassessment.model.S3EventNotification;
+import com.studentassessment.model.S3UploadDocDetailsRecord;
+import com.studentassessment.service.AssessmentService;
 import io.awspring.cloud.sqs.annotation.SqsListener;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -20,8 +23,9 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class SQSUploadListener {
     private static final Logger LOG = LoggerFactory.getLogger(SQSUploadListener.class);
-    private final S3Presigner s3Presigner;
-    private final S3Client s3Client;
+
+    private final AssessmentService assessmentService;
+    private final S3ActionsService s3ActionsService;
 
     @SqsListener("${questionpaper.queue.name}")
     public void processOrder(S3EventNotification s3EventNotificationRecord) {
@@ -29,25 +33,9 @@ public class SQSUploadListener {
             S3EventNotification.S3 s3Entity = s3EventNotificationRecord.getRecords().get(0).getS3();
             LOG.info("Bucket Name {}", s3Entity.getBucket().getName());
             LOG.info("Key Name {}", s3Entity.getObject().getKey());
+           assessmentService.sendMailToStudentsOnQuestionsUpload(s3Entity);
 
 
-            GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                    .bucket(s3Entity.getBucket().getName())
-                    .key(s3Entity.getObject().getKey())
-                    .build();
-            GetObjectResponse getObjectResponse = s3Client.getObject(getObjectRequest).response();
-
-            if (getObjectResponse.metadata().containsKey("assignmentid"))
-                LOG.info("Assignment Id in Lister:{}", getObjectResponse.metadata().get("assignmentid"));
-            GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
-                    .signatureDuration(Duration.ofMinutes(60))
-                    .getObjectRequest(getObjectRequest)
-                    .build();
-
-            PresignedGetObjectRequest presignedGetObjectRequest = s3Presigner.presignGetObject(getObjectPresignRequest);
-            String theUrl = presignedGetObjectRequest.url().toString();
-
-            System.out.println(theUrl);
         }
 
 
