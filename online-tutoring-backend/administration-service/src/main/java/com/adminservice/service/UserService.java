@@ -1,33 +1,20 @@
 package com.adminservice.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.adminservice.entity.*;
 import com.adminservice.model.CreateTeacherRequest;
-import com.adminservice.model.RegisterTeacherMappingRequest;
 import com.adminservice.model.TeacherRecord;
 import com.adminservice.repo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.adminservice.model.CreateStudentRequest;
-import com.adminservice.util.Utilties.Roles;
 
 import lombok.RequiredArgsConstructor;
-import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminAddUserToGroupRequest;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.SignUpRequest;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.SignUpResponse;
 
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 @Service
 @RequiredArgsConstructor
@@ -86,7 +73,13 @@ public class UserService {
     public List<TeacherRecord> getAllTeachers(){
         return teacherRepository.getAllTeachers();
     }
+    public TeacherRecord getTeacherById(long id){
+        return  teacherRepository.findById(id).orElseThrow();
+    }
 
+    public TeacherRecord getTeacherDetailsByName(String name){
+        return teacherRepository.findByName(name).orElseThrow();
+    }
 
 
 }

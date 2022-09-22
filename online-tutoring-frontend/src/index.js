@@ -7,15 +7,27 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { AuthContextProvider } from './store/auth-context';
 import { QueryClient, QueryClientProvider } from "react-query";
+import { LoginContextProvider } from './store/login-context';
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
+      retry:3,
+      refetchOnWindowFocus:false,
+      staleTime: 120000
+    },
+  },
+})
 root.render(
   <QueryClientProvider client={queryClient}>
   <BrowserRouter> 
+  <LoginContextProvider>
   <AuthContextProvider>
+
     <App />
     </AuthContextProvider>
-    
+    </LoginContextProvider>
   </BrowserRouter>
   </QueryClientProvider>
 );

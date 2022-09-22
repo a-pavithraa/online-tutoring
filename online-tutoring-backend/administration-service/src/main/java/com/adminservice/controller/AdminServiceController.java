@@ -2,7 +2,6 @@ package com.adminservice.controller;
 
 import javax.validation.Valid;
 
-import com.adminservice.entity.Teacher;
 import com.adminservice.model.*;
 import com.adminservice.service.CognitoService;
 import com.adminservice.util.Utilties;
@@ -57,6 +56,16 @@ public class AdminServiceController {
 	@GetMapping("/teachers")
 	public List<TeacherRecord> getAllTeachers(){
 		return userService.getAllTeachers();
+	}
+
+	@GetMapping("/teacher")
+	public TeacherRecord getTeacherById(@RequestParam("id") long id){
+		return userService.getTeacherById(id);
+	}
+
+	@GetMapping("/teacher/{teacherName}")
+	public TeacherRecord getTeacherDetailsByName(@PathVariable("teacherName") String teacherName){
+		return userService.getTeacherDetailsByName(teacherName);
 	}
 
 

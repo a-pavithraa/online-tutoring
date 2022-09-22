@@ -25,5 +25,9 @@ public class StudentAssessmentMapping {
     @MapsId("assessmentId")
     private Assessment assessment;
 
+    private double marks;
+    private String uploadedDocument;
+    private String correctedDocument;
+
 
 }

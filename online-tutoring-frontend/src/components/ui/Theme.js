@@ -2,8 +2,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import { Box } from '@mui/system';
-import { blue, grey, dark, lightGreen, red, green, lightBlue } from '@mui/material/colors';
-import { InputBase, Paper, TableCell, tableCellClasses, TableRow, TextField, Typography } from '@mui/material';
+import { blue, grey, dark, lightGreen, red, green, lightBlue, blueGrey } from '@mui/material/colors';
+import { Grid, InputBase, Paper, TableCell, tableCellClasses, TableRow, TextField, Typography } from '@mui/material';
 export const lightTheme = createTheme({
 
   palette: {
@@ -150,6 +150,11 @@ export const StyledBox = styled(Box)(({ theme }) => ({
 
 }));
 
+export const TextInputGrid = styled(Grid)(({ theme }) => ({
+  alignItems: 'center', paddingTop: theme.spacing(5), paddingLeft: theme.spacing(3),marginBottom:theme.spacing(5)
+
+}));
+
 export const InputFieldsBox = styled(Box)(({ theme }) => ({
   maxWidth: '55rem',
   margin: '2rem auto',
@@ -158,6 +163,18 @@ export const InputFieldsBox = styled(Box)(({ theme }) => ({
   height: `calc(100% - 22px)`,
 
   backgroundColor: "#f6f7fe",
+  display: 'flex', alignItems: 'center'
+
+}));
+
+export const LoginBox = styled(Box)(({ theme }) => ({
+  maxWidth: '40rem',
+  margin: '2rem auto',
+  padding: '20px',
+  boxShadow:'0 8px 16px 2px rgba(200, 198, 207, 0.2)',
+  height: `calc(100% - 12px)`,
+
+  backgroundColor: blue['100'],
   display: 'flex', alignItems: 'center'
 
 }));

@@ -28,7 +28,7 @@ public class Assessment {
     private Long gradeId;
     private Long subjectId;
     private Long teacherId;
-    private String documentUrl;
+    private String questionPaperDocument;
     private LocalDateTime assessmentDate;
     @CreationTimestamp
     private LocalDateTime createdAt;

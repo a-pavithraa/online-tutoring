@@ -13,7 +13,7 @@ import { Button } from "@mui/material";
 import TeacherMappingModal from "./TeacherMappingModal";
 import { InputFieldsBox, StyledTableCell, StyledTableRow } from "../ui/Theme";
 async function getTeachers() {
-  const res = await httpClient.get("/admin/teachers");
+  const res = await httpClient.get("/mdm/admin/teachers");
   return res.data;
 }
 

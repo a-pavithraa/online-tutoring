@@ -21,9 +21,9 @@ public class S3Configuration {
 		logger.info(kubernetesProfile);
 		
 		return "Y".equals(kubernetesProfile)
-				? S3Client.builder().region(Region.US_EAST_1)
+				? S3Client.builder()
 						.credentialsProvider(WebIdentityTokenFileCredentialsProvider.create()).build()
-				: S3Client.builder().region(Region.US_EAST_1).build();
+				: S3Client.builder().build();
 
 
 	}
@@ -31,9 +31,8 @@ public class S3Configuration {
 	@Bean
 	public S3Presigner getS3Presigner(){
 		return "Y".equals(kubernetesProfile)?S3Presigner.builder()
-				.region(Region.US_EAST_1)
 				.credentialsProvider(WebIdentityTokenFileCredentialsProvider.create())
-				.build(): S3Presigner.builder().region(Region.US_EAST_1).build();
+				.build(): S3Presigner.builder().build();
 	}
 
 }

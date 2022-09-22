@@ -26,7 +26,7 @@ const validationSchema = yup.object({
 
 });
 async function getRefData(urlSuffix) {
-    const res = await httpClient.get("/referenceData/" + urlSuffix);  
+    const res = await httpClient.get("/mdm/referenceData/" + urlSuffix);  
    return res.data;
 
 }

@@ -10,6 +10,7 @@ import {
 import React, { useContext } from "react";
 import { useQuery } from "react-query";
 import AuthContext from "../../store/auth-context";
+import LoginContext from "../../store/login-context";
 import { InputFieldsBox, StyledTableCell, StyledTableRow } from "../ui/Theme";
 import httpClient from "../util/http-client";
 import useQueryParam from "../util/queryparam-hook";
@@ -17,7 +18,7 @@ async function fetchStudentDetails(teacherId, gradeId, subjectId) {
   let gradeIdquery = gradeId? "&gradeId="+gradeId :'';
   let subjectIdQuery = subjectId?"&subjectId="+subjectId:'';
   const res = await httpClient.get(
-    "/mapping/studentsOfTeacher?teacherId=" +
+    "/mdm/mapping/studentsOfTeacher?teacherId=" +
       teacherId +
       gradeIdquery
    +subjectIdQuery
@@ -26,7 +27,7 @@ async function fetchStudentDetails(teacherId, gradeId, subjectId) {
 }
 const StudentsList = (props) => {
   const queryParam = useQueryParam();
-  const {teacherId}=useContext(AuthContext);
+  const {teacherId}=useContext(LoginContext);
  
   const { data, isFetching,status } = useQuery(
     "studentsOfClass",
@@ -56,7 +57,7 @@ const StudentsList = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {isFetching && <CircularProgress />}
+            {isFetching &&  <StyledTableRow><StyledTableCell colSpan={4}><CircularProgress /></StyledTableCell></StyledTableRow>}
             {data &&
               data.map((row) => (
                 <StyledTableRow

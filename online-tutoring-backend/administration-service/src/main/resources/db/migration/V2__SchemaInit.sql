@@ -6,7 +6,7 @@ id bigint AUTO_INCREMENT PRIMARY KEY,
    assessment_date timestamp,
    created_at timestamp ,
    updated_at timestamp ,
-   document_url varchar(500),
+   question_paper_document varchar(500),
    FOREIGN KEY (subject_id)
            REFERENCES subject(id)
            ON

@@ -8,23 +8,28 @@ import { Documents } from './pages/Documents';
 
 import Administration from './pages/Administration';
 import Students from './pages/Students';
+import RequireAuth from './components/util/RequireAuth';
+import Login from './pages/Login';
 
 function App() {
   return (
     <div className="App">
     <header className="App-header">
-      <Layout>
+    <Layout>
       <Routes>
-        
+        <Route path="/login" element={<Login/>}/>
+      <Route element={<RequireAuth />}>
+     
       <Route path="/" element={<Home />} />
       <Route path="/Classes" element={<Classes />} />
       <Route path="/Documents" element={<Documents />} />
       <Route path="/Administration" element={<Administration />} />
       <Route path="/Students" element={<Students />} />
-   
+    
+      </Route> 
    
      </Routes>
-      </Layout>
+     </Layout>
     </header>
   
  </div>

@@ -18,40 +18,12 @@ import Paper from "@mui/material/Paper";
 
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import LoginContext from "../store/login-context";
 
-const classesJson = [
-  {
-    id: "1",
-    grade: "VI",
-    subject: "Math",
-    students: "View Students",
-    nextAssessment: "16/08/2022",
-  },
-  {
-    id: "2",
-    grade: "VI",
-    subject: "Math",
-    students: "View Students",
-    nextAssessment: "16/08/2022",
-  },
-  {
-    id: "3",
-    grade: "VI",
-    subject: "Math",
-    students: "View Students",
-    nextAssessment: "16/08/2022",
-  },
-  {
-    id: "4",
-    grade: "VI",
-    subject: "Math",
-    students: "View Students",
-    nextAssessment: "16/08/2022",
-  },
-];
+
 async function fetchClassesMapped(id) {
   const res = await httpClient.get(
-    "/mapping/gradeAndSubjectsOfTeacher?teacherId=" + id
+    "/mdm/mapping/gradeAndSubjectsOfTeacher?teacherId=" + id
   );
   return res.data;
 }
@@ -59,10 +31,11 @@ async function fetchClassesMapped(id) {
 
 
 export const Classes = (props) => {
-  const context = useContext(AuthContext);
+  const context = useContext(LoginContext);
+  const uiContext = useContext(AuthContext);
   const navigate = useNavigate();
   
-  const { status, data, error, isFetching } = useQuery(
+  const {  data } = useQuery(
     "classesOfTeacher",
     () => fetchClassesMapped(context.teacherId),
     {
@@ -71,7 +44,7 @@ export const Classes = (props) => {
   );
  
   const displayStudents = (subjectId,gradeId)=>{
-    context.setSelectedMenu(1);
+    uiContext.setSelectedMenu(1);
     navigate("/Students?teacherId="+context.teacherId+'&subjectId='+subjectId+'&gradeId='+gradeId);
   }
   return (
@@ -104,7 +77,7 @@ export const Classes = (props) => {
 
                     <StyledTableCell>
                       <Button variant="contained" color="success">
-                        Schedule
+                        Schedule Assessment
                       </Button>
                     </StyledTableCell>
                   </StyledTableRow>

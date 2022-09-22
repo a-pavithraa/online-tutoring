@@ -15,10 +15,12 @@ import MenuItem from '@mui/material/MenuItem';
 
 import { styled } from "@mui/system";
 import AuthContext from "../../store/auth-context";
+import LoginContext from "../../store/login-context";
 const NavBar = () => {
 
  
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
+  const loginContext = useContext(LoginContext);
   const CssTextField = styled(TextField)({
     '& label.Mui-focused': {
       color: 'green',
@@ -43,14 +45,7 @@ const NavBar = () => {
 
 
  
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const menuOpen = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  
 
   
   let appBarContent = <Typography component="div" variant="h4" sx={{ paddingLeft: "10px" }}>SHIKSHA </Typography>
@@ -84,34 +79,21 @@ const NavBar = () => {
          
             
 
-<div className={moduleClasses.rightAlignment}>
+{loginContext.isLoggedIn  && <div className={moduleClasses.rightAlignment}>
 
             <Button
               id="basic-button"
-              color="inherit"
-              aria-controls={menuOpen ? 'basic-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={menuOpen ? 'true' : undefined}
+              color="inherit"            
+            
               sx={{fontSize:"1em"}}
-              onClick={handleClick}
+              onClick={loginContext.logout}
             >
-              TEST USER
+             LOGOUT
             </Button>
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={menuOpen}
-              onClose={handleMenuClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button',
-              }}
-            >
-              <MenuItem >Preferences</MenuItem>
-              <MenuItem >Dashboard</MenuItem>
-
-            </Menu>
+          
 
           </div>
+}
         </Toolbar>
       
       </AppBar>

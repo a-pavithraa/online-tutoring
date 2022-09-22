@@ -25,7 +25,7 @@ const style = {
 };
 async function getSubjectsAndGrades(teacherId) {
   const { data } = await httpClient.get(
-    "/mapping/gradeAndSubjectsOfTeacher?teacherId=" + teacherId,
+    "/mdm/mapping/gradeAndSubjectsOfTeacher?teacherId=" + teacherId,
     {
       staleTime: Infinity,
     }

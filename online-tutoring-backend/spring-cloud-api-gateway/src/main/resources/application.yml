@@ -16,17 +16,14 @@ spring:
               allowedHeaders: "*"
      
       routes:
-        - id: user
-          uri: http://localhost:8082/
+        - id: mdm
+          uri: http://localhost:8090/
           predicates:
-            - Path=/user/**
+            - Path=/mdm/**
          
-        - id: notification
-          uri: http://localhost:8083/
-          predicates:
-            - Path=/notification/**
-            
-        - id: s3
+        - id: assessment
           uri: http://localhost:8088/
           predicates:
-            - Path=/documents/*
+            - Path=/assessment/**
+            
+

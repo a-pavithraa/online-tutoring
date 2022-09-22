@@ -25,11 +25,11 @@ const validationSchema = yup.object({
   fullName: yup.string("Enter Full Name").max(30).required("Name is required"),
 });
 async function getRefData(urlSuffix) {
-  const res = await httpClient.get("/referenceData/" + urlSuffix);
+  const res = await httpClient.get("/mdm/referenceData/" + urlSuffix);
   return res.data;
 }
 async function createStudent(studentData) {
-  await httpClient.post("/admin/student", studentData);
+  await httpClient.post("/mdm/admin/student", studentData);
 }
 const StudentRegistration = () => {
   // const grades =[{id: 1, value:"one"},{id: 2, value:"two"},{id: 3, value:"three"}];

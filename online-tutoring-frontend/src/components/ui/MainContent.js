@@ -5,12 +5,14 @@ import Drawer from '@mui/material/Drawer';
 
 import { SideDraw } from './SideDraw';
 import AuthContext from '../../store/auth-context';
+import LoginContext from '../../store/login-context';
 
 const drawerWidth = 240;
 
 function MainContent(props) {
   const { window } = props;
-  const context = React.useContext(AuthContext)
+  const context = React.useContext(AuthContext);
+  const loginContext=React.useContext(LoginContext);
   const mobileOpen = context.mobileOpen;
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   console.log('selectedIndex==' + selectedIndex);
@@ -21,7 +23,7 @@ function MainContent(props) {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
      
-      <Box
+    {loginContext.isLoggedIn && <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
@@ -52,7 +54,7 @@ function MainContent(props) {
         >
           <SideDraw />
         </Drawer>
-      </Box>
+      </Box>}  
       <Box
         component="main"
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}

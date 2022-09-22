@@ -2,6 +2,7 @@ package com.studentassessment.api.mdm;
 
 import com.studentassessment.feign.FeignConfig;
 import com.studentassessment.model.StudentRecord;
+import com.studentassessment.model.TeacherRecord;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,4 +20,11 @@ public interface MdmClient {
             value = "/mdm/mapping/studentsOfTeacher",
             consumes = "application/json")
     List<StudentRecord> getStudents(@RequestParam("teacherId") Long teacherId, @RequestParam("gradeId")Long gradeId, @RequestParam("subjectId") Long subjectId);
+
+
+    @RequestMapping(
+            method = RequestMethod.GET,
+            value = "/mdm/admin/teacher",
+            consumes = "application/json")
+    TeacherRecord getTeacherById(@RequestParam("id") Long teacherId);
 }
