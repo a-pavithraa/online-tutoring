@@ -9,6 +9,7 @@ import { TextInput } from '../components/ui/FormInputs';
 import LoginContext from '../store/login-context';
 import { useNavigate } from 'react-router-dom';
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
+import { CLIENT_ID, USER_POOL_ID } from '../components/util/constants';
 const validationSchema = yup.object({
     userName: yup
         .string('Enter your user name')       
@@ -33,8 +34,8 @@ const Login =(props)=>{
         };
         var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
         var poolData = {
-          UserPoolId: 'us-east-1_DUfDYLnmA',
-          ClientId: '7sopkguq2mmi4vf7dhnet51kjn'
+          UserPoolId: USER_POOL_ID,
+          ClientId: CLIENT_ID
         };
         var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
         var userData = {

@@ -1,6 +1,8 @@
 package com.studentassessment.controller;
 
 import com.studentassessment.model.CreateAssessmentRequest;
+import com.studentassessment.model.SearchAssessmentRequest;
+import com.studentassessment.model.SearchAssessmentResponse;
 import com.studentassessment.model.UploadAnswerSheetRequest;
 import com.studentassessment.service.AssessmentService;
 import io.awspring.cloud.s3.ObjectMetadata;
@@ -58,19 +60,24 @@ public class AssessmentController {
     }
 
     @PostMapping(path="/questionPaperUpload",consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public void uploadQuestionPaper(@RequestParam("assignmentId") long assignmentId, @RequestParam("file") MultipartFile file) throws IOException {
-        logger.info("assignment id={}",assignmentId);
+    public void uploadQuestionPaper(@RequestParam("assessmentId") long assessmentId, @RequestParam("file") MultipartFile file) throws IOException {
+        logger.info("assignment id={}",assessmentId);
         logger.info("getOriginalFilename name={}",file.getOriginalFilename());
         logger.info(" name={}",file.getName());
 
         String fileName = file.getOriginalFilename();
         String extension =fileName.substring(fileName.lastIndexOf("."));
-        String newFileName = "QnPaper_"+assignmentId+"_"+ UUID.randomUUID()+extension;
+        String newFileName = "QnPaper_"+assessmentId+"_"+ UUID.randomUUID()+extension;
 
-        ObjectMetadata objectMetadata=ObjectMetadata.builder().metadata("x-amz-meta-assignmentid", String.valueOf(assignmentId)).build();
+        ObjectMetadata objectMetadata=ObjectMetadata.builder().metadata("x-amz-meta-assignmentid", String.valueOf(assessmentId)).build();
         s3Template.upload(qnPaperBucketName,newFileName,file.getInputStream(),objectMetadata);
 
 
+    }
+
+    @GetMapping(path="/assessmentDetails")
+    public SearchAssessmentResponse getAssessmentDetails(@RequestParam("teacherId") Long teacherId,@RequestParam(required = false) Long gradeId,@RequestParam(required = false) Long subjectId){
+        return  assessmentService.getAssessmentDetails(teacherId,gradeId,subjectId);
     }
 
 

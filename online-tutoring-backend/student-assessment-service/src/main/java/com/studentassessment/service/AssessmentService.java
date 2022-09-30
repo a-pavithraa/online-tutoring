@@ -93,5 +93,13 @@ public class AssessmentService {
 
     }
 
+    public SearchAssessmentResponse getAssessmentDetails(Long teacherId, Long gradeId, Long subjectId){
+        List<AssessmentDetailsRecord> assessmentDetailsRecords= assessmentRepo.getAssessments(teacherId,gradeId,subjectId);
+        SearchAssessmentResponse searchAssessmentResponse = new SearchAssessmentResponse(assessmentDetailsRecords);
+        return searchAssessmentResponse;
+    }
+
+
+
 
 }

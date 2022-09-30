@@ -37,7 +37,7 @@ public class UserService {
         logger.debug("subjects:{}", subjects);
         logger.debug("Creating student!!");
         Student student = Student.builder().userName(createStudentRequest.getUserName()).fullName(createStudentRequest.getFullName()).email(createStudentRequest.getEmailId())
-                .cognitoId(cognitoId).phoneNo(createStudentRequest.getEmailId()).grade(grade).parentName(createStudentRequest.getParentName())
+                .cognitoId(cognitoId).phoneNo(createStudentRequest.getPhoneNo()).grade(grade).parentName(createStudentRequest.getParentName())
                 .address(createStudentRequest.getAddress()).build();
         studentRepo.persist(student);
         logger.debug("Setting subject for student!!");

@@ -4,11 +4,14 @@ import {lightTheme} from './Theme';
 
 import NavBar from "./Navbar";
 import MainContent from "./MainContent";
+import { Outlet } from "react-router-dom";
 
 export const Layout =(props)=>{
     return <ThemeProvider theme={lightTheme}>
-        <NavBar/>
-        <MainContent content={props.children}/>
+      
+        <MainContent>
+            <Outlet/>
+            </MainContent>
         
     </ThemeProvider>
 

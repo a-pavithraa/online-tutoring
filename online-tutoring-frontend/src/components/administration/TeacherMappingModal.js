@@ -25,16 +25,13 @@ const style = {
 };
 async function getSubjectsAndGrades(teacherId) {
   const { data } = await httpClient.get(
-    "/mdm/mapping/gradeAndSubjectsOfTeacher?teacherId=" + teacherId,
-    {
-      staleTime: Infinity,
-    }
+    "/mdm/mapping/gradeAndSubjectsOfTeacher?teacherId=" + teacherId
   );
 
   return data;
 }
 async function getRefData(urlSuffix) {
-  const res = await httpClient.get("/referenceData/" + urlSuffix);
+  const res = await httpClient.get("/mdm/referenceData/" + urlSuffix);
   return res.data;
 }
 function mapperFn(data) {
@@ -54,7 +51,7 @@ function mapperFn(data) {
   return mapObj;
 }
 async function mapTeacherToSubjectAndGrade(mappingData) {
-  await httpClient.post("/mapping/mapTeacherToGradeAndSubject", mappingData);
+  await httpClient.post("/mdm/mapping/mapTeacherToGradeAndSubject", mappingData);
 }
 const validationSchema =Yup.object({
   gradeSubjectMappings: Yup.array().of(
@@ -81,7 +78,7 @@ const TeacherMappingModal = (props) => {
     onSuccess: data => {
        console.log(data);
        const message = "success"
-       alert(message)
+       props.handleClose();
  },
    onError: () => {
         alert("there was an error")
@@ -91,18 +88,14 @@ const TeacherMappingModal = (props) => {
  }
  });
   const {
-    status: subjectsFetchedStatus,
-    data: subjects,
-    error: subError,
-    isFetching: subjectsFetching,
+   
+    data: subjects   
   } = useQuery("subjects", () => getRefData("subjects"), {
     staleTime: Infinity,
   });
-  const {
-    status: gradesFetchedStatus,
+  const {   
     data: grades,
-    error: gradeError,
-    isFetching: gradesFetching,
+   
   } = useQuery("grades", () => getRefData("grades"), { staleTime: Infinity });
   return (
     <Modal
@@ -124,8 +117,8 @@ const TeacherMappingModal = (props) => {
                 initialValues={{ gradeSubjectMappings: data }}
                 // Need to modify. Will add this validation along with removing the already selected grade in the options
                 //validationSchema={validationSchema}
-                onSubmit={(values) =>
-                  setTimeout(() => {
+                onSubmit={(values) =>{
+                
                   
                    
                     
@@ -144,8 +137,9 @@ const TeacherMappingModal = (props) => {
                     console.log(jsonData);
                     mutate(jsonData);
                     
-                  }, 500)
+                 
                 }
+              }
               >
                 {(props) => (
                   <Form style={{ width: "100%" }}>

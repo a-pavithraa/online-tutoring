@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface AssessmentRepo extends JpaRepository<Assessment, Long>, HibernateRepository<Assessment> {
+public interface AssessmentRepo extends JpaRepository<Assessment, Long>, HibernateRepository<Assessment>,CustomAssessmentRepository {
 
 
 

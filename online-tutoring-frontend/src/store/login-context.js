@@ -104,7 +104,7 @@ export const LoginContextProvider = (props) => {
   const loginHandler = async (idToken,accessToken, expirationTime) => {
     setToken(idToken);
     const tokenObject = parseToken(idToken);
-    const userName = tokenObject.email??tokenObject["cognito:username"];
+    const userName = tokenObject["cognito:username"];
     setLoggedInUser(userName);
     const isTeacher = !!tokenObject["cognito:groups"].find(x=>x===TEACHER_GROUP);
     console.log(isTeacher);

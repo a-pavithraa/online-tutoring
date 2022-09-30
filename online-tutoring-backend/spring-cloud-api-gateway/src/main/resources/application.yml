@@ -1,6 +1,6 @@
 server:
   port: 9090
-jwt.aws.userPoolId: us-east-1_DUfDYLnmA
+jwt.aws.userPoolId: us-east-1_d7gTXDzXK
 jwt.aws.region: us-east-1
 ---
 spring:
@@ -17,12 +17,12 @@ spring:
      
       routes:
         - id: mdm
-          uri: http://localhost:8090/
+          uri: ${mdm_url}
           predicates:
             - Path=/mdm/**
          
         - id: assessment
-          uri: http://localhost:8088/
+          uri: ${assessment_url}
           predicates:
             - Path=/assessment/**
             

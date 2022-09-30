@@ -1,7 +1,7 @@
 version: '3'
 services:
-  onlinetutorialdbnew:
-    container_name: onlinetutorialdbnew
+  mysql:
+    container_name: onlinetutorialdb
     restart: always
     image: mysql:8.0.30
     ports:
@@ -24,30 +24,28 @@ services:
     environment:
       - spring.cloud.gateway.routes[0].id=mdm
       - spring.cloud.gateway.routes[0].predicates[0]=Path=/mdm/**
-      - spring.cloud.gateway.routes[0].uri=http://mdm/
+      - spring.cloud.gateway.routes[0].uri=http://mdm:8090/
       - spring.cloud.gateway.routes[1].id=assessment
       - spring.cloud.gateway.routes[1].predicates[0]=Path=/assessment/**
-      - spring.cloud.gateway.routes[1].uri=http://studentassessment/
+      - spring.cloud.gateway.routes[1].uri=http://studentassessment:8088/
   mdm:
     container_name: mdm
     image: pavithravasudevan/administration-service:0.0.1
     ports:
       - 8090:8090
     depends_on:
-      - onlinetutorialdbnew
-    environment:
-      - spring.datasource.url=jdbc:mysql://onlinetutorialdbnew:3307/shikshadb?user=testpass&password=testpass&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+      - mysql
+    env_file:
+      - ./env/mdm.env
   studentassessment:
     container_name: studentassessment
     image: pavithravasudevan/assessment-service:0.0.1
     ports:
       - 8088:8088
     depends_on:
-      - onlinetutorialdbnew
-    environment:
-      - spring.datasource.url=jdbc:mysql://onlinetutorialdbnew:3307/shikshadb?user=testpass&password=testpass&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
-      - restapi.mdm.url=http://mdm/
-      - AWS_REGION=us-east-1
+      - mysql
+    env_file:
+      - ./env/student-assessment.env
 
 volumes:
   onlinetutorialdbvol:

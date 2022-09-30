@@ -57,6 +57,15 @@ export const lightTheme = createTheme({
         }
       }
     },
+   MuiPickersDay:{
+    styleOverrides: {
+      root: {
+        backgroundColor: blue[50],
+        
+      }
+    }
+
+   },
     MuiOutlinedInput:{
       styleOverrides: {
         root: {

@@ -20,7 +20,7 @@ export const SideDraw = (props) => {
     navigate("/" + obj.text);
   };
   return (
-    <div>
+    <div >
       <List>
         {[
           "Classes",

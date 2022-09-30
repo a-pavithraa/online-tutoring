@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 public class RouterValidator {
 
     public static final List<String> openApiEndpoints = List.of(
-            "**/health"
+            "**/health","**/mdm/actuator/**"
           
     );
 

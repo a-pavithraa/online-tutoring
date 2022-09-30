@@ -44,7 +44,7 @@ const StudentsList = (props) => {
   return (
     <InputFieldsBox>
    
-      <TableContainer component={Paper} sx={{ maxWidth: 650 }}>
+      <TableContainer component={Paper} sx={{ maxWidth: "100%" }}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>

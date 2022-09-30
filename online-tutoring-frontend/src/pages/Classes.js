@@ -1,5 +1,5 @@
 import { Grid, Typography } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useQuery } from "react-query";
 import {
   InputFieldsBox,
@@ -19,6 +19,7 @@ import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import LoginContext from "../store/login-context";
+import ScheduleAssessmentModal from "../components/assessment/ScheduleAssessmentModal";
 
 
 async function fetchClassesMapped(id) {
@@ -34,6 +35,18 @@ export const Classes = (props) => {
   const context = useContext(LoginContext);
   const uiContext = useContext(AuthContext);
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [selectedGradeId,setSelectedGradeId]=useState();
+  const [selectedSubjectId,setSelectedSubjectId]=useState();
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const openEditModal = (gradeId,subjectId) => {
+    setSelectedGradeId(gradeId);
+    setSelectedSubjectId(subjectId);
+    setOpen(true);
+  };
   
   const {  data } = useQuery(
     "classesOfTeacher",
@@ -49,14 +62,16 @@ export const Classes = (props) => {
   }
   return (
     <InputFieldsBox>
-      <TableContainer component={Paper} sx={{ maxWidth: 650 }}>
+     {open && <ScheduleAssessmentModal subjectId={selectedSubjectId} gradeId={selectedGradeId} open={open}
+                handleClose={handleClose}/>}
+      <TableContainer component={Paper} sx={{ maxWidth: "100%" }}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <StyledTableCell>Subject</StyledTableCell>
               <StyledTableCell>Grade</StyledTableCell>
-              <StyledTableCell>&nbsp;</StyledTableCell>
-              <StyledTableCell>&nbsp;</StyledTableCell>
+              <StyledTableCell>Students</StyledTableCell>
+              <StyledTableCell>Assessment</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -76,7 +91,7 @@ export const Classes = (props) => {
                     </StyledTableCell>
 
                     <StyledTableCell>
-                      <Button variant="contained" color="success">
+                      <Button variant="contained" color="success" onClick={()=>openEditModal(row.gradeId, row.subjectId)}>
                         Schedule Assessment
                       </Button>
                     </StyledTableCell>
@@ -85,7 +100,9 @@ export const Classes = (props) => {
               })}
           </TableBody>
         </Table>
+      
       </TableContainer>
+     
     </InputFieldsBox>
   );
 };

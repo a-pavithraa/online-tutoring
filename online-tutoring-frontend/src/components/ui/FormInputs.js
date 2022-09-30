@@ -11,6 +11,33 @@ import {
 import moduleClasses from "./FormInput.module.scss";
 import { BootstrapInput } from "./Theme";
 import Select from "react-select";
+import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+export const DateField = ({ label, ...props }) => {
+  // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
+  // which we can spread on <input>. We can use field meta to show an error
+  // message if the field is invalid and it has been touched (i.e. visited)
+  const [field, meta] = useField(props);
+
+  return (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DateTimePicker
+        {...field}
+        {...props}
+        label={label}
+        inputFormat="MM/DD/YYYY HH:mm"
+        onChange={(value) => {
+          props.onChange(value["$d"] ?? value);
+        }}
+        renderInput={(params) => <TextField {...params} />}
+      />
+      {meta.touched && meta.error ? (
+        <div className={moduleClasses.error}>{meta.error}</div>
+      ) : null}
+    </LocalizationProvider>
+  );
+};
 export const TextInput = ({ label, ...props }) => {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
   // which we can spread on <input>. We can use field meta to show an error
@@ -68,35 +95,31 @@ const customStyles = {
 export const ComboBox = ({ label, ...props }) => {
   const [field, state, meta] = useField(props);
 
-  
   const { options } = props;
   return (
     <div className={moduleClasses.left}>
-    <Autocomplete
-     
-      disablePortal
-      {...field}
-      {...props}
-      options={options}
-      autoHighlight
-      getOptionLabel={(option) => option && option.label}
-      
-      onChange={(e, value) => {
-     
-        props.onChange(value);
-      }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label={label}
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: "new-password", // disable autocomplete and autofill
-          }}
-        />
-      )}
-    />
-     
+      <Autocomplete
+        disablePortal
+        {...field}
+        {...props}
+        options={options}
+        autoHighlight
+        getOptionLabel={(option) => option && option.label}
+        onChange={(e, value) => {
+          props.onChange(value);
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label={label}
+            inputProps={{
+              ...params.inputProps,
+              autoComplete: "new-password", // disable autocomplete and autofill
+            }}
+          />
+        )}
+      />
+
       {meta.touched && meta.error ? (
         <div className={moduleClasses.error}>{meta.error}</div>
       ) : null}
