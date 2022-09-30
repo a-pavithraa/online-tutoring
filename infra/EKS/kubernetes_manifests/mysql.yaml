@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+data:  
+    MYSQL_USER: testpass
+    MYSQL_PASSWORD: testpass
+    MYSQL_ROOT_PASSWORD: testpass
+    MYSQL_DATABASE: shikshadb
+    MYSQL_TCP_PORT: '3307'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:  
+  labels:
+    app: mysql
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql  
+  template:
+    metadata:      
+      labels:
+        app: mysql
+    spec:      
+      containers:
+      - image: mysql:8.0.30
+        name: mysql       
+        envFrom:
+        - configMapRef:
+            name: mysql-config
+   
+
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  labels:
+    app: mysql
+  name: mysql
+spec:
+  ports:
+  - name: 3307-3307
+    port: 3307
+    protocol: TCP
+    targetPort: 3307
+  selector:
+    app: mysql
+  type: ClusterIP
+status:
+  loadBalancer: {}
