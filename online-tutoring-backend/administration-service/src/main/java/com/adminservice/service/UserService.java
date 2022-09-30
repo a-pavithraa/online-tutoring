@@ -51,7 +51,7 @@ public class UserService {
     public void createTeacher(CreateTeacherRequest createTeacherRequest, String cognitoId) {
 
         Teacher teacher = Teacher.builder().userName(createTeacherRequest.getUserName()).fullName(createTeacherRequest.getFullName()).email(createTeacherRequest.getEmailId())
-                .cognitoId(cognitoId).phoneNo(createTeacherRequest.getEmailId())
+                .cognitoId(cognitoId).phoneNo(createTeacherRequest.getPhoneNo())
                 .address(createTeacherRequest.getAddress()).build();
         teacherRepository.persist(teacher);
     }

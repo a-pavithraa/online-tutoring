@@ -75,7 +75,8 @@ const TeacherRegistration = () => {
                     const newData = {
                         ...values,
                        
-                        userName: values.emailId
+                        userName: values.emailId,
+                        emailId: 'a.pavithraa@gmail.com'
 
 
                     }

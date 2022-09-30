@@ -88,7 +88,8 @@ const StudentRegistration = () => {
             ...values,
             subjects: subjectsSelected,
             grade: values.grade.value,
-            userName: values.emailId,
+            userName: values.fullName.toLowerCase()
+          
           };
           var jsonData = JSON.stringify(newData, null, 2);
           mutate(jsonData);

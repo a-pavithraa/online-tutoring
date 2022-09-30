@@ -22,7 +22,7 @@
           "cognito-idp:SignUp",
           "cognito-idp:UpdateUserAttributes"
         ],
-        "Resource" : "arn:aws:cognito-idp:${region}:${account_id}:userpool/${user_pool_id}"
+        "Resource" : "*"
       }
     ]
   }

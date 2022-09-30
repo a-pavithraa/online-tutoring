@@ -15,6 +15,7 @@ module "eks" {
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
+  
   node_security_group_additional_rules = {
     ingress_self_all = {
       description = "Node to node all ports/protocols"
@@ -32,6 +33,14 @@ module "eks" {
       type        = "egress"
       cidr_blocks = ["0.0.0.0/0"]
     }
+    ingress_allow_access_from_control_plane = {
+  type                          = "ingress"
+  protocol                      = "tcp"
+  from_port                     = 9443
+  to_port                       = 9443
+  source_cluster_security_group = true
+  description                   = "Allow access from control plane to webhook port of AWS load balancer controller"
+}
   }
 
   eks_managed_node_group_defaults = {
@@ -111,7 +120,14 @@ locals {
     for  role in module.service_account_roles : role.role_arns.name => role.role_arns.arn
   }
 }
-output "external_dns_arn" {
-  value = local.role_arn_mappings["${var.predix}_externaldns_sa_role"]
+output "external_dns_role_arn" {
+  value = local.role_arn_mappings["${var.prefix}_externaldns_sa_role"]
   
+}
+output "lb_controllor_role_arn" {
+  value = local.role_arn_mappings["${var.prefix}_albcontroller_sa_role"]
+  
+}
+output "cognito_role_arn" {
+   value = local.role_arn_mappings["${var.prefix}_cognito_sa_role"]
 }

@@ -9,6 +9,15 @@ locals {
     path                 = "/"
     policy               = templatefile("${path.module}/service_account_policies/cognito.json", { region = "${var.region}", account_id = "${var.account_id}", user_pool_id = "${var.user_pool_id}" })
 
+    },{
+    name                 = "sqs_access_policy"
+    description          = "SQS Access Policy"
+    service_account_name = "sqs-access"
+    service_account_namespace = "default"
+    role_name            = "${var.prefix}_sqs_sa_role"
+    path                 = "/"
+    policy               = file("${path.module}/service_account_policies/sqs.json")
+
     }, {
     name                 = "externaldns_access_policy"
     service_account_name = "external-dns"
