@@ -2,13 +2,19 @@ package com.studentassessment.awsservices;
 
 import com.studentassessment.model.S3EventNotification;
 import com.studentassessment.model.S3UploadDocDetailsRecord;
+import io.awspring.cloud.s3.ObjectMetadata;
+import io.awspring.cloud.s3.S3Resource;
+import io.awspring.cloud.s3.S3Template;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
@@ -29,6 +35,8 @@ public class AWSUtilityService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AWSUtilityService.class);
     private final MailSender mailSender;
+
+    private final S3Template s3Template;
     @Value("${mail.address.from}")
     private String fromMailAddress;
 
@@ -72,6 +80,24 @@ public class AWSUtilityService {
         simpleMailMessage.setText(body);
         mailSender.send(simpleMailMessage);
 
+    }
+
+    @SneakyThrows
+    public void uploadToBucket(String bucketName, String key, Map<String,String> metadataMap, MultipartFile file) {
+
+        ObjectMetadata.Builder metadataBuilder = ObjectMetadata.builder();
+        metadataMap.entrySet().forEach(m->metadataBuilder.metadata(m.getKey(),m.getValue()));
+        ObjectMetadata metadata =metadataBuilder.build();
+        s3Template.upload(bucketName, key, file.getInputStream(),metadata);
+
+
+    }
+
+    @SneakyThrows
+    public InputStreamResource downloadFile(String bucket, String key)  {
+       S3Resource s3Resource = s3Template.download(bucket,key);
+        InputStreamResource inputStreamResource=new InputStreamResource(s3Resource.getInputStream());
+        return inputStreamResource;
     }
 
 

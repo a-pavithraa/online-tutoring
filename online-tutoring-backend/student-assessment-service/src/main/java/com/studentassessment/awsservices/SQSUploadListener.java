@@ -15,7 +15,7 @@ public class SQSUploadListener {
     private static final Logger LOG = LoggerFactory.getLogger(SQSUploadListener.class);
 
     private final AssessmentService assessmentService;
-    private final AWSUtilityService AWSUtilityService;
+    private final com.studentassessment.awsservices.AWSUtilityService AWSUtilityService;
 
     @SqsListener("${questionpaper.queue.name}")
     public void questionPaperUploadHandler(S3EventNotification s3EventNotificationRecord) {
