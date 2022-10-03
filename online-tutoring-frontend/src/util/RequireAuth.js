@@ -1,6 +1,6 @@
 import { Navigate ,useLocation,Outlet} from 'react-router-dom';
 import {useContext} from 'react';
-import LoginContext from '../../store/login-context';
+import LoginContext from '../store/login-context';
 function RequireAuth({ children, redirectTo }) {
   const ctx = useContext(LoginContext);
   let isAuthenticated = ctx.isLoggedIn;

@@ -2,7 +2,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import { Box } from '@mui/system';
-import { blue, grey, dark, lightGreen, red, green, lightBlue, blueGrey } from '@mui/material/colors';
+import { blue, grey, dark, lightGreen, red, green, lightBlue, blueGrey, purple } from '@mui/material/colors';
 import { Grid, InputBase, Paper, TableCell, tableCellClasses, TableRow, TextField, Typography } from '@mui/material';
 export const lightTheme = createTheme({
 
@@ -31,6 +31,7 @@ export const lightTheme = createTheme({
         },
       },
     },
+  
     MuiDialogContent: {
       styleOverrides: {
         root: {
@@ -106,7 +107,7 @@ export const lightTheme = createTheme({
     MuiInputLabel: {
       defaultProps: {
         sx: {
-          fontSize: "1.1.em",
+          fontSize: "1.3em",
           top: 2,
         },
       },
@@ -123,7 +124,7 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
          color:"#031121",
-         fontSize: "1.1em",
+         fontSize: "1.2em",
          paddingBottom:"",
           
           '& h6': {
@@ -300,10 +301,42 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
+    backgroundColor: green[100],
   },
   // hide last border
   "&:last-child td, &:last-child th": {
     border: 1,
   },
 }));
+
+export const ModalGridItem = styled(Grid)(({ theme }) => ({
+  marginBottom:10, paddingRight: "10px",paddingBottom: "15px", paddingTop: "5px"
+}));
+
+export const ModalBox = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+}));
+
+export const ModalStyle= {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  pt: 2,
+  px: 4,
+  pb: 3,
+};

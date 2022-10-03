@@ -2,27 +2,15 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
-import httpClient from "../util/http-client";
+import httpClient from "../../util/http-client";
 import { CircularProgress, Grid } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Header, InputFieldsBox, Item } from "../ui/Theme";
+import { Header, InputFieldsBox, Item, ModalBox } from "../ui/Theme";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { ComboBox } from "../ui/FormInputs";
 import moduleClasses from "./Registration.module.scss";
 import * as Yup from "yup";
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
 
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  pt: 2,
-  px: 4,
-  pb: 3,
-};
 async function getSubjectsAndGrades(teacherId) {
   const { data } = await httpClient.get(
     "/mdm/mapping/gradeAndSubjectsOfTeacher?teacherId=" + teacherId
@@ -107,7 +95,7 @@ const TeacherMappingModal = (props) => {
     >
       {
        
-        <Box sx={{ ...style}}>
+        <ModalBox>
           <div  style={{float:'right'}}>
           <Button sx={{fontWeight:'bolder', color:'red', fontSize:14}} onClick={props.handleClose}>X</Button>
         </div>
@@ -273,7 +261,7 @@ const TeacherMappingModal = (props) => {
               </Formik>
             )}
           </InputFieldsBox>
-        </Box>
+        </ModalBox>
       }
     </Modal>
   );

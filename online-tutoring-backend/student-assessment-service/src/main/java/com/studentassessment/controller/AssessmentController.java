@@ -1,9 +1,6 @@
 package com.studentassessment.controller;
 
-import com.studentassessment.model.CreateAssessmentRequest;
-import com.studentassessment.model.SearchAssessmentRequest;
-import com.studentassessment.model.SearchAssessmentResponse;
-import com.studentassessment.model.UploadAnswerSheetRequest;
+import com.studentassessment.model.*;
 import com.studentassessment.service.AssessmentService;
 import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Template;
@@ -11,8 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,51 +33,52 @@ public class AssessmentController {
     @Value("${answersheet.bucket.name}")
     private String answerSheetBucketName;
     private static final Logger logger = LoggerFactory.getLogger(AssessmentController.class);
+
     @PostMapping("/assessment")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createAssessment(@RequestBody @Valid CreateAssessmentRequest createAssessmentRequest){
+    public void createAssessment(@RequestBody @Valid CreateAssessmentRequest createAssessmentRequest) {
         //add validation to check whether any previous assessment is scheduled
         assessmentService.createAssessment(createAssessmentRequest);
     }
 
-    @PostMapping(path="/answerSheetUpload",consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public void uploadAnswerSheet(@ModelAttribute UploadAnswerSheetRequest answerSheetRequest) throws IOException{
-        String fileName = answerSheetRequest.getAnswerSheet().getOriginalFilename();
-        String extension =fileName.substring(fileName.lastIndexOf("."));
-        ObjectMetadata objectMetadata=ObjectMetadata.builder()
-                .metadata("x-amz-meta-teacherid", String.valueOf(answerSheetRequest.getTeacherId()))
-                .metadata("x-amz-meta-studentid", String.valueOf(answerSheetRequest.getStudentId()))
-                .metadata("x-amz-meta-assignmentid", String.valueOf(answerSheetRequest.getAssignmentId()))
-                .build();
-
-        String newFileName = "AnswerSheet_"+answerSheetRequest.getAssignmentId()+"_"+answerSheetRequest.getStudentId()+"_"+ UUID.randomUUID()+extension;
-        StringBuilder key= new StringBuilder();
-        key.append(answerSheetRequest.getTeacherId()).append("/").append(answerSheetRequest.getAssignmentId()).append("/");
-        key.append(answerSheetRequest.getStudentId()).append("/");
-        key.append(newFileName);
-        s3Template.upload(answerSheetBucketName, key.toString(), answerSheetRequest.getAnswerSheet().getInputStream(),objectMetadata);
-    // Not adding update table call here since upload can be done via front end code also
+    @PostMapping(path = "/answerSheetUpload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public void uploadAnswerSheet(@ModelAttribute UploadAnswerSheetRequest answerSheetRequest) throws IOException {
+        assessmentService.uploadAnswerSheet(answerSheetRequest);
+        // Not adding update table call here since upload can be done via front end code also
     }
 
-    @PostMapping(path="/questionPaperUpload",consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PostMapping(path = "/questionPaperUpload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public void uploadQuestionPaper(@RequestParam("assessmentId") long assessmentId, @RequestParam("file") MultipartFile file) throws IOException {
-        logger.info("assignment id={}",assessmentId);
-        logger.info("getOriginalFilename name={}",file.getOriginalFilename());
-        logger.info(" name={}",file.getName());
-
-        String fileName = file.getOriginalFilename();
-        String extension =fileName.substring(fileName.lastIndexOf("."));
-        String newFileName = "QnPaper_"+assessmentId+"_"+ UUID.randomUUID()+extension;
-
-        ObjectMetadata objectMetadata=ObjectMetadata.builder().metadata("x-amz-meta-assignmentid", String.valueOf(assessmentId)).build();
-        s3Template.upload(qnPaperBucketName,newFileName,file.getInputStream(),objectMetadata);
+        logger.info("assignment id={}", assessmentId);
+        logger.info("getOriginalFilename name={}", file.getOriginalFilename());
+        logger.info(" name={}", file.getName());
+        assessmentService.uploadQuestionPaper(file, assessmentId);
 
 
     }
 
-    @GetMapping(path="/assessmentDetails")
-    public SearchAssessmentResponse getAssessmentDetails(@RequestParam("teacherId") Long teacherId,@RequestParam(required = false) Long gradeId,@RequestParam(required = false) Long subjectId){
-        return  assessmentService.getAssessmentDetails(teacherId,gradeId,subjectId);
+    @GetMapping(path = "/assessmentDetails")
+    public SearchAssessmentResponse getAssessmentDetails(@RequestParam("teacherId") Long teacherId, @RequestParam(required = false) Long gradeId, @RequestParam(required = false) Long subjectId) {
+        return assessmentService.getAssessmentDetails(teacherId, gradeId, subjectId);
+    }
+    @GetMapping(path = "/downloadFile")
+    public ResponseEntity<Resource> downloadFile(@RequestParam("documentName") String fileName, @RequestParam("documentType") String fileType) throws IOException{
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                .header(HttpHeaders.CONTENT_TYPE,"application/octet-stream")
+                .body(assessmentService.downloadDocument(fileName,fileType));
+
+
+    }
+    @GetMapping(path = "/submittedAssessmentDetails")
+    public SubmittedAssessmentResponse getSubmittedAssessments(@RequestParam("teacherId") Long teacherId) {
+        return assessmentService.getSubmittedAssessments(teacherId);
+    }
+
+    @PostMapping(path="/updateSubmittedAssessment")
+    public void updateSubmittedAssessment(@ModelAttribute UpdateSubmittedAssessmentRequest updateSubmittedAssessmentRequest){
+        assessmentService.updateSubmittedAssessment(updateSubmittedAssessmentRequest);
     }
 
 

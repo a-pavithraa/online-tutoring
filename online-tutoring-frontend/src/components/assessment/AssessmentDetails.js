@@ -1,6 +1,7 @@
 import {
   Button,
   CircularProgress,
+  Fab,
   Paper,
   Table,
   TableBody,
@@ -12,9 +13,9 @@ import React, { useContext, useState } from "react";
 import { useQuery } from "react-query";
 
 import LoginContext from "../../store/login-context";
-import { InputFieldsBox, StyledTableCell, StyledTableRow } from "../ui/Theme";
-import httpClient from "../util/http-client";
-import useQueryParam from "../util/queryparam-hook";
+import { Header, InputFieldsBox, StyledTableCell, StyledTableRow } from "../ui/Theme";
+import httpClient from "../../util/http-client";
+import useQueryParam from "../../util/queryparam-hook";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -25,6 +26,8 @@ import UploadAssessmentQnModal from "./UploadAssessmentQnModal";
 import { useTheme } from '@mui/material/styles';
 import moment from "moment";
 
+import DownloadIcon from "@mui/icons-material/DownloadOutlined";
+import { saveAs } from 'file-saver';
 
 async function getAssessmentDetails(teacherId, gradeId, subjectId) {
   let gradeIdquery = gradeId ? "&gradeId=" + gradeId : "";
@@ -37,7 +40,15 @@ async function getAssessmentDetails(teacherId, gradeId, subjectId) {
       subjectIdQuery
   );
   return res.data;
-}
+} 
+async function  downloadFile(fileName){
+  console.log(fileName);
+   
+  return httpClient.get(`/assessment/downloadFile?documentType=QuestionPaper&documentName=${fileName}`,{
+    responseType: 'blob'
+  }).then(({data}) => {   
+    saveAs(data, fileName);
+  })};
 
 function checkWhetherTodayDate(assessmentDate){
     const convertedDate = moment(assessmentDate).format("DD/MM/YYYY");
@@ -100,6 +111,8 @@ const AssessmentList = (props) => {
   const handleDialogClose = () => {
     setDialogOpen(false);
   };
+ 
+  
 
 
   return (
@@ -136,8 +149,11 @@ const AssessmentList = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <TableContainer component={Paper} sx={{ maxWidth: "100%" }}>
-        <Table aria-label="simple table">
+      <TableContainer component={Paper} sx={{ maxWidth: "100%",maxHeight:440 }}>
+      <Header variant="h4" component="h2">
+              ASSESSMENTS SCHEDULED
+            </Header>
+        <Table stickyHeader  aria-label="simple table">
           <TableHead>
             <TableRow>
               <StyledTableCell>Name</StyledTableCell>
@@ -170,7 +186,7 @@ const AssessmentList = (props) => {
                   <StyledTableCell>{row.assessmentDate}</StyledTableCell>
                   <StyledTableCell>
                     {
-                    row.qnPaperDocument?row.qnPaperDocument:
+                    row.qnPaperDocument?<Fab color="primary" size="small" component="span" aria-label="add" variant="extended" onClick={()=>downloadFile(row.qnPaperDocument)}> <DownloadIcon /> Question Paper </Fab>:
                      checkWhetherTodayDate(row.assessmentDate)? <Button
                         variant="contained"
                         onClick={() => handleDialogOpen(row.assessmentId,row.assessmentDate)}

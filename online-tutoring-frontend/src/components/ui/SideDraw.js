@@ -9,6 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import Divider from "@mui/material/Divider";
 import AuthContext from "../../store/auth-context";
+import Grid3x3Icon from '@mui/icons-material/Grid3x3';
 export const SideDraw = (props) => {
  
   const {selectedMenu,setSelectedMenu} = useContext(AuthContext);
@@ -20,13 +21,11 @@ export const SideDraw = (props) => {
     navigate("/" + obj.text);
   };
   return (
-    <div >
+    <div style={{fontWeight:"bolder"}}>
       <List>
         {[
           "Classes",
-          "Students",
-          "Documents",
-          "Notification",
+          "Students",            
           "Administration",
           "Assessments",
           "Submissions",
@@ -40,7 +39,7 @@ export const SideDraw = (props) => {
               onClick={(event) => displayPage(event, { index }, { text })}
             >
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+               <Grid3x3Icon/>
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>

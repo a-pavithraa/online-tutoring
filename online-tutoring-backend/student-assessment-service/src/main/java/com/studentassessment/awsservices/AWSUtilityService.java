@@ -48,12 +48,12 @@ public class AWSUtilityService {
                 .key(s3Entity.getObject().getKey())
                 .build();
         GetObjectResponse getObjectResponse = s3Client.getObject(getObjectRequest).response();
-        long assignmentId = 0;
+        long assessmentId = 0;
         long teacherId =0;
         long studentId=0;
 
-        if (getObjectResponse.metadata().containsKey("assignmentid"))
-            assignmentId= Long.valueOf(getObjectResponse.metadata().get("assignmentid"));
+        if (getObjectResponse.metadata().containsKey("assessmentid"))
+            assessmentId= Long.valueOf(getObjectResponse.metadata().get("assessmentid"));
 
         if (getObjectResponse.metadata().containsKey("teacherid"))
             teacherId= Long.valueOf(getObjectResponse.metadata().get("teacherid"));
@@ -68,8 +68,27 @@ public class AWSUtilityService {
         PresignedGetObjectRequest presignedGetObjectRequest = s3Presigner.presignGetObject(getObjectPresignRequest);
         String theUrl = presignedGetObjectRequest.url().toString();
         System.out.println(theUrl);
-        S3UploadDocDetailsRecord s3UploadDocDetailsRecords= new S3UploadDocDetailsRecord(assignmentId,teacherId,studentId,theUrl);
+        S3UploadDocDetailsRecord s3UploadDocDetailsRecords= new S3UploadDocDetailsRecord(assessmentId,teacherId,studentId,theUrl);
         return s3UploadDocDetailsRecords;
+    }
+
+    public String getPresignedUrl(String bucketName,String key){
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+        GetObjectResponse getObjectResponse = s3Client.getObject(getObjectRequest).response();
+        GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
+                .signatureDuration(Duration.ofMinutes(60))
+                .getObjectRequest(getObjectRequest)
+                .build();
+
+
+        PresignedGetObjectRequest presignedGetObjectRequest = s3Presigner.presignGetObject(getObjectPresignRequest);
+        String theUrl = presignedGetObjectRequest.url().toString();
+
+        return theUrl;
+
     }
 
     public void sendMail(String recipientAddress, String subject, String body){
@@ -91,6 +110,10 @@ public class AWSUtilityService {
         s3Template.upload(bucketName, key, file.getInputStream(),metadata);
 
 
+    }
+
+    public void uploadJSONToBucket(String bucketName,String key, String jsonStr){
+        s3Template.store(bucketName,key,jsonStr);
     }
 
     @SneakyThrows

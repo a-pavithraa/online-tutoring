@@ -17,7 +17,7 @@ public class SQSUploadListener {
     private final AssessmentService assessmentService;
     private final com.studentassessment.awsservices.AWSUtilityService AWSUtilityService;
 
-    @SqsListener("${questionpaper.queue.name}")
+   /* @SqsListener("${questionpaper.queue.name}")
     public void questionPaperUploadHandler(S3EventNotification s3EventNotificationRecord) {
         if (s3EventNotificationRecord != null && s3EventNotificationRecord.getRecords() != null) {
             S3EventNotification.S3 s3Entity = s3EventNotificationRecord.getRecords().get(0).getS3();
@@ -27,7 +27,7 @@ public class SQSUploadListener {
 
 
         }
-    }
+    }*/
 
     @SqsListener("${answersheet.queue.name}")
     public void answerSheetUploadHandler(S3EventNotification s3EventNotificationRecord) {
@@ -35,7 +35,8 @@ public class SQSUploadListener {
             S3EventNotification.S3 s3Entity = s3EventNotificationRecord.getRecords().get(0).getS3();
             LOG.info("Bucket Name {}", s3Entity.getBucket().getName());
             LOG.info("Key Name {}", s3Entity.getObject().getKey());
-            assessmentService.sendMailToTeacherOnAnswerSheetUpload(s3Entity);
+            if(s3Entity.getObject().getKey().startsWith("Uploads/"))
+                assessmentService.sendMailToTeacherOnAnswerSheetUpload(s3Entity);
 
 
         }

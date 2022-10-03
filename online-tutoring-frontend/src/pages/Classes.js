@@ -2,11 +2,12 @@ import { Grid, Typography } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { useQuery } from "react-query";
 import {
+  Header,
   InputFieldsBox,
   StyledTableCell,
   StyledTableRow,
 } from "../components/ui/Theme";
-import httpClient from "../components/util/http-client";
+import httpClient from "../util/http-client";
 import AuthContext from "../store/auth-context";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -62,10 +63,14 @@ export const Classes = (props) => {
   }
   return (
     <InputFieldsBox>
+     
      {open && <ScheduleAssessmentModal subjectId={selectedSubjectId} gradeId={selectedGradeId} open={open}
                 handleClose={handleClose}/>}
-      <TableContainer component={Paper} sx={{ maxWidth: "100%" }}>
-        <Table aria-label="simple table">
+       <TableContainer component={Paper} sx={{ maxWidth: "100%" }}>
+       <Header variant="h4" component="h2">
+              MY CLASSES
+            </Header>
+        <Table stickyHeader  aria-label="simple table">
           <TableHead>
             <TableRow>
               <StyledTableCell>Subject</StyledTableCell>

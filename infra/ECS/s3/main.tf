@@ -30,25 +30,37 @@ resource "aws_s3_bucket_public_access_block" "bucket_public_access" {
 resource "aws_s3_bucket_lifecycle_configuration" "s3_bucket_lifecycle" {
   bucket = aws_s3_bucket.s3_bucket.bucket
 
-  rule {
-    expiration {
-      days = var.expiration_days
+  dynamic "rule" {
+    for_each = var.lifecycle_policies.prefix_policies
+   
+    content {
+      id = rule.value.name
+      expiration {
+        days = rule.value.expiration_days
+      }
+      filter {
+        prefix = rule.value.prefix
+      }
+
+      status = "Enabled"
+
     }
-    status = "Enabled"
-    id     = "${var.bucket_name}-policy"
+
   }
+
 }
 resource "aws_sqs_queue" "event_notification_queue" {
   name = "${var.bucket_name}_sqs"
 
-  policy = templatefile("${path.module}/sns_policy.json", { queue="${var.bucket_name}_sqs",bucket = "${aws_s3_bucket.s3_bucket.arn}" })
+  policy = templatefile("${path.module}/sns_policy.json", { queue = "${var.bucket_name}_sqs", bucket = "${aws_s3_bucket.s3_bucket.arn}" })
 }
 resource "aws_s3_bucket_notification" "bucket_notification" {
   bucket = aws_s3_bucket.s3_bucket.id
-
+ 
   queue {
     queue_arn = aws_sqs_queue.event_notification_queue.arn
     events    = ["s3:ObjectCreated:*"]
-
+    
+    filter_prefix =var.s3_prefix
   }
 }

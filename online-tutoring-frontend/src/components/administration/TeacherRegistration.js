@@ -7,7 +7,7 @@ import { TextInput } from '../ui/FormInputs';
 import { CircularProgress, Grid } from '@mui/material';
 import { Header, InputFieldsBox, Item } from '../ui/Theme';
 import moduleClasses from './Registration.module.scss';
-import httpClient from '../util/http-client';
+import httpClient from '../../util/http-client';
 import { useMutation, useQueryClient } from 'react-query';
 
 

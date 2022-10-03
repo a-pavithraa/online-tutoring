@@ -11,8 +11,7 @@
   display: flex;
   flex-direction: column;
   
- 
-  font-size: calc(10px + 2vmin);
+
   color: #031121;
 }
 
@@ -46,7 +45,7 @@
 [class^="Component-horizontalScrollContainer-"] ::-webkit-scrollbar-thumb {
   border: 0.5px solid #afcef1;
   border-radius: 0.5px;
-  background-color: rgba(105, 99, 99, 0.3);
+  background-color: rgba(12, 11, 11, 0.3);
 }
 .MuiTab-root.Mui-selected {
   color: #ea2330!important;
@@ -95,12 +94,12 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #9562e7;
+  background: #1a191b;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgb(67, 6, 235);
+  background: rgb(76, 76, 77);
 }
 
 /* Handle on hover */

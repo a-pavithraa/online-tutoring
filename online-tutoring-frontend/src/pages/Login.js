@@ -9,7 +9,7 @@ import { TextInput } from '../components/ui/FormInputs';
 import LoginContext from '../store/login-context';
 import { useNavigate } from 'react-router-dom';
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
-import { CLIENT_ID, USER_POOL_ID } from '../components/util/constants';
+import { CLIENT_ID, USER_POOL_ID } from '../util/constants';
 const validationSchema = yup.object({
     userName: yup
         .string('Enter your user name')       
@@ -84,7 +84,7 @@ const Login =(props)=>{
             validationSchema={validationSchema}
             onSubmit={async (values) => {
              
-                 console.log(values);
+               
                  loginHandler(values.userName,values.password);
                  
               
@@ -93,7 +93,7 @@ const Login =(props)=>{
       {props =>  
              <Form style={{width:"100%"}}>
                 <Header variant="h4" component="h2" sx={{textAlign:'center'}}>LOGIN</Header>
-                <Grid container sx={{ paddingBottom: "10px"}} >
+                <Grid container sx={{  paddingRight: "10px", paddingBottom: "15px", paddingTop: "5px"}} >
                     <TextInputGrid item xs={12}  >
                         <Item>
                             <TextInput

@@ -1,5 +1,5 @@
 import React from "react";
-import httpClient from "../util/http-client";
+import httpClient from "../../util/http-client";
 import { useQuery } from "react-query";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

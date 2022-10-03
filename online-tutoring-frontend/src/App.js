@@ -4,10 +4,7 @@ import { Layout } from "./components/ui/Layout";
 import {
   Route,
   Routes,
-  Navigate,
-  Link,
-  createBrowserRouter,
-  RouterProvider,
+ 
 } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Classes } from "./pages/Classes";
@@ -15,10 +12,13 @@ import { Documents } from "./pages/Documents";
 
 import Administration from "./pages/Administration";
 import Students from "./pages/Students";
-import RequireAuth from "./components/util/RequireAuth";
+import RequireAuth from "./util/RequireAuth";
 import Login from "./pages/Login";
 import NavBar from "./components/ui/Navbar";
 import Assessments from "./pages/Assessments";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { lightTheme } from "./components/ui/Theme";
+import Submissions from "./pages/Submissions";
 /**const router = createBrowserRouter([
   {
     path: "/",
@@ -61,8 +61,10 @@ import Assessments from "./pages/Assessments";
 function App() {
   return (
     <div className="App">
+
       <header className="App-header">
         <NavBar />
+        <ThemeProvider theme={lightTheme}>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route element={<RequireAuth />}>
@@ -72,9 +74,11 @@ function App() {
               <Route path="/Administration" element={<Administration />} />
               <Route path="/Assessments" element={<Assessments />} />
               <Route path="/Students" element={<Students />} />
+              <Route path="/Submissions" element={<Submissions />} />
             </Route>
           </Route>
         </Routes>
+        </ThemeProvider>
       </header>
     </div>
   );

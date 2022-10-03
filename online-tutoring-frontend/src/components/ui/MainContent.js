@@ -5,6 +5,7 @@ import Drawer from '@mui/material/Drawer';
 
 import { SideDraw } from './SideDraw';
 import AuthContext from '../../store/auth-context';
+import { blue } from '@mui/material/colors';
 
 
 const drawerWidth = 240;
@@ -39,7 +40,7 @@ function MainContent(props) {
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth,background:blue[100] },
           }}
         >
           <SideDraw />
@@ -48,7 +49,7 @@ function MainContent(props) {
           variant="permanent"
           sx={{
             display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, marginTop: '70px' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, marginTop: '65px',background:blue[100] },
           }}
           open
         >

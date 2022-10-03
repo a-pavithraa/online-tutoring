@@ -2,31 +2,19 @@ import React, { useContext } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
-import httpClient from "../util/http-client";
+import httpClient from "../../util/http-client";
 import { CircularProgress, Grid } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Header, InputFieldsBox, Item } from "../ui/Theme";
+import { Header, InputFieldsBox, Item, ModalStyle } from "../ui/Theme";
 import { Field, FieldArray, Form, Formik } from "formik";
 import {  DateField } from "../ui/FormInputs";
 
 import * as Yup from "yup";
 import moment from "moment/moment";
-import { getCurrentTime } from "../util/functions";
+import { getCurrentTime } from "../../util/functions";
 import LoginContext from "../../store/login-context";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
 
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  pt: 2,
-  px: 4,
-  pb: 3,
-};
 async function createAssessment(createAssessmentRequest){
  
   console.log(createAssessmentRequest);
@@ -61,7 +49,7 @@ const ScheduleAssessmentModal = (props) => {
       aria-describedby="child-modal-description"
     >
       {
-        <Box sx={{ ...style }}>
+        <Box sx={{ ...ModalStyle }}>
           <div style={{ float: "right" }}>
             <Button
               sx={{ fontWeight: "bolder", color: "red", fontSize: 14 }}

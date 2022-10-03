@@ -11,9 +11,9 @@ import React, { useContext } from "react";
 import { useQuery } from "react-query";
 import AuthContext from "../../store/auth-context";
 import LoginContext from "../../store/login-context";
-import { InputFieldsBox, StyledTableCell, StyledTableRow } from "../ui/Theme";
-import httpClient from "../util/http-client";
-import useQueryParam from "../util/queryparam-hook";
+import { Header, InputFieldsBox, StyledTableCell, StyledTableRow } from "../ui/Theme";
+import httpClient from "../../util/http-client";
+import useQueryParam from "../../util/queryparam-hook";
 async function fetchStudentDetails(teacherId, gradeId, subjectId) {
   let gradeIdquery = gradeId? "&gradeId="+gradeId :'';
   let subjectIdQuery = subjectId?"&subjectId="+subjectId:'';
@@ -45,6 +45,9 @@ const StudentsList = (props) => {
     <InputFieldsBox>
    
       <TableContainer component={Paper} sx={{ maxWidth: "100%" }}>
+      <Header variant="h4" component="h2">
+              MY STUDENTS
+            </Header>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -53,6 +56,7 @@ const StudentsList = (props) => {
               <StyledTableCell>Parent Name</StyledTableCell>
               <StyledTableCell>Contact No</StyledTableCell>
               <StyledTableCell>Address</StyledTableCell>
+              <StyledTableCell>Performance</StyledTableCell>
             
             </TableRow>
           </TableHead>
@@ -71,6 +75,7 @@ const StudentsList = (props) => {
                   <StyledTableCell>{row.parentName}</StyledTableCell>
                   <StyledTableCell>{row.contactNo}</StyledTableCell>
                   <StyledTableCell>{row.address}</StyledTableCell>
+                  <StyledTableCell>&nbsp;</StyledTableCell>
                 </StyledTableRow>
              ))}
              {!isFetching && (!data || data.length==0) && <StyledTableRow>

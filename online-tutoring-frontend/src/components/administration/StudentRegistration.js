@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { BootstrapInput, Header, InputFieldsBox, Item } from "../ui/Theme";
 import moduleClasses from "./Registration.module.scss";
-import httpClient from "../util/http-client";
+import httpClient from "../../util/http-client";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const validationSchema = yup.object({

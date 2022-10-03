@@ -2,9 +2,12 @@ variable "bucket_name" {
 
 }
 
-variable "expiration_days" {
+variable "lifecycle_policies" {
 
 }
 variable "tags" {
+  
+}
+variable "s3_prefix" {
   
 }

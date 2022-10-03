@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
-import { TEACHER_GROUP } from '../components/util/constants';
-import httpClient from '../components/util/http-client';
+import { TEACHER_GROUP } from '../util/constants';
+import httpClient from '../util/http-client';
 
 let logoutTimer;
 

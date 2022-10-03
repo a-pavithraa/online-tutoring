@@ -1,1 +1,1 @@
-domain_name="saaralkaatru.com"
+domain_name = "saaralkaatru.com"
