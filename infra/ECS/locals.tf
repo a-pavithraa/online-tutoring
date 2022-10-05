@@ -20,11 +20,11 @@ locals {
       prefix_policies = [{
         prefix          = "",
         expiration_days = 15,
-        name            = "${var.prefix}-questionpapers_all"
+        name            = "${var.prefix}-answersheets"
         }, {
-        prefix          = "/notification",
+        prefix          = "/Notification",
         expiration_days = 1,
-        name            = "${var.prefix}-questionpapers_notification"
+        name            = "${var.prefix}-answersheets_notification"
       }],
       tag_policies = [{
         tag_name = "student_notification"

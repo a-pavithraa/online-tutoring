@@ -60,11 +60,11 @@ public class CourseRegistrationService {
 
 
     @Transactional(readOnly = true)
-    public List<StudentRecord> getStudentsOfTeacher(Long teacherId, Long gradeId, Long subjectId) {
+    public ListStudentsResponse getStudentsOfTeacher(Long teacherId, Long gradeId, Long subjectId) {
 
         List<StudentRecord> studentRecords = studentRepository.getAllStudentsOfTeacher(teacherId, gradeId, subjectId);
-        return studentRecords;
-
+        ListStudentsResponse listStudentsResponse = new ListStudentsResponse(studentRecords);
+        return listStudentsResponse;
     }
 
     @Transactional(readOnly = true)
@@ -84,10 +84,11 @@ public class CourseRegistrationService {
     }
 
     @Transactional(readOnly = true)
-    public List<GradeAndSubjectMappingRecord> getGradesAndSubjectsOfTeacher(long teacherId) {
+    public GradeAndSubjectMappingResponse getGradesAndSubjectsOfTeacher(long teacherId) {
 
         List<GradeAndSubjectMappingRecord> gradeAndSubjectMappingForTeacher = teacherSubjectGradeRepository.getGradeAndSubjectMappingForTeacher(teacherId);
-        return gradeAndSubjectMappingForTeacher;
+        GradeAndSubjectMappingResponse gradeAndSubjectMappingResponse = new GradeAndSubjectMappingResponse(gradeAndSubjectMappingForTeacher);
+        return gradeAndSubjectMappingResponse;
 
     }
 

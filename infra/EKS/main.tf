@@ -15,7 +15,7 @@ module "eks" {
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
-  
+
   node_security_group_additional_rules = {
     ingress_self_all = {
       description = "Node to node all ports/protocols"
@@ -34,13 +34,13 @@ module "eks" {
       cidr_blocks = ["0.0.0.0/0"]
     }
     ingress_allow_access_from_control_plane = {
-  type                          = "ingress"
-  protocol                      = "tcp"
-  from_port                     = 9443
-  to_port                       = 9443
-  source_cluster_security_group = true
-  description                   = "Allow access from control plane to webhook port of AWS load balancer controller"
-}
+      type                          = "ingress"
+      protocol                      = "tcp"
+      from_port                     = 9443
+      to_port                       = 9443
+      source_cluster_security_group = true
+      description                   = "Allow access from control plane to webhook port of AWS load balancer controller"
+    }
   }
 
   eks_managed_node_group_defaults = {
@@ -109,25 +109,25 @@ module "service_account_roles" {
   policy                                         = each.value.policy
   k8s_service_account_namespace                  = each.value.service_account_namespace
   k8s_service_account_name                       = each.value.service_account_name
-  role_name = each.value.role_name
+  role_name                                      = each.value.role_name
   oidc_arn                                       = module.eks.oidc_provider_arn
   aws_iam_oidc_connect_provider_extract_from_arn = local.aws_iam_oidc_connect_provider_extract_from_arn
 
 }
 
 locals {
-  role_arn_mappings={
-    for  role in module.service_account_roles : role.role_arns.name => role.role_arns.arn
+  role_arn_mappings = {
+    for role in module.service_account_roles : role.role_arns.name => role.role_arns.arn
   }
 }
 output "external_dns_role_arn" {
   value = local.role_arn_mappings["${var.prefix}_externaldns_sa_role"]
-  
+
 }
 output "lb_controllor_role_arn" {
   value = local.role_arn_mappings["${var.prefix}_albcontroller_sa_role"]
-  
+
 }
 output "cognito_role_arn" {
-   value = local.role_arn_mappings["${var.prefix}_cognito_sa_role"]
+  value = local.role_arn_mappings["${var.prefix}_cognito_sa_role"]
 }

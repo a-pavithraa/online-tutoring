@@ -24,6 +24,7 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
                 (String) tuple[i++],
                 (String) tuple[i++],
                 (String) tuple[i++],
+                (String) tuple[i++],
                 (String) tuple[i++]
         );
     };
@@ -37,7 +38,7 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
 
         String query ="""
                         SELECT
-                                	distinct s.id , s.user_name ,s.full_name , s.email , s.parent_name ,s.phone_no,s.address 
+                                	distinct s.id , s.user_name ,s.full_name , s.email , s.parent_name ,s.phone_no,s.address,s.cognito_id 
                                 from
                                 	student s ,
                                 	student_subject_map ssm ,

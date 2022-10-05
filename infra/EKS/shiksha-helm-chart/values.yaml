@@ -1,0 +1,19 @@
+mysql:
+  serviceName: mysql
+  dbName: shiksha
+  userName: testpass
+  password: testpass
+image:
+  repositoryName: pavithravasudevan
+aws:
+  cognito:
+    userPoolId: us-east-1_d7gTXDzXK
+    appClientId: 4d0rspobol474rft7nq57krjjq
+  region: us-east-1
+ports:
+    apigateway: 9090
+    mdm: 8090
+    assessment: 8088
+    mysql: 3306
+ingress:
+  domainName: saaralkaatru.com

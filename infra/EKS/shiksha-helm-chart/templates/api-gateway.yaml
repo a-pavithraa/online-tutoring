@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apigateway-config
+data:  
+    mdm_url: http://mdm.default.svc.cluster.local:{{.Values.ports.mdm}}/    
+    assessment_url: http://assessment.default.svc.cluster.local:{{.Values.ports.assessment}}/
+    jwt.aws.userPoolId: {{.Values.aws.cognito.userPoolId}}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:  
+  labels:
+    app: apigateway
+  name: apigateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apigateway  
+  template:
+    metadata:      
+      labels:
+        app: apigateway
+    spec:
+      
+      containers:
+      - image: pavithravasudevan/spring-cloud-gateway:0.0.1
+        name: apigateway       
+        envFrom:
+        - configMapRef:
+            name: apigateway-config
+       
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  labels:
+    app: apigateway
+  name: apigateway
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health/readiness
+spec:
+  ports:
+  - name: 9090-9090
+    port: {{.Values.ports.apigateway}}
+    protocol: TCP
+    targetPort: 9090
+  selector:
+    app: apigateway
+  type: NodePort
+status:
+  loadBalancer: {}

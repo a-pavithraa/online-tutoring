@@ -24,7 +24,7 @@ EOF
 
 resource "aws_iam_policy" "student_policy" {
   name        = "student-policy"
-  description = "A test policy"
+  description = "Giving S3 folder and DynamoDB Access"
 
   policy = <<EOF
 {
@@ -40,7 +40,24 @@ resource "aws_iam_policy" "student_policy" {
             "Resource": [
                 "arn:aws:s3:::${var.assessment_bucket_name}",
                 "arn:aws:s3:::${var.assessment_bucket_name}/*"
-            ]
+            ],
+             "Condition": {
+                "StringLike": {
+                    "s3:prefix": [
+                        "$${cognito-identity.amazonaws.com:sub}/*"
+                    ]
+                }
+            }
+        },
+        {
+            "Sid": "DescribeQueryScanStudentsTable",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:DescribeTable",
+                "dynamodb:Query",
+                "dynamodb:Scan"
+            ],
+            "Resource": "arn:aws:dynamodb:::table/${var.dynamodb_table_name}"
         }
     ]
 }

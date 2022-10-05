@@ -1,5 +1,5 @@
 variable "prefix" {
-  default = "shiksha"  
+  default = "shiksha"
 }
 variable "oidc_thumbprint_list" {
   type    = list(any)
@@ -26,6 +26,6 @@ variable "hosted_zone_id" {
   description = "Hosted Zone Id for External DNS service account"
   type        = string
 }
-variable "user_pool_id"{
-   type        = string
+variable "user_pool_id" {
+  type = string
 }

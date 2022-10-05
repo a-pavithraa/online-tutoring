@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import httpClient from "../../util/http-client";
 import { CircularProgress, Grid } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Header, InputFieldsBox, Item, ModalBox } from "../ui/Theme";
+import { Header, InputFieldsBox, Item, ModalBox, ModalStyle } from "../ui/Theme";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { ComboBox } from "../ui/FormInputs";
 import moduleClasses from "./Registration.module.scss";
@@ -95,7 +95,7 @@ const TeacherMappingModal = (props) => {
     >
       {
        
-        <ModalBox>
+       <Box sx={{ ...ModalStyle }}>
           <div  style={{float:'right'}}>
           <Button sx={{fontWeight:'bolder', color:'red', fontSize:14}} onClick={props.handleClose}>X</Button>
         </div>
@@ -261,7 +261,7 @@ const TeacherMappingModal = (props) => {
               </Formik>
             )}
           </InputFieldsBox>
-        </ModalBox>
+        </Box>
       }
     </Modal>
   );

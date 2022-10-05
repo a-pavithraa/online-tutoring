@@ -14,6 +14,7 @@ import LoginContext from "../../store/login-context";
 import { Header, InputFieldsBox, StyledTableCell, StyledTableRow } from "../ui/Theme";
 import httpClient from "../../util/http-client";
 import useQueryParam from "../../util/queryparam-hook";
+import PaginationComponent from "../ui/PaginationComponent";
 async function fetchStudentDetails(teacherId, gradeId, subjectId) {
   let gradeIdquery = gradeId? "&gradeId="+gradeId :'';
   let subjectIdQuery = subjectId?"&subjectId="+subjectId:'';
@@ -41,6 +42,7 @@ const StudentsList = (props) => {
       refetchOnWindowFocus: false,
     }
   );
+  const dataLoaded =data && data.studentRecords;
   return (
     <InputFieldsBox>
    
@@ -62,8 +64,8 @@ const StudentsList = (props) => {
           </TableHead>
           <TableBody>
             {isFetching &&  <StyledTableRow><StyledTableCell colSpan={4}><CircularProgress /></StyledTableCell></StyledTableRow>}
-            {data &&
-              data.map((row) => (
+            {dataLoaded &&
+              data.studentRecords.map((row) => (
                 <StyledTableRow
                   key={row.fullName}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -84,6 +86,12 @@ const StudentsList = (props) => {
           </TableBody>
         </Table>
       </TableContainer>
+      {dataLoaded && <PaginationComponent       
+        count={data.studentRecords.length}
+        rowsPerPage={5}
+       
+      />
+}
     </InputFieldsBox>
   );
 };

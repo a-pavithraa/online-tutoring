@@ -3,10 +3,13 @@ package com.studentassessment.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studentassessment.api.mdm.MdmClient;
 import com.studentassessment.awsservices.AWSUtilityService;
+import com.studentassessment.awsservices.DynamoDBService;
 import com.studentassessment.entity.Assessment;
 import com.studentassessment.entity.Student;
 import com.studentassessment.entity.StudentAssessmentMapping;
 import com.studentassessment.entity.StudentAssessmentMappingId;
+import com.studentassessment.entity.dynamodb.NotificationDetails;
+import com.studentassessment.entity.dynamodb.StudentNotification;
 import com.studentassessment.model.*;
 import com.studentassessment.repo.AssessmentRepo;
 import com.studentassessment.repo.StudentAssessmentMappingRepo;
@@ -22,7 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -37,6 +42,8 @@ public class AssessmentService {
 
     private final AWSUtilityService awsUtilityService;
     private final StudentRepo studentRepo;
+
+    private final DynamoDBService dynamoDBService;
     private final StudentAssessmentMappingRepo studentAssessmentMappingRepo;
     private static final Logger LOG = LoggerFactory.getLogger(AssessmentService.class);
 
@@ -67,26 +74,34 @@ public class AssessmentService {
     public void sendMailToStudentsOnQuestionsUpload(long assessmentId,String key) {
         String preSignedUrl = awsUtilityService.getPresignedUrl(qnPaperBucketName,key);
         Assessment assessmentRecord = assessmentRepo.findById(assessmentId).orElseThrow();
-
-        List<StudentRecord> students = mdmClient.getStudents(assessmentRecord.getTeacherId(), assessmentRecord.getGradeId(), assessmentRecord.getSubjectId());
         assessmentRecord.setQuestionPaperDocument(key);
         assessmentRepo.persist(assessmentRecord);
-       /* ObjectMapper mapper = new ObjectMapper();
-        String assessmentStr = mapper.writeValueAsString("""
-                {
-                "assignmentId":%1$s,
-                "teacherId":%2$s
-                }
-                """).formatted(assessmentRecord.getId(),assessmentRecord.getTeacherId());*/
 
+        List<StudentRecord> students = mdmClient.getStudents(assessmentRecord.getTeacherId(), assessmentRecord.getGradeId(), assessmentRecord.getSubjectId()).getStudentRecords();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+
+        List<StudentNotification> studentNotifications = new ArrayList<>();
+        long epochTimeNowPlusHours = LocalDateTime.now().plusHours(6L).toEpochSecond(ZoneOffset.UTC);
         for (StudentRecord studentRecord : students) {
             StringBuilder content = new StringBuilder();
             content.append("Dear ").append(studentRecord.fullName()).append(",\n");
             content.append("Please click on the below url to access the question paper:").append("\n").append(preSignedUrl);
             awsUtilityService.sendMail(studentRecord.email(), "Question Paper Link", content.toString());
-          //  awsUtilityService.uploadJSONToBucket(answerSheetBucketName,"notification/"+studentRecord.id(),assessmentStr);
+
+            NotificationDetails notificationDetails = NotificationDetails.builder()
+                    .assessmentId(assessmentRecord.getId())
+                    .studentId(studentRecord.id())
+                    .teacherId(assessmentRecord.getTeacherId()).build();
+            StudentNotification studentNotification = StudentNotification.builder().cognitoId(studentRecord.cognitoId()).assessmentId(assessmentRecord.getId())
+                    .studentId(studentRecord.id())
+                    .teacherId(assessmentRecord.getTeacherId()).ttl(epochTimeNowPlusHours).build();
+            studentNotifications.add(studentNotification);
 
         }
+        dynamoDBService.insertStudentNotificationRecords(studentNotifications);
+
 
     }
 

@@ -1,7 +1,7 @@
 # Datasource: AWS Load Balancer Controller IAM Policy get from aws-load-balancer-controller/ GIT Repo (latest)
 
 provider "helm" {
-      
+
   kubernetes {
 
     host                   = data.aws_eks_cluster.cluster.endpoint
@@ -17,7 +17,7 @@ resource "helm_release" "loadbalancer_controller" {
   verify     = false
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
- 
+
   namespace = "kube-system"
 
   set {

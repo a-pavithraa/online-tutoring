@@ -39,6 +39,8 @@ metadata:
   labels:
     app: apigateway
   name: apigateway
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: /actuator/health/readiness
 spec:
   ports:
   - name: 9090-9090

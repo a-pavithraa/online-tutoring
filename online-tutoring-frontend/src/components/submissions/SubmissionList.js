@@ -101,6 +101,7 @@ import UpdateSubmissionModal from "./UpdateSubmissionModal";
             <TableHead>
               <TableRow>
                 <StyledTableCell>Name</StyledTableCell>
+                <StyledTableCell>Assessment Date</StyledTableCell>
                 <StyledTableCell>Answer Sheet</StyledTableCell>
                 <StyledTableCell>Corrected Answer Sheet</StyledTableCell>
                 <StyledTableCell>Marks</StyledTableCell>
@@ -125,6 +126,9 @@ import UpdateSubmissionModal from "./UpdateSubmissionModal";
                     <StyledTableCell component="th" scope="row">
                       {row.studentName}
                     </StyledTableCell>
+                    <StyledTableCell component="th" scope="row">
+                      {row.assessmentDate}
+                    </StyledTableCell>
                     <StyledTableCell><Fab color="primary" size="small" component="span" aria-label="add" variant="extended" onClick={()=>downloadFile(row.answerSheet)}> <DownloadIcon /> Answer Sheet </Fab></StyledTableCell>
                     <StyledTableCell>{row.correctedAnswerSheet?<Fab color="secondary" size="small" component="span" aria-label="add" variant="extended" onClick={()=>downloadFile(row.correctedAnswerSheet)}> <DownloadIcon /> Corrected Sheet </Fab>:''}</StyledTableCell>
                     <StyledTableCell>{row.correctedAnswerSheet?row.marks:"NOT EVALUATED"}</StyledTableCell>
@@ -135,7 +139,7 @@ import UpdateSubmissionModal from "./UpdateSubmissionModal";
                 ))}
               {!isFetching && (!data || data.length == 0) && (
                 <StyledTableRow>
-                  <StyledTableCell colSpan={5}>
+                  <StyledTableCell colSpan={6}>
                     No Submissions found
                   </StyledTableCell>
                 </StyledTableRow>

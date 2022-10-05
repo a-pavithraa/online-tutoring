@@ -7,6 +7,7 @@ public record StudentRecord(
         String email,
         String parentName,
         String contactNo,
-        String address
+        String address,
+        String cognitoId
 ) {
 }

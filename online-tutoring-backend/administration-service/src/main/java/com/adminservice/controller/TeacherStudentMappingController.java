@@ -32,12 +32,14 @@ public class TeacherStudentMappingController {
 
 
     @GetMapping("/studentsOfTeacher")
-    public List<StudentRecord> getStudentsOfTeacher(@RequestParam("teacherId") Long teacherId,@RequestParam(required = false) Long gradeId,@RequestParam(required = false) Long subjectId){
-        return courseRegistrationService.getStudentsOfTeacher(teacherId,gradeId,subjectId);
+    public ListStudentsResponse getStudentsOfTeacher(@RequestParam("teacherId") Long teacherId,@RequestParam(required = false) Long gradeId,@RequestParam(required = false) Long subjectId){
+
+        ListStudentsResponse listStudentsResponse = courseRegistrationService.getStudentsOfTeacher(teacherId,gradeId,subjectId);
+        return listStudentsResponse;
     }
 
     @GetMapping("/gradeAndSubjectsOfTeacher")
-    public List<GradeAndSubjectMappingRecord> getGradeAndSubjectsOfTeacher(@RequestParam("teacherId") long teacherId){
+    public GradeAndSubjectMappingResponse getGradeAndSubjectsOfTeacher(@RequestParam("teacherId") long teacherId){
         return courseRegistrationService.getGradesAndSubjectsOfTeacher(teacherId);
     }
 

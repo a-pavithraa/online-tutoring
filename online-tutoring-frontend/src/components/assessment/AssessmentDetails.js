@@ -7,13 +7,14 @@ import {
   TableBody,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
 } from "@mui/material";
 import React, { useContext, useState } from "react";
 import { useQuery } from "react-query";
 
 import LoginContext from "../../store/login-context";
-import { Header, InputFieldsBox, StyledTableCell, StyledTableRow } from "../ui/Theme";
+import { CustomizedTableContainer, Header, InputFieldsBox, StyledTableCell, StyledTableContainer, StyledTableRow } from "../ui/Theme";
 import httpClient from "../../util/http-client";
 import useQueryParam from "../../util/queryparam-hook";
 import Dialog from "@mui/material/Dialog";
@@ -28,6 +29,7 @@ import moment from "moment";
 
 import DownloadIcon from "@mui/icons-material/DownloadOutlined";
 import { saveAs } from 'file-saver';
+import PaginationComponent from "../ui/PaginationComponent";
 
 async function getAssessmentDetails(teacherId, gradeId, subjectId) {
   let gradeIdquery = gradeId ? "&gradeId=" + gradeId : "";
@@ -99,7 +101,9 @@ const AssessmentList = (props) => {
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-
+ 
+  const dataLoaded = status === 'success' && data &&  data.assessmentDetailsRecordList;
+  
 
   const handleDialogOpen = (assessmentId,assessmentDate) => {
     
@@ -116,7 +120,10 @@ const AssessmentList = (props) => {
 
 
   return (
-    <InputFieldsBox>
+    <InputFieldsBox sx={{ width: '70%', overflow: 'hidden' }}>
+        <Header variant="h4" component="h2">
+              ASSESSMENTS SCHEDULED
+            </Header>
       {open && (
         <UploadAssessmentQnModal
           assessmentId={assessmentId}
@@ -149,12 +156,10 @@ const AssessmentList = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-      <TableContainer component={Paper} sx={{ maxWidth: "100%",maxHeight:440 }}>
-      <Header variant="h4" component="h2">
-              ASSESSMENTS SCHEDULED
-            </Header>
-        <Table stickyHeader  aria-label="simple table">
-          <TableHead>
+      <StyledTableContainer component={Paper}>
+    
+        <Table stickyHeader aria-label="sticky table" >
+          <TableHead >
             <TableRow>
               <StyledTableCell>Name</StyledTableCell>
               <StyledTableCell>Subject</StyledTableCell>
@@ -171,8 +176,7 @@ const AssessmentList = (props) => {
                 </StyledTableCell>
               </StyledTableRow>
             )}
-            {status === 'success' && data &&
-              data.assessmentDetailsRecordList &&
+            {dataLoaded &&
               data.assessmentDetailsRecordList.map((row) => (
                 <StyledTableRow
                   key={row.assessmentId}
@@ -186,7 +190,7 @@ const AssessmentList = (props) => {
                   <StyledTableCell>{row.assessmentDate}</StyledTableCell>
                   <StyledTableCell>
                     {
-                    row.qnPaperDocument?<Fab color="primary" size="small" component="span" aria-label="add" variant="extended" onClick={()=>downloadFile(row.qnPaperDocument)}> <DownloadIcon /> Question Paper </Fab>:
+                    row.qnPaperDocument?<Fab color="primary" size="small" component="span" aria-label="add" variant="extended" sx={{ zIndex: 1}} onClick={()=>downloadFile(row.qnPaperDocument)}> <DownloadIcon /> Question Paper </Fab>:
                      checkWhetherTodayDate(row.assessmentDate)? <Button
                         variant="contained"
                         onClick={() => handleDialogOpen(row.assessmentId,row.assessmentDate)}
@@ -207,7 +211,13 @@ const AssessmentList = (props) => {
             )}
           </TableBody>
         </Table>
-      </TableContainer>
+      </StyledTableContainer>
+      {dataLoaded && <PaginationComponent       
+        count={data.assessmentDetailsRecordList.length}
+        rowsPerPage={5}
+       
+      />
+}
     </InputFieldsBox>
   );
 };

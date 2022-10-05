@@ -36,6 +36,7 @@ public class CustomAssessmentRepositoryImpl implements CustomAssessmentRepositor
         return new SubmittedAssessmentsRecord(
                 id,
                 (String) tuple[i++],
+                tuple[i++].toString(),
                 (String) tuple[i++],
                 (String) tuple[i++],
                 tuple[i]==null?0: ((Number) tuple[i++]).longValue(),
@@ -91,6 +92,7 @@ public class CustomAssessmentRepositoryImpl implements CustomAssessmentRepositor
         String query = """
                 select
                 	a.id,
+                	DATE_FORMAT(a.assessment_date,'%d/%m/%y'),
                 	s.full_name ,
                 	s.email,
                 	s.cognito_id,

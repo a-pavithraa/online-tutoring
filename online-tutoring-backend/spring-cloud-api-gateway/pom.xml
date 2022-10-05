@@ -72,18 +72,43 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 	<build>
 		<plugins>
+
+			<!-- mvn clean install && mvn jib:dockerBuild -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-				<image>
-					<name>pavithravasudevan/spring-cloud-gateway:${project.version}</name>
-				</image>
+					<image>
+						<name>pavithravasudevan/spring-cloud-gateway:${project.version}</name>
+					</image>
 				</configuration>
 			</plugin>
+			<!-- [ other plugins ] -->
+			<!-- mvn clean install && mvn jib:dockerBuild -->
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
+					<from>
+						<image>eclipse-temurin:18</image>
+					</from>
+					<to>
+						<image>pavithravasudevan/spring-cloud-gateway-jib</image>
+					</to>
+					<container>
+						<jvmFlags>
+							<jvmFlag>-Xms256m</jvmFlag>
+
+						</jvmFlags>
+
+					</container>
+				</configuration>
+			</plugin>
+
+
 		</plugins>
 	</build>
 

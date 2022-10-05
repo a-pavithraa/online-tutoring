@@ -1,0 +1,11 @@
+auth:
+  database: shikshadb
+  username: testpass
+  password: testpass
+  rootPassword: testpass
+volumePermissions:
+  enabled: true
+primary:
+  persistence:
+    size: 2Gi
+  

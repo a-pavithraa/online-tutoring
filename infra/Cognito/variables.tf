@@ -35,3 +35,7 @@ variable "certificate_arn"{
 variable "assessment_bucket_name"{
     default = "shiksha-answersheets.612efef2"
 }
+variable "dynamodb_table_name" {
+    default = "StudentNotification"
+  
+}

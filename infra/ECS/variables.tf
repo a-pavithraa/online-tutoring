@@ -12,3 +12,6 @@ variable "bucket_name" {
   default = "assessment"
 
 }
+variable "dynamodb_table_name"{
+  default = "StudentNotification"
+}

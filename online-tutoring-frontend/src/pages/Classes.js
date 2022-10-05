@@ -5,6 +5,7 @@ import {
   Header,
   InputFieldsBox,
   StyledTableCell,
+  StyledTableContainer,
   StyledTableRow,
 } from "../components/ui/Theme";
 import httpClient from "../util/http-client";
@@ -21,6 +22,7 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import LoginContext from "../store/login-context";
 import ScheduleAssessmentModal from "../components/assessment/ScheduleAssessmentModal";
+import PaginationComponent from "../components/ui/PaginationComponent";
 
 
 async function fetchClassesMapped(id) {
@@ -56,20 +58,20 @@ export const Classes = (props) => {
       refetchOnWindowFocus: false,
     }
   );
- 
+ const dataLoaded= data && data.gradeAndSubjectMappingRecords;
   const displayStudents = (subjectId,gradeId)=>{
     uiContext.setSelectedMenu(1);
     navigate("/Students?teacherId="+context.teacherId+'&subjectId='+subjectId+'&gradeId='+gradeId);
   }
   return (
     <InputFieldsBox>
-     
-     {open && <ScheduleAssessmentModal subjectId={selectedSubjectId} gradeId={selectedGradeId} open={open}
-                handleClose={handleClose}/>}
-       <TableContainer component={Paper} sx={{ maxWidth: "100%" }}>
-       <Header variant="h4" component="h2">
+      <Header variant="h4" component="h2">
               MY CLASSES
             </Header>
+     {open && <ScheduleAssessmentModal subjectId={selectedSubjectId} gradeId={selectedGradeId} open={open}
+                handleClose={handleClose}/>}
+       <StyledTableContainer component={Paper} sx={{ maxWidth: "100%" }}>
+      
         <Table stickyHeader  aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -80,8 +82,8 @@ export const Classes = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data &&
-              data.map((row) => {
+            {dataLoaded &&
+              data.gradeAndSubjectMappingRecords.map((row) => {
                 return (
                   <StyledTableRow
                     key={`${row.subjectName}-${row.gradeName}`}
@@ -106,8 +108,13 @@ export const Classes = (props) => {
           </TableBody>
         </Table>
       
-      </TableContainer>
-     
+      </StyledTableContainer>
+      {dataLoaded && <PaginationComponent       
+        count={data.gradeAndSubjectMappingRecords.length}
+        rowsPerPage={5}
+       
+      />
+}
     </InputFieldsBox>
   );
 };
