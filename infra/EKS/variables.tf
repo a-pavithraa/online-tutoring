@@ -13,7 +13,7 @@ variable "account_id" {
   description = "Account ID"
 }
 variable "instance_type" {
-  default = "t2.medium"
+  default = "t2.large"
 }
 
 variable "vpc_cidr_block" {
@@ -28,4 +28,8 @@ variable "hosted_zone_id" {
 }
 variable "user_pool_id" {
   type = string
+}
+
+variable "dynamodb_table_name"{
+  default = "StudentNotification"
 }

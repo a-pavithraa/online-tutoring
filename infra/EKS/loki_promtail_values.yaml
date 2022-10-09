@@ -1,0 +1,19 @@
+loki:
+  user: user
+  password: pass
+gateway:
+  service:
+    type: NodePort
+
+  ingress:
+    enabled: true
+    ingressClassName: my-aws-ingress-class
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: loki.saaralkaatru.com
+
+    hosts:
+      - host: loki.saaralkaatru.com
+        paths:
+          - path: /
+            pathType: Prefix
+    tls: []

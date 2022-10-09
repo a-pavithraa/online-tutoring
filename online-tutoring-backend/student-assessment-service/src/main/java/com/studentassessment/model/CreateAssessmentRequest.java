@@ -1,6 +1,7 @@
 package com.studentassessment.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class CreateAssessmentRequest {
     @NotEmpty(message = "Grade Id can't be empty")
     private long gradeId;

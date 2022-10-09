@@ -20,7 +20,7 @@ resource "helm_release" "external_dns" {
 
   set {
     name  = "serviceAccount.name"
-    value = "external-dns"
+    value = local.external_dns_service_account_name
   }
 
   set {

@@ -81,7 +81,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<image>
-						<name>pavithravasudevan/spring-cloud-gateway:${project.version}</name>
+						<name>pavithravasudevan/${project.artifactId}:${project.version}</name>
 					</image>
 				</configuration>
 			</plugin>

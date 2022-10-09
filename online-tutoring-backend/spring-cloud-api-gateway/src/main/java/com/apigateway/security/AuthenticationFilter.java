@@ -64,13 +64,15 @@ public class AuthenticationFilter implements GlobalFilter {
 					groupName = getGroupNameFrom(claims);
 					if (userName != null) {
 
-						logger.info("username ={}", new Object[] { userName });
+						logger.info("username ={}, groupName={}", new Object[] { userName,groupName });
 						this.populateRequestWithHeaders(exchange, userName,groupName,token);
 					}
 				}
 
 				if (userName == null)
 					return this.onError(exchange, "Authorization header is invalid", HttpStatus.UNAUTHORIZED);
+				if(!"Teacher".equals(groupName))
+					return this.onError(exchange, "Only Teachers can use this API", HttpStatus.UNAUTHORIZED);
 
 			}
 		} catch (Exception e) {

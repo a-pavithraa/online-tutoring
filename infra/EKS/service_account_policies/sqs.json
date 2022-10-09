@@ -25,6 +25,12 @@
           "Resource" : [
             "*"
           ]
+        },
+        {
+
+          "Effect" : "Allow",
+          "Action" : ["dynamodb:*"],
+          "Resource" : "arn:aws:dynamodb:::table/${dynamodb_table_name}"
         }
     ]
 }

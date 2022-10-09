@@ -1,0 +1,11 @@
+image:
+  repository: ${repositoryName}
+serviceAccount:
+  create: true
+  name: ${serviceAccountName}
+  annotations:
+    eks.amazonaws.com/role-arn: ${roleArn}
+
+vpcId: ${vpcId}
+region: ${region}
+clusterName: ${clusterName}

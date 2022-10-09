@@ -1,5 +1,6 @@
 package com.studentassessment.awsservices;
 
+import com.studentassessment.exception.InvalidMetadataException;
 import com.studentassessment.model.S3EventNotification;
 import com.studentassessment.model.S3UploadDocDetailsRecord;
 import io.awspring.cloud.s3.ObjectMetadata;
@@ -40,9 +41,10 @@ public class AWSUtilityService {
     @Value("${mail.address.from}")
     private String fromMailAddress;
 
-    public S3UploadDocDetailsRecord getSignedUrlAndAssignmentId(S3EventNotification.S3 s3Entity){
+    public S3UploadDocDetailsRecord getSignedUrlAndAssessmentId(S3EventNotification.S3 s3Entity){
 
         Map<String,String> resultMap = new HashMap<>();
+        LOG.info("S3 Event Entity object {}",s3Entity);
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(s3Entity.getBucket().getName())
                 .key(s3Entity.getObject().getKey())
@@ -59,6 +61,8 @@ public class AWSUtilityService {
             teacherId= Long.valueOf(getObjectResponse.metadata().get("teacherid"));
         if (getObjectResponse.metadata().containsKey("studentid"))
             studentId= Long.valueOf(getObjectResponse.metadata().get("studentid"));
+       /* if(assessmentId==0 || teacherId==0|| studentId==0)
+            throw new InvalidMetadataException();*/
         GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
                 .signatureDuration(Duration.ofMinutes(60))
                 .getObjectRequest(getObjectRequest)

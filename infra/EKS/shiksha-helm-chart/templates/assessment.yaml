@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: assessment-config
 data:  
-    spring.datasource.url: jdbc:mysql://mysql.default.svc.cluster.local:{{.Values.ports.mysql}}/shikshadb?user=testpass&password=testpass&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+    spring.datasource.url: jdbc:mysql://{{.Values.dbConnectionStringParams.serviceName}}.default.svc.cluster.local:{{.Values.ports.mysql}}/{{.Values.dbConnectionStringParams.dbName}}?user={{.Values.dbConnectionStringParams.userName}}&password={{.Values.dbConnectionStringParams.password}}&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
     restapi.mdm.url: http://mdm.default.svc.cluster.local:{{.Values.ports.mdm}}/
     AWS_REGION: {{.Values.aws.region}}
     kubernetes.profile: "Y"
@@ -26,7 +26,7 @@ spec:
       labels:
         app: assessment
     spec:
-      serviceAccountName: sqs-access
+      serviceAccountName: {{.Values.serviceAccountName.assessment}}
       containers:
       - image: pavithravasudevan/assessment-service:0.0.1
         name: assessment

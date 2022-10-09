@@ -49,7 +49,7 @@ function MainContent(props) {
           variant="permanent"
           sx={{
             display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, marginTop: '65px',background:blue[100] },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, marginTop: '65px',background:blue[100],maxHeight:'80vh' },
           }}
           open
         >

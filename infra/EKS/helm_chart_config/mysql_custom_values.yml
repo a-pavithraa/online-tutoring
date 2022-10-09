@@ -8,4 +8,5 @@ volumePermissions:
 primary:
   persistence:
     size: 2Gi
+    existingClaim: ${pvc_claim}
   

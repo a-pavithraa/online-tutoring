@@ -1,6 +1,5 @@
 package com.studentassessment.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.studentassessment.api.mdm.MdmClient;
 import com.studentassessment.awsservices.AWSUtilityService;
 import com.studentassessment.awsservices.DynamoDBService;
@@ -22,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -71,15 +71,11 @@ public class AssessmentService {
 
     @Transactional
     @SneakyThrows
-    public void sendMailToStudentsOnQuestionsUpload(long assessmentId,String key) {
-        String preSignedUrl = awsUtilityService.getPresignedUrl(qnPaperBucketName,key);
-        Assessment assessmentRecord = assessmentRepo.findById(assessmentId).orElseThrow();
-        assessmentRecord.setQuestionPaperDocument(key);
-        assessmentRepo.persist(assessmentRecord);
-
+    public void sendMailToStudentsOnQuestionsUpload(S3EventNotification.S3 s3Entity) {
+        S3UploadDocDetailsRecord uploadDocDetailsRecord = awsUtilityService.getSignedUrlAndAssessmentId(s3Entity);
+        Assessment assessmentRecord = assessmentRepo.findById(uploadDocDetailsRecord.assessmentId()).orElseThrow();
+        String preSignedUrl = uploadDocDetailsRecord.url();
         List<StudentRecord> students = mdmClient.getStudents(assessmentRecord.getTeacherId(), assessmentRecord.getGradeId(), assessmentRecord.getSubjectId()).getStudentRecords();
-
-        ObjectMapper mapper = new ObjectMapper();
 
 
         List<StudentNotification> studentNotifications = new ArrayList<>();
@@ -107,7 +103,7 @@ public class AssessmentService {
 
     @Transactional
     public void sendMailToTeacherOnAnswerSheetUpload(S3EventNotification.S3 s3Entity) {
-        S3UploadDocDetailsRecord uploadDocDetailsRecord = awsUtilityService.getSignedUrlAndAssignmentId(s3Entity);
+        S3UploadDocDetailsRecord uploadDocDetailsRecord = awsUtilityService.getSignedUrlAndAssessmentId(s3Entity);
         LOG.info("uploaded doc details:{}",uploadDocDetailsRecord);
         TeacherRecord teacherRecord = mdmClient.getTeacherById(uploadDocDetailsRecord.teacherId());
         Assessment assessmentRecord = assessmentRepo.findById(uploadDocDetailsRecord.assessmentId()).orElseThrow();
@@ -166,15 +162,19 @@ public class AssessmentService {
     public void uploadQuestionPaper(MultipartFile file,long assessmentId) {
 
         String fileName = file.getOriginalFilename();
-        String extension =fileName.substring(fileName.lastIndexOf("."));
+        String extension = fileName!=null && !fileName.equals("") ?fileName.substring(fileName.lastIndexOf(".")):"";
         String newFileName = "QnPaper_"+assessmentId+"_"+ UUID.randomUUID()+extension;
-        Map<String,String> metadataMap = Map.ofEntries( Map.entry("x-amz-meta-assignmentid", String.valueOf(assessmentId)));
+        Map<String,String> metadataMap = Map.ofEntries( Map.entry("x-amz-meta-assessmentid", String.valueOf(assessmentId)));
 
        awsUtilityService.uploadToBucket(qnPaperBucketName,
                newFileName,
                metadataMap,
                file);
-        sendMailToStudentsOnQuestionsUpload(assessmentId,newFileName);
+        Assessment assessmentRecord = assessmentRepo.findById(assessmentId).orElseThrow();
+        assessmentRecord.setQuestionPaperDocument(newFileName);
+        assessmentRepo.persist(assessmentRecord);
+
+        // sendMailToStudentsOnQuestionsUpload(assessmentId,newFileName);
     }
 
     public Resource downloadDocument(String documentName,String documentType) {

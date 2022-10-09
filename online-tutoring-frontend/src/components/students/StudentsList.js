@@ -80,9 +80,7 @@ const StudentsList = (props) => {
                   <StyledTableCell>&nbsp;</StyledTableCell>
                 </StyledTableRow>
              ))}
-             {!isFetching && (!data || data.length==0) && <StyledTableRow>
-              <StyledTableCell colSpan={5}>No Students found</StyledTableCell>
-              </StyledTableRow>}
+             {!isFetching && (!data || data.studentRecords.length==0) && <StyledTableRow><StyledTableCell colSpan={6}>No Students found</StyledTableCell></StyledTableRow>}
           </TableBody>
         </Table>
       </TableContainer>

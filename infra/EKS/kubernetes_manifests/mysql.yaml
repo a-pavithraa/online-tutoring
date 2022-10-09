@@ -27,11 +27,18 @@ spec:
     spec:      
       containers:
       - image: mysql:8.0.30
-        name: mysql       
+        name: mysql  
+        
+        volumeMounts:
+           - name: mysql-pv
+             mountPath: /var/lib/mysql         
         envFrom:
         - configMapRef:
             name: mysql-config
-   
+    volumes: 
+        - name: mysql-pv
+          persistentVolumeClaim:
+            claimName: ebs-mysql-pv-claim
 
 ---
 apiVersion: v1

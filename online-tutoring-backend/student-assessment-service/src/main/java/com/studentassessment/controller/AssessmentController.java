@@ -27,11 +27,7 @@ public class AssessmentController {
 
     private final AssessmentService assessmentService;
     private final S3Template s3Template;
-    @Value("${questionpaper.bucket.name}")
-    private String qnPaperBucketName;
 
-    @Value("${answersheet.bucket.name}")
-    private String answerSheetBucketName;
     private static final Logger logger = LoggerFactory.getLogger(AssessmentController.class);
 
     @PostMapping("/assessment")

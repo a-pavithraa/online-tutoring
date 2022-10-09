@@ -355,7 +355,7 @@ export const ModalStyle= {
 };
 
 export const StyledTableContainer=styled(TableContainer)(({ theme }) => ({
-  maxHeight:540, "&::-webkit-scrollbar": {
+  maxHeight:440, "&::-webkit-scrollbar": {
 	  width: 10
     },
     "&::-webkit-scrollbar-track": {

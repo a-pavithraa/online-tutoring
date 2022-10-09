@@ -1,6 +1,6 @@
-mysql:
-  serviceName: mysql
-  dbName: shiksha
+dbConnectionStringParams:
+  serviceName: shikshaapp-mysql
+  dbName: shikshadb
   userName: testpass
   password: testpass
 image:
@@ -17,3 +17,19 @@ ports:
     mysql: 3306
 ingress:
   domainName: saaralkaatru.com
+serviceAccountName:
+  mdm: mdm
+  assessment: assessment
+
+mysql:
+  auth:
+    database: shikshadb
+    username: testpass
+    password: testpass
+    rootPassword: testpass
+  volumePermissions:
+    enabled: true
+  primary:
+    persistence:
+      size: 4Gi
+      existingClaim: ebs-mysql-pv-claim

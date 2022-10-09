@@ -23,7 +23,7 @@ public class SQSUploadListener {
             S3EventNotification.S3 s3Entity = s3EventNotificationRecord.getRecords().get(0).getS3();
             LOG.info("Bucket Name {}", s3Entity.getBucket().getName());
             LOG.info("Key Name {}", s3Entity.getObject().getKey());
-            //assessmentService.sendMailToStudentsOnQuestionsUpload(s3Entity);
+            assessmentService.sendMailToStudentsOnQuestionsUpload(s3Entity);
 
 
         }

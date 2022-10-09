@@ -129,8 +129,12 @@ import UpdateSubmissionModal from "./UpdateSubmissionModal";
                     <StyledTableCell component="th" scope="row">
                       {row.assessmentDate}
                     </StyledTableCell>
-                    <StyledTableCell><Fab color="primary" size="small" component="span" aria-label="add" variant="extended" onClick={()=>downloadFile(row.answerSheet)}> <DownloadIcon /> Answer Sheet </Fab></StyledTableCell>
-                    <StyledTableCell>{row.correctedAnswerSheet?<Fab color="secondary" size="small" component="span" aria-label="add" variant="extended" onClick={()=>downloadFile(row.correctedAnswerSheet)}> <DownloadIcon /> Corrected Sheet </Fab>:''}</StyledTableCell>
+                    <StyledTableCell><Button variant="contained" color="primary" startIcon={<DownloadIcon />} onClick={()=>downloadFile(row.answerSheet)}>
+                    Answer Sheet
+                  </Button></StyledTableCell>
+                    <StyledTableCell>{row.correctedAnswerSheet?<Button variant="contained" color="secondary" startIcon={<DownloadIcon />} onClick={()=>downloadFile(row.correctedAnswerSheet)}>
+                    Corrected Sheet
+                  </Button>:''}</StyledTableCell>
                     <StyledTableCell>{row.correctedAnswerSheet?row.marks:"NOT EVALUATED"}</StyledTableCell>
                     <StyledTableCell>
                     {row.correctedAnswerSheet?'':<Button sx={{color:'red'}} onClick={()=>updateSubmission(row)}>EVALUATE</Button>}

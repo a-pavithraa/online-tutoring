@@ -7,9 +7,11 @@
 
 .App-header {
   background-color: #f1f3f5;
-  min-height: 100vh;
+  min-height: 95vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-y: hidden!important;
   
 
   color: #031121;

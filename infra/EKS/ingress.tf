@@ -10,6 +10,20 @@ provider "helm" {
   }
 }
 
+locals {
+ 
+  aws_lb_values = templatefile(
+  "${path.module}/helm_chart_config/aws_lb_custom_values.yml",{
+    repositoryName="602401143452.dkr.ecr.us-east-1.amazonaws.com/amazon/aws-load-balancer-controller"
+    serviceAccountName = local.aws_lb_service_account_name
+    roleArn= local.role_arn_mappings["${var.prefix}_albcontroller_sa_role"]
+    vpcId= module.vpc.vpc_id
+    region= var.region
+    clusterName= module.eks.cluster_id
+  }
+  )
+
+}
 
 resource "helm_release" "loadbalancer_controller" {
   depends_on = [module.service_account_roles]
@@ -17,43 +31,10 @@ resource "helm_release" "loadbalancer_controller" {
   verify     = false
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
-
   namespace = "kube-system"
+  values     = [local.aws_lb_values]
 
-  set {
-    name  = "image.repository"
-    value = "602401143452.dkr.ecr.us-east-1.amazonaws.com/amazon/aws-load-balancer-controller" # Changes based on Region - This is for us-east-1 Additional Reference: https://docs.aws.amazon.com/eks/latest/userguide/add-ons-images.html
-  }
-
-  set {
-    name  = "serviceAccount.create"
-    value = "true"
-  }
-
-  set {
-    name  = "serviceAccount.name"
-    value = "aws-load-balancer-controller"
-  }
-
-  set {
-    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-    value = local.role_arn_mappings["${var.prefix}_albcontroller_sa_role"]
-  }
-
-  set {
-    name  = "vpcId"
-    value = module.vpc.vpc_id
-  }
-
-  set {
-    name  = "region"
-    value = var.region
-  }
-
-  set {
-    name  = "clusterName"
-    value = module.eks.cluster_id
-  }
+ 
 
 }
 

@@ -28,6 +28,7 @@ import { useTheme } from '@mui/material/styles';
 import moment from "moment";
 
 import DownloadIcon from "@mui/icons-material/DownloadOutlined";
+import UploadIcon from "@mui/icons-material/UploadOutlined";
 import { saveAs } from 'file-saver';
 import PaginationComponent from "../ui/PaginationComponent";
 
@@ -190,13 +191,12 @@ const AssessmentList = (props) => {
                   <StyledTableCell>{row.assessmentDate}</StyledTableCell>
                   <StyledTableCell>
                     {
-                    row.qnPaperDocument?<Fab color="primary" size="small" component="span" aria-label="add" variant="extended" sx={{ zIndex: 1}} onClick={()=>downloadFile(row.qnPaperDocument)}> <DownloadIcon /> Question Paper </Fab>:
-                     checkWhetherTodayDate(row.assessmentDate)? <Button
-                        variant="contained"
-                        onClick={() => handleDialogOpen(row.assessmentId,row.assessmentDate)}
-                      >
-                        Upload Paper
-                      </Button>:''
+                    row.qnPaperDocument?<Button variant="contained" color="primary" startIcon={<DownloadIcon />} onClick={()=>downloadFile(row.qnPaperDocument)}>
+                    Question Paper
+                  </Button>:
+                     checkWhetherTodayDate(row.assessmentDate)? <Button variant="contained" color="primary" startIcon={<UploadIcon />} onClick={() => handleDialogOpen(row.assessmentId,row.assessmentDate)}>
+                     Question Paper
+                   </Button>:''
                     
                     }
                   </StyledTableCell>
@@ -204,7 +204,7 @@ const AssessmentList = (props) => {
               ))}
             {!isFetching && (!data || data.length == 0) && (
               <StyledTableRow>
-                <StyledTableCell colSpan={5}>
+                <StyledTableCell colSpan={6}>
                   No Assessments found
                 </StyledTableCell>
               </StyledTableRow>
