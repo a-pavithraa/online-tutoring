@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useQuery } from 'react-query';
+
 import { useLocation, useNavigate } from 'react-router-dom';
-import { TEACHER_GROUP } from '../util/constants';
-import httpClient from '../util/http-client';
+import { STUDENT_GROUP, TEACHER_GROUP } from '../util/constants';
+
 
 let logoutTimer;
 
@@ -10,11 +10,11 @@ const LoginContext = React.createContext({
   token: '',
   isLoggedIn: false, 
   userName: '',
-  reqHeader:{},
-  teacherId:'',
+  cognitoId:'',
+  
   login: (token) => { },
-  logout: () => { },
-  subscribe: () => { }
+  logout: () => { }
+
 });
 
 const calculateRemainingTime = (expirationTime) => {
@@ -43,19 +43,10 @@ const retrieveStoredToken = () => {
     duration: remainingTime,
   };
 };
-async function getTeacherDetails(userName) {
-  const { data } = await httpClient.get(
-    "/mdm/admin/teacher/" + userName,
-    {
-      staleTime: Infinity,
-    }
-  );
-    console.log(data);
-  return data;
-}
+
 export const LoginContextProvider = (props) => {
   const tokenData = retrieveStoredToken();
-  const[isTeacher,setIsTeacher]=useState(false);
+  const[isStudent,setIsStudent]=useState(false);
   const { location } = useLocation();
 
   let initialToken;
@@ -65,13 +56,13 @@ export const LoginContextProvider = (props) => {
 
   const [token, setToken] = useState(initialToken);  
   const navigate=useNavigate();
-  const [reqHeader,setReqHeader]=useState({});
+  const [cognitoId,setCognitoId]=useState();
   const [loggedInUser,setLoggedInUser]=useState();
-  const { data,isError,error } = useQuery(['orgData', { userName: loggedInUser }], ()=>getTeacherDetails(loggedInUser), { enabled: isTeacher });
+  
 
-  {error && alert('Login Failed') }
 
-  const userIsLoggedIn =!!token && !!data;
+
+  const userIsLoggedIn =!!token ;
 
   const logoutHandler = useCallback(() => {
     setToken(null);
@@ -84,9 +75,9 @@ export const LoginContextProvider = (props) => {
   });
   
   useEffect(()=>{
-    console.log(location);
-    if(userIsLoggedIn && isTeacher )
-    navigate((location && location.path)??"/Classes");
+    
+    if(userIsLoggedIn && isStudent )
+    navigate("/");
     
   },[userIsLoggedIn])
 
@@ -106,10 +97,12 @@ export const LoginContextProvider = (props) => {
     setToken(idToken);
     const tokenObject = parseToken(idToken);
     const userName = tokenObject["cognito:username"];
+    const cognitoId = tokenObject["sub"];
     setLoggedInUser(userName);
-    const isTeacher = !!tokenObject["cognito:groups"].find(x=>x===TEACHER_GROUP);
-    console.log(isTeacher);
-    setIsTeacher(isTeacher);
+    setCognitoId(cognitoId);
+    const isStudent = !!tokenObject["cognito:groups"].find(x=>x===STUDENT_GROUP);
+    console.log(isStudent);
+    setIsStudent(isStudent);
     
    
     localStorage.setItem('jwtToken', accessToken);
@@ -138,8 +131,8 @@ export const LoginContextProvider = (props) => {
     userName:loggedInUser,
     login: loginHandler,
     logout: logoutHandler,  
-    reqHeader:reqHeader,
-    teacherId:data?.id
+    cognitoId:cognitoId,
+   
 
 
   };

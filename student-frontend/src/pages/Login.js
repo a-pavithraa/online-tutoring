@@ -10,7 +10,6 @@ import LoginContext from '../store/login-context';
 import { useNavigate } from 'react-router-dom';
 import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
 import { CLIENT_ID, USER_POOL_ID } from '../util/constants';
-
 import LoadingButton from '@mui/lab/LoadingButton';
 import LoginIcon from '@mui/icons-material/LoginSharp';
 const validationSchema = yup.object({
@@ -129,16 +128,8 @@ const Login =(props)=>{
 
                 </Grid>
                
-             <LoadingButton
-             type="submit"
-        loading={progress}
-        loadingPosition="start"
-        startIcon={<LoginIcon />}
-        variant="contained"
-        sx={{float:'right'}}
-      >
-        Login
-      </LoadingButton>
+               <LoadingButton loading={progress} type="submit" variant="contained" color="success" sx={{float:'right'}} loadingPosition="start"
+        startIcon={<LoginIcon />}>Login</LoadingButton>
         
 
             </Form>}

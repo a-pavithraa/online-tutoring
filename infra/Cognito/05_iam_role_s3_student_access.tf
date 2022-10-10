@@ -13,7 +13,7 @@ resource "aws_iam_role" "student_role" {
             "Action": "sts:AssumeRoleWithWebIdentity",
             "Condition": {
                 "StringEquals": {
-                    "cognito-identity.amazonaws.com:aud": "${module.cognito_user_pool.id}"
+                    "cognito-identity.amazonaws.com:aud": "${resource.aws_cognito_identity_pool.identity_pool.id}"
                 }
             }
         }
@@ -53,11 +53,13 @@ resource "aws_iam_policy" "student_policy" {
             "Sid": "DescribeQueryScanStudentsTable",
             "Effect": "Allow",
             "Action": [
-                "dynamodb:DescribeTable",
-                "dynamodb:Query",
-                "dynamodb:Scan"
+                "dynamodb:ListTables",
+                "dynamodb:GetItem",
+                "dynamodb:BatchGetItem",
+                "dynamodb:Query"
+
             ],
-            "Resource": "arn:aws:dynamodb:::table/${var.dynamodb_table_name}"
+            "Resource": "arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:table/${var.dynamodb_table_name}"
         }
     ]
 }
@@ -76,4 +78,14 @@ resource "aws_cognito_user_group" "student" {
  
   role_arn     = aws_iam_policy.student_policy.arn
   user_pool_id = module.cognito_user_pool.id
+}
+
+// Attaching only Student Role. Teacher Role is not necessary. We are not using cognito IDP as of now for teacher login
+resource "aws_cognito_identity_pool_roles_attachment" "myaws" {
+  identity_pool_id = aws_cognito_identity_pool.identity_pool.id
+
+  roles = {
+    "authenticated" = aws_iam_role.student_role.arn
+  }
+  
 }

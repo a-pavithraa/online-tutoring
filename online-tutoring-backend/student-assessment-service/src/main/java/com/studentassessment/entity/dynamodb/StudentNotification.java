@@ -18,6 +18,9 @@ public class StudentNotification {
     private long assessmentId;
     private long teacherId;
     private long studentId;
+
+    private String subject;
+    private String dueDate;
     private long ttl;
 
     @DynamoDbSortKey

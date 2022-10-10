@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 
-import { AuthContextProvider } from './store/auth-context';
+import { UIContextProvider } from './store/ui-context';
 import { QueryClient, QueryClientProvider } from "react-query";
 import { LoginContextProvider } from './store/login-context';
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -23,10 +23,10 @@ root.render(
   <QueryClientProvider client={queryClient}>
   <BrowserRouter> 
   <LoginContextProvider>
-  <AuthContextProvider>
+  <UIContextProvider>
 
     <App />
-    </AuthContextProvider>
+    </UIContextProvider>
     </LoginContextProvider>
   </BrowserRouter>
   </QueryClientProvider>

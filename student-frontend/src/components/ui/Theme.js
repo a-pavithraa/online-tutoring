@@ -191,18 +191,13 @@ export const CustomizedTableContainer = styled(Paper)(({ theme }) => ({
 
 
 export const LoginBox = styled(Box)(({ theme }) => ({
-  minWidth: '35rem',
+  maxWidth: '40rem',
   margin: '2rem auto',
   padding: '20px',
-  borderRadius: '10px',
-  
-    backgroundColor: "#f6f7fe",
-    padding: '20px',
-  
-  boxShadow:'rgb(0 0 0 / 2%) 0px 1px 1px, rgb(0 0 0 / 2%) 0px 2px 2px, rgb(0 0 0 / 2%) 0px 4px 4px, rgb(0 0 0 / 2%) 0px 8px 8px, rgb(0 0 0 / 2%) 0px 16px 16px',
+  boxShadow:'0 8px 16px 2px rgba(200, 198, 207, 0.2)',
   height: `calc(100% - 12px)`,
 
- 
+  backgroundColor: blue['100'],
   display: 'flex', alignItems: 'center'
 
 }));

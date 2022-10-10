@@ -194,7 +194,7 @@ const AssessmentList = (props) => {
                     row.qnPaperDocument?<Button variant="contained" color="primary" startIcon={<DownloadIcon />} onClick={()=>downloadFile(row.qnPaperDocument)}>
                     Question Paper
                   </Button>:
-                     checkWhetherTodayDate(row.assessmentDate)? <Button variant="contained" color="primary" startIcon={<UploadIcon />} onClick={() => handleDialogOpen(row.assessmentId,row.assessmentDate)}>
+                     checkWhetherTodayDate(row.assessmentDate)? <Button variant="contained" color="secondary" startIcon={<UploadIcon />} onClick={() => handleDialogOpen(row.assessmentId,row.assessmentDate)}>
                      Question Paper
                    </Button>:''
                     

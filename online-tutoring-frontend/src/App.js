@@ -68,13 +68,14 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route element={<RequireAuth />}>
-            <Route path="/" element={<Layout />}>
+            <Route element={<Layout />}>
               <Route path="/Classes" element={<Classes />} />
               <Route path="/Documents" element={<Documents />} />
               <Route path="/Administration" element={<Administration />} />
               <Route path="/Assessments" element={<Assessments />} />
               <Route path="/Students" element={<Students />} />
               <Route path="/Submissions" element={<Submissions />} />
+              <Route path="/"  element={<Classes />} />
             </Route>
           </Route>
         </Routes>

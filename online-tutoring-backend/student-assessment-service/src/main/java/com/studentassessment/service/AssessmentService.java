@@ -73,9 +73,10 @@ public class AssessmentService {
     @SneakyThrows
     public void sendMailToStudentsOnQuestionsUpload(S3EventNotification.S3 s3Entity) {
         S3UploadDocDetailsRecord uploadDocDetailsRecord = awsUtilityService.getSignedUrlAndAssessmentId(s3Entity);
-        Assessment assessmentRecord = assessmentRepo.findById(uploadDocDetailsRecord.assessmentId()).orElseThrow();
+        long assessmentId = uploadDocDetailsRecord.assessmentId();
+        AssessmentDetailsForStudentNotification assessmentRecord = assessmentRepo.getAssessmentDetailsForStudentNotification(assessmentId);
         String preSignedUrl = uploadDocDetailsRecord.url();
-        List<StudentRecord> students = mdmClient.getStudents(assessmentRecord.getTeacherId(), assessmentRecord.getGradeId(), assessmentRecord.getSubjectId()).getStudentRecords();
+        List<StudentRecord> students = mdmClient.getStudents(assessmentRecord.teacherId(), assessmentRecord.gradeId(), assessmentRecord.subjectId()).getStudentRecords();
 
 
         List<StudentNotification> studentNotifications = new ArrayList<>();
@@ -86,17 +87,16 @@ public class AssessmentService {
             content.append("Please click on the below url to access the question paper:").append("\n").append(preSignedUrl);
             awsUtilityService.sendMail(studentRecord.email(), "Question Paper Link", content.toString());
 
-            NotificationDetails notificationDetails = NotificationDetails.builder()
-                    .assessmentId(assessmentRecord.getId())
+            StudentNotification studentNotification = StudentNotification.builder().cognitoId(studentRecord.cognitoId()).assessmentId(assessmentId)
                     .studentId(studentRecord.id())
-                    .teacherId(assessmentRecord.getTeacherId()).build();
-            StudentNotification studentNotification = StudentNotification.builder().cognitoId(studentRecord.cognitoId()).assessmentId(assessmentRecord.getId())
-                    .studentId(studentRecord.id())
-                    .teacherId(assessmentRecord.getTeacherId()).ttl(epochTimeNowPlusHours).build();
+                    .subject(assessmentRecord.subject())
+                    .dueDate(assessmentRecord.assessmentDate())
+                    .teacherId(assessmentRecord.teacherId()).ttl(epochTimeNowPlusHours).build();
             studentNotifications.add(studentNotification);
 
         }
-        dynamoDBService.insertStudentNotificationRecords(studentNotifications);
+        if(studentNotifications.size()>0)
+            dynamoDBService.insertStudentNotificationRecords(studentNotifications);
 
 
     }

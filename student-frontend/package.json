@@ -3,13 +3,33 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.32.0",
+    "@aws-sdk/client-s3": "^3.186.0",
+    "@aws-sdk/credential-providers": "^3.32.0",
+    "@aws-sdk/lib-dynamodb": "^3.32.0",
+    "@aws-sdk/node-http-handler": "^3.32.0",
+    "@aws-sdk/types": "^3.32.0",
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/lab": "latest",
+    "@mui/material": "^5.9.3",
+    "@mui/styled-engine-sc": "^5.9.3",
+    "@mui/x-date-pickers": "latest",
     "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
+    "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "amazon-cognito-identity-js": "^5.2.4",
+    "axios": "^0.27.2",
+    "formik": "^2.2.9",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "6.4",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "styled-components": "^5.3.5",
+    "web-vitals": "^2.1.4",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -34,5 +54,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "sass": "^1.44.0",
+    "sass-loader": "^12.4.0"
   }
 }

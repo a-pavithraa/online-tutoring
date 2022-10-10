@@ -1,9 +1,6 @@
 package com.studentassessment.repo.impl;
 
-import com.studentassessment.model.AssessmentDetailsRecord;
-import com.studentassessment.model.AssessmentRecord;
-import com.studentassessment.model.SearchAssessmentRequest;
-import com.studentassessment.model.SubmittedAssessmentsRecord;
+import com.studentassessment.model.*;
 import com.studentassessment.repo.CustomAssessmentRepository;
 import com.vladmihalcea.hibernate.query.ListResultTransformer;
 
@@ -43,6 +40,19 @@ public class CustomAssessmentRepositoryImpl implements CustomAssessmentRepositor
                 (String) tuple[i++],
                 (String)tuple[i++],
                 tuple[i]==null?0: ((Double) tuple[i++])
+        );
+    };
+
+    private static final ListResultTransformer studentNotificationAssessmentTransformer = (tuple, aliases) -> {
+        int i = 0;
+       // long id =tuple[i]==null?0: ((Number) tuple[i++]).longValue();
+        return new AssessmentDetailsForStudentNotification(
+                ((Number) tuple[i++]).longValue(),
+                ((Number) tuple[i++]).longValue(),
+                ((Number) tuple[i++]).longValue(),
+                (String) tuple[i++],
+                (String) tuple[i++]
+
         );
     };
 
@@ -118,4 +128,36 @@ public class CustomAssessmentRepositoryImpl implements CustomAssessmentRepositor
         return assessmentDetailsRecords;
 
     }
+
+    public AssessmentDetailsForStudentNotification getAssessmentDetailsForStudentNotification(long assessmentId){
+        String query = """
+                SELECT
+                	t.id,
+                	s.id subject_id,
+                	g.id grade_id,
+                	s.name subject_name ,              
+                	
+                	DATE_FORMAT(a.assessment_date,'%d/%m/%y')
+                from
+                	assessment a ,
+                	teacher t ,  
+                	grade g ,              	
+                	subject s
+                where
+                	a.subject_id = s.id    
+                	and a.grade_id = g.id          	
+                	and a.teacher_id = t.id 
+                	and a.id =:assessmentId
+                """;
+        Query nativeQuery=entityManager.createNativeQuery(query);
+        nativeQuery.setParameter("assessmentId",assessmentId);
+        AssessmentDetailsForStudentNotification assessmentDetailsRecords =(AssessmentDetailsForStudentNotification)nativeQuery
+                .unwrap(org.hibernate.query.NativeQuery.class)
+                .setResultTransformer(studentNotificationAssessmentTransformer).getResultList().get(0);
+        return assessmentDetailsRecords;
+
+    }
+
+
+
 }

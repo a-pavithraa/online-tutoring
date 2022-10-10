@@ -13,7 +13,7 @@ resource "aws_iam_role" "teacher_role" {
             "Action": "sts:AssumeRoleWithWebIdentity",
             "Condition": {
                 "StringEquals": {
-                    "cognito-identity.amazonaws.com:aud": "${module.cognito_user_pool.id}"
+                    "cognito-identity.amazonaws.com:aud": "${aws_cognito_identity_pool.identity_pool.id}"
                 }
             }
         }

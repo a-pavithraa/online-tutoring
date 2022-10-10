@@ -28,7 +28,8 @@
     "recharts": "^2.1.14",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "@mui/lab": "latest"
   },
   "scripts": {
     "start": "react-scripts start",

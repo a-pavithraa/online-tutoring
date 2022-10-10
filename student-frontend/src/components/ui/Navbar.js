@@ -14,12 +14,12 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 import { styled } from "@mui/system";
-import UIContext from "../../store/ui-context";
+
 import LoginContext from "../../store/login-context";
 const NavBar = () => {
 
  
-  const context = useContext(UIContext);
+
   const loginContext = useContext(LoginContext);
   const CssTextField = styled(TextField)({
     '& label.Mui-focused': {
@@ -63,15 +63,7 @@ const NavBar = () => {
 
         <Toolbar>
            
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
-          onClick={context.switchDrawToggle}
-          sx={{ mr: 2, display: { sm: 'none' } }}
-        >
-          <MenuIcon />
-        </IconButton>
+  
 
      
 

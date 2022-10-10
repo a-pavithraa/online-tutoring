@@ -13,6 +13,7 @@ import * as Yup from "yup";
 import moment from "moment/moment";
 import { getCurrentTime } from "../../util/functions";
 import LoginContext from "../../store/login-context";
+import { LoadingButton } from "@mui/lab";
 
 
 async function createAssessment(createAssessmentRequest){
@@ -92,13 +93,13 @@ const ScheduleAssessmentModal = (props) => {
                             </Grid>
                             </Grid>
                
-                   {isLoading?<CircularProgress/>:<Button  variant="contained"
+                <LoadingButton loading={isLoading}  variant="contained"
                                 color="success"
                                 type="submit"
                                 sx={{ float: "right" }}>
                                   Submit
                       
-                    </Button>} 
+                    </LoadingButton>} 
 </Form>)}
                 </Formik>
           </InputFieldsBox>

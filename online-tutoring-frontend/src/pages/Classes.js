@@ -9,7 +9,7 @@ import {
   StyledTableRow,
 } from "../components/ui/Theme";
 import httpClient from "../util/http-client";
-import AuthContext from "../store/auth-context";
+import UIContext from "../store/ui-context";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 
@@ -36,7 +36,7 @@ async function fetchClassesMapped(id) {
 
 export const Classes = (props) => {
   const context = useContext(LoginContext);
-  const uiContext = useContext(AuthContext);
+  const uiContext = useContext(UIContext);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [selectedGradeId,setSelectedGradeId]=useState();

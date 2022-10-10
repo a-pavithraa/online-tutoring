@@ -8,11 +8,11 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import Divider from "@mui/material/Divider";
-import AuthContext from "../../store/auth-context";
+import UIContext from "../../store/ui-context";
 import Grid3x3Icon from '@mui/icons-material/Grid3x3';
 export const SideDraw = (props) => {
  
-  const {selectedMenu,setSelectedMenu} = useContext(AuthContext);
+  const {selectedMenu,setSelectedMenu} = useContext(UIContext);
 
   const navigate = useNavigate();
 

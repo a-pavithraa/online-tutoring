@@ -10,6 +10,7 @@ import { Field, FieldArray, Form, Formik } from "formik";
 import { ComboBox } from "../ui/FormInputs";
 import moduleClasses from "./Registration.module.scss";
 import * as Yup from "yup";
+import { LoadingButton } from "@mui/lab";
 
 async function getSubjectsAndGrades(teacherId) {
   const { data } = await httpClient.get(
@@ -238,18 +239,17 @@ const TeacherMappingModal = (props) => {
                               >
                                 ADD
                               </Button>
-                              {isLoading ? (
-              <CircularProgress />
-            ) : (
-                              <Button
+                              
+                              <LoadingButton
                                 variant="contained"
                                 color="success"
                                 type="submit"
+                                loading={isLoading}
                                 sx={{ float: "right" }}
                               >
                                 Submit
-                              </Button>
-            )}
+                              </LoadingButton>
+            
                               &nbsp;
                             </div>
                           </>

@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 
- const AuthContext = createContext({
+ const UIContext = createContext({
 
     mobileOpen: false,
    
@@ -10,7 +10,7 @@ import React, { createContext, useState } from 'react';
 
 });
 
-export const AuthContextProvider = (props) => {
+export const UIContextProvider = (props) => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [selectedMenu,setSelectedMenu]=useState(0);
     const switchDrawToggle = () => {
@@ -24,10 +24,10 @@ export const AuthContextProvider = (props) => {
 
     }
 
-    return <AuthContext.Provider value={context}>
+    return <UIContext.Provider value={context}>
         {props.children}
-    </AuthContext.Provider>
+    </UIContext.Provider>
 
 }
 
-export default AuthContext;
+export default UIContext;

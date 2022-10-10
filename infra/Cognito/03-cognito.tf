@@ -69,3 +69,17 @@ module "cognito_user_pool" {
     Terraform   = true
   }
 }
+
+resource "aws_cognito_identity_pool" "identity_pool" {
+  identity_pool_name               = "${var.prefix}_identity_pool"
+  allow_unauthenticated_identities = false
+  allow_classic_flow               = false
+
+  cognito_identity_providers {
+    client_id               = module.cognito_user_pool.client_ids[0]
+    provider_name           = module.cognito_user_pool.endpoint
+    server_side_token_check = false
+  }
+
+  
+}

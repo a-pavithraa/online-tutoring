@@ -29,6 +29,8 @@ public class DynamoDBService {
 
     public void insertStudentNotificationRecords(List<StudentNotification> studentNotificationList){
 
+        System.out.println("Inside insertStudentNotificationRecords of dynamodb");
+        System.out.println(studentNotificationList);
         DynamoDbTable<StudentNotification> mappedTable = dynamoDbEnhancedClient.table(dynamoDBTableName, TableSchema.fromBean(StudentNotification.class));
 
         WriteBatch.Builder<StudentNotification> batchBuilder = WriteBatch.builder(StudentNotification.class)

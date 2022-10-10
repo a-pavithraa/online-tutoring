@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import React, { useContext } from "react";
 import { useQuery } from "react-query";
-import AuthContext from "../../store/auth-context";
+import UIContext from "../../store/ui-context";
 import LoginContext from "../../store/login-context";
 import { Header, InputFieldsBox, StyledTableCell, StyledTableRow } from "../ui/Theme";
 import httpClient from "../../util/http-client";
