@@ -79,7 +79,7 @@ const AssessmentList = (props) => {
    
   }
   const uploadQnPaper = () => {
-    setAssessmentId(assessmentId);
+    
     handleDialogClose();
     setOpen(true);
   };
@@ -92,10 +92,8 @@ const AssessmentList = (props) => {
         queryParam.get("subjectId")
       ),
     {
-      refetchOnWindowFocus: false,
-      staleTime: 0,
-      cacheTime: 0,
-      refetchInterval: 0,
+      refetchOnWindowFocus: false
+    
     }
   );
 
@@ -166,7 +164,7 @@ const AssessmentList = (props) => {
               <StyledTableCell>Subject</StyledTableCell>
               <StyledTableCell>Grade</StyledTableCell>
               <StyledTableCell>Date</StyledTableCell>
-              <StyledTableCell>Document</StyledTableCell>
+              <StyledTableCell>Question Paper</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -192,10 +190,10 @@ const AssessmentList = (props) => {
                   <StyledTableCell>
                     {
                     row.qnPaperDocument?<Button variant="contained" color="primary" startIcon={<DownloadIcon />} onClick={()=>downloadFile(row.qnPaperDocument)}>
-                    Question Paper
+                    Download
                   </Button>:
                      checkWhetherTodayDate(row.assessmentDate)? <Button variant="contained" color="secondary" startIcon={<UploadIcon />} onClick={() => handleDialogOpen(row.assessmentId,row.assessmentDate)}>
-                     Question Paper
+                     Upload
                    </Button>:''
                     
                     }

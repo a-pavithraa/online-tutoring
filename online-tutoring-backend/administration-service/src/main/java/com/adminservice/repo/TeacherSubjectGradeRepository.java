@@ -1,10 +1,9 @@
 package com.adminservice.repo;
 
-import com.adminservice.entity.Teacher;
 import com.adminservice.entity.TeacherSubjectGradeId;
 import com.adminservice.entity.TeacherSubjectGradeMap;
-import com.adminservice.model.GradeAndSubjectMappingRecord;
-import com.adminservice.model.TeacherRecord;
+import com.adminservice.model.GradeAndSubjectMappingDetails;
+import com.adminservice.model.TeacherDetails;
 import com.vladmihalcea.spring.repository.HibernateRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,7 +12,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface TeacherSubjectGradeRepository extends JpaRepository<TeacherSubjectGradeMap, TeacherSubjectGradeId>, HibernateRepository<TeacherSubjectGradeMap> {
@@ -24,7 +22,7 @@ public interface TeacherSubjectGradeRepository extends JpaRepository<TeacherSubj
     public Optional<Long> findBySubjectIdAndGradeId(long subjectId, long gradeId);*/
 
     @Query("""
-            select new com.adminservice.model.TeacherRecord(
+            select new com.adminservice.model.TeacherDetails(
                 t.id as id,
                 t.userName as name,
                 t.email as email
@@ -33,17 +31,17 @@ public interface TeacherSubjectGradeRepository extends JpaRepository<TeacherSubj
             WHERE t.id = tsg.id.teacherId  AND tsg.id.subjectId=?1 AND tsg.id.gradeId=?2 
                 
             """)
-    TeacherRecord getTeacherForGradeAndSubject(long subjectId, long gradeId);
+    TeacherDetails getTeacherForGradeAndSubject(long subjectId, long gradeId);
 
     @Query("""
-            select new com.adminservice.model.GradeAndSubjectMappingRecord(
+            select new com.adminservice.model.GradeAndSubjectMappingDetails(
             g.id,g.name,s.id,s.name
             ) 
             FROM Subject s , TeacherSubjectGradeMap tsg, Grade g
             WHERE s.id = tsg.id.subjectId and g.id = tsg.id.gradeId AND tsg.id.teacherId=?1 
                 
             """)
-    List<GradeAndSubjectMappingRecord> getGradeAndSubjectMappingForTeacher(long teacherId);
+    List<GradeAndSubjectMappingDetails> getGradeAndSubjectMappingForTeacher(long teacherId);
 
     @Modifying
     @Query("""   

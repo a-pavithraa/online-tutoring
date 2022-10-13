@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import httpClient from "../../util/http-client";
-import { CircularProgress, Grid } from "@mui/material";
+import { Alert, CircularProgress, Grid } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Header, InputFieldsBox, Item, ModalStyle } from "../ui/Theme";
 import { Field, FieldArray, Form, Formik } from "formik";
@@ -26,12 +26,16 @@ const ScheduleAssessmentModal = (props) => {
   const context = useContext(LoginContext);
   const queryClient = useQueryClient();
    
-  const { mutate, isLoading } = useMutation(createAssessment, {
+  const { mutate, isLoading,isSuccess,isError } = useMutation(createAssessment, {
      onSuccess: data => {
        
-        const message = "success";
-        alert(message);
-        props.handleClose();
+      setTimeout(function () {
+       
+          props.handleClose();
+        
+    }, 2000);
+      
+       
   },
     onError: () => {
          alert("there was an error");
@@ -51,6 +55,7 @@ const ScheduleAssessmentModal = (props) => {
     >
       {
         <Box sx={{ ...ModalStyle }}>
+         
           <div style={{ float: "right" }}>
             <Button
               sx={{ fontWeight: "bolder", color: "red", fontSize: 14 }}
@@ -60,6 +65,8 @@ const ScheduleAssessmentModal = (props) => {
             </Button>
           </div>
           <InputFieldsBox sx={{ maxWidth: 1100 }}>
+          {isSuccess &&<Alert severity="success">Assessment Scheduled!</Alert>}
+          {isError &&<Alert severity="error">Error in scheduling!</Alert>}
           <Formik
                 initialValues={{assessmentDate: getCurrentTime() }}
                 onSubmit={async (values) =>{
@@ -99,7 +106,7 @@ const ScheduleAssessmentModal = (props) => {
                                 sx={{ float: "right" }}>
                                   Submit
                       
-                    </LoadingButton>} 
+                    </LoadingButton>
 </Form>)}
                 </Formik>
           </InputFieldsBox>

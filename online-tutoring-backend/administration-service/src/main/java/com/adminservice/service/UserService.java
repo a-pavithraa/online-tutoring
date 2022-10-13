@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.adminservice.entity.*;
 import com.adminservice.model.CreateTeacherRequest;
-import com.adminservice.model.TeacherRecord;
+import com.adminservice.model.TeacherDetails;
 import com.adminservice.repo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,14 +70,14 @@ public class UserService {
 
     }
 
-    public List<TeacherRecord> getAllTeachers(){
+    public List<TeacherDetails> getAllTeachers(){
         return teacherRepository.getAllTeachers();
     }
-    public TeacherRecord getTeacherById(long id){
+    public TeacherDetails getTeacherById(long id){
         return  teacherRepository.findById(id).orElseThrow();
     }
 
-    public TeacherRecord getTeacherDetailsByName(String name){
+    public TeacherDetails getTeacherDetailsByName(String name){
         return teacherRepository.findByName(name).orElseThrow();
     }
 

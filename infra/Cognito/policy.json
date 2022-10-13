@@ -1,0 +1,43 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::${var.assessment_bucket_name}"
+            ],
+            "Condition": {
+                "StringLike": {
+                    "s3:prefix": [
+                        "$${cognito-identity.amazonaws.com:sub}/*"
+                    ]
+                }
+            }
+        },
+        {
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::${var.assessment_bucket_name}/${cognito-identity.amazonaws.com:sub}/*"
+            ]
+        },
+        {
+            "Sid": "DescribeQueryScanStudentsTable",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:ListTables",
+                "dynamodb:GetItem",
+                "dynamodb:BatchGetItem",
+                "dynamodb:Query"
+
+            ],
+            "Resource": "arn:aws:dynamodb:${var.region}:${data.aws_caller_identity.current.account_id}:table/${var.dynamodb_table_name}"
+        }
+    ]
+}

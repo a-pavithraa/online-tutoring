@@ -58,7 +58,7 @@ export const Classes = (props) => {
       refetchOnWindowFocus: false,
     }
   );
- const dataLoaded= data && data.gradeAndSubjectMappingRecords;
+ const dataLoaded= data && data.gradeAndSubjectMappingDetails;
   const displayStudents = (subjectId,gradeId)=>{
     uiContext.setSelectedMenu(1);
     navigate("/Students?teacherId="+context.teacherId+'&subjectId='+subjectId+'&gradeId='+gradeId);
@@ -83,7 +83,7 @@ export const Classes = (props) => {
           </TableHead>
           <TableBody>
             {dataLoaded &&
-              data.gradeAndSubjectMappingRecords.map((row) => {
+              data.gradeAndSubjectMappingDetails.map((row) => {
                 return (
                   <StyledTableRow
                     key={`${row.subjectName}-${row.gradeName}`}
@@ -110,7 +110,7 @@ export const Classes = (props) => {
       
       </StyledTableContainer>
       {dataLoaded && <PaginationComponent       
-        count={data.gradeAndSubjectMappingRecords.length}
+        count={data.gradeAndSubjectMappingDetails.length}
         rowsPerPage={5}
        
       />

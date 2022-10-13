@@ -1,6 +1,5 @@
 package com.adminservice.repo;
 
-import com.adminservice.model.StudentRecord;
 import com.vladmihalcea.spring.repository.HibernateRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -8,7 +7,6 @@ import com.adminservice.entity.Student;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 
 

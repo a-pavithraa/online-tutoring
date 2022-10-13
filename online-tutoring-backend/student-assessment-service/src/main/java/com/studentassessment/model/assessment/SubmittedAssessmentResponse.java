@@ -1,4 +1,4 @@
-package com.studentassessment.model;
+package com.studentassessment.model.assessment;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,5 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 public class SubmittedAssessmentResponse {
     //Need to add pagination specific properties in the next iteration
-    private List<SubmittedAssessmentsRecord> submittedAssessmentsRecords;
+    private List<SubmittedAssessments> submittedAssessmentsRecords;
 }

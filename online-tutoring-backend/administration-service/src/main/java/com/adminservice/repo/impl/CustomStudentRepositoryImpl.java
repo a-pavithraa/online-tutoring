@@ -1,6 +1,6 @@
 package com.adminservice.repo.impl;
 
-import com.adminservice.model.StudentRecord;
+import com.adminservice.model.StudentDetails;
 import com.adminservice.repo.CustomStudentRepository;
 import com.vladmihalcea.hibernate.query.ListResultTransformer;
 
@@ -17,7 +17,7 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
         int i = 0;
         long id =tuple[i]==null?0: ((Number) tuple[i++]).longValue();
 
-        return new StudentRecord(
+        return new StudentDetails(
                 id,
                 (String) tuple[i++],
                 (String) tuple[i++],
@@ -29,7 +29,7 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
         );
     };
 
-    public List<StudentRecord> getAllStudentsOfTeacher(Long teacherId, Long gradeId, Long subjectId) {
+    public List<StudentDetails> getAllStudentsOfTeacher(Long teacherId, Long gradeId, Long subjectId) {
        StringBuilder whereClauseBuilder = new StringBuilder();
        if(gradeId!=null)
            whereClauseBuilder.append(" and tsgm.grade_id  = :gradeId");
@@ -54,7 +54,7 @@ public class CustomStudentRepositoryImpl implements CustomStudentRepository {
             nativeQuery.setParameter("gradeId", gradeId);
         if(subjectId!=null)
             nativeQuery.setParameter("subjectId", subjectId);
-        List<StudentRecord> studentRecords =nativeQuery
+        List<StudentDetails> studentRecords =nativeQuery
                 .unwrap(org.hibernate.query.NativeQuery.class)
                 .setResultTransformer(transformer).getResultList();
         return studentRecords;

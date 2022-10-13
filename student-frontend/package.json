@@ -27,6 +27,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "6.4",
     "react-scripts": "5.0.1",
+    "react-query": "^3.39.2",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
@@ -56,6 +57,7 @@
     ]
   },
   "devDependencies": {
+    "dotenv": "^16.0.3",
     "sass": "^1.44.0",
     "sass-loader": "^12.4.0"
   }

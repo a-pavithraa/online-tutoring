@@ -2,8 +2,11 @@ package com.studentassessment.entity;
 
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "student_assessment_mapping")
@@ -28,6 +31,10 @@ public class StudentAssessmentMapping {
     private double marks;
     private String uploadedDocument;
     private String correctedDocument;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
 
 }

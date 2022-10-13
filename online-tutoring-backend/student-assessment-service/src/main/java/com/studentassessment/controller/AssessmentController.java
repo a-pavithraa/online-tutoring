@@ -1,13 +1,11 @@
 package com.studentassessment.controller;
 
-import com.studentassessment.model.*;
+import com.studentassessment.model.assessment.*;
 import com.studentassessment.service.AssessmentService;
-import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Template;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -75,6 +72,11 @@ public class AssessmentController {
     @PostMapping(path="/updateSubmittedAssessment")
     public void updateSubmittedAssessment(@ModelAttribute UpdateSubmittedAssessmentRequest updateSubmittedAssessmentRequest){
         assessmentService.updateSubmittedAssessment(updateSubmittedAssessmentRequest);
+    }
+
+    @GetMapping("/studentPerformance")
+    public StudentPerformanceResponse getStudentPerformanceDetails(@RequestParam("studentId") long studentId){
+        return assessmentService.getStudentPerformance(studentId);
     }
 
 

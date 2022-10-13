@@ -1,7 +1,7 @@
 package com.studentassessment.controller;
 
 import com.studentassessment.entity.Assessment;
-import com.studentassessment.model.CreateAssessmentRequest;
+import com.studentassessment.model.assessment.CreateAssessmentRequest;
 import com.studentassessment.repo.AssessmentRepo;
 import com.studentassessment.service.AssessmentService;
 import com.studentassessment.utils.LocalstackContainerInitializer;
@@ -18,7 +18,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;

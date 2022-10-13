@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
@@ -44,6 +45,8 @@ public class CustomExceptionHandler implements
                 .build();
         return create(problem, request);
     }
+
+
 
     @Override
     public boolean isCausalChainsEnabled() {

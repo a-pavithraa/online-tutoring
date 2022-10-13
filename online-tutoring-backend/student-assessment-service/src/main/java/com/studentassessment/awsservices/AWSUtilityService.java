@@ -1,8 +1,6 @@
 package com.studentassessment.awsservices;
 
-import com.studentassessment.exception.InvalidMetadataException;
-import com.studentassessment.model.S3EventNotification;
-import com.studentassessment.model.S3UploadDocDetailsRecord;
+import com.studentassessment.model.s3.S3UploadDocDetails;
 import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
@@ -24,8 +22,8 @@ import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignReques
 import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Map;
+import static com.studentassessment.api.mdm.Constants.Metadata;
 
 @Service
 @RequiredArgsConstructor
@@ -40,40 +38,46 @@ public class AWSUtilityService {
     private final S3Template s3Template;
     @Value("${mail.address.from}")
     private String fromMailAddress;
+    private final static int PRE_SIGNED_URL_VALIDITY = 120;
 
-    public S3UploadDocDetailsRecord getSignedUrlAndAssessmentId(S3EventNotification.S3 s3Entity){
 
-        Map<String,String> resultMap = new HashMap<>();
-        LOG.info("S3 Event Entity object {}",s3Entity);
-        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                .bucket(s3Entity.getBucket().getName())
-                .key(s3Entity.getObject().getKey())
-                .build();
+    public S3UploadDocDetails parseS3MetadataForIds(GetObjectRequest getObjectRequest, String key){
+
         GetObjectResponse getObjectResponse = s3Client.getObject(getObjectRequest).response();
         long assessmentId = 0;
         long teacherId =0;
         long studentId=0;
+        String cognitoId=null;
 
-        if (getObjectResponse.metadata().containsKey("assessmentid"))
-            assessmentId= Long.valueOf(getObjectResponse.metadata().get("assessmentid"));
+        if (getObjectResponse.metadata().containsKey(Metadata.ASSESSMENT_ID.toString()))
+            assessmentId= Long.valueOf(getObjectResponse.metadata().get(Metadata.ASSESSMENT_ID.toString()));
 
-        if (getObjectResponse.metadata().containsKey("teacherid"))
-            teacherId= Long.valueOf(getObjectResponse.metadata().get("teacherid"));
-        if (getObjectResponse.metadata().containsKey("studentid"))
-            studentId= Long.valueOf(getObjectResponse.metadata().get("studentid"));
-       /* if(assessmentId==0 || teacherId==0|| studentId==0)
+        if (getObjectResponse.metadata().containsKey(Metadata.TEACHER_ID.toString()))
+            teacherId= Long.valueOf(getObjectResponse.metadata().get(Metadata.TEACHER_ID.toString()));
+        if (getObjectResponse.metadata().containsKey(Metadata.STUDENT_ID.toString()))
+            studentId= Long.valueOf(getObjectResponse.metadata().get(Metadata.STUDENT_ID.toString()));
+        if (getObjectResponse.metadata().containsKey(Metadata.COGNITO_ID.toString()))
+            cognitoId= String.valueOf(getObjectResponse.metadata().get(Metadata.COGNITO_ID.toString()));
+         /* if(assessmentId==0 || teacherId==0|| studentId==0)
             throw new InvalidMetadataException();*/
+        S3UploadDocDetails s3UploadDocDetailsRecords= new S3UploadDocDetails(assessmentId,teacherId,studentId,cognitoId,key);
+        return s3UploadDocDetailsRecords;
+
+    }
+
+    public String getSignedUrl(GetObjectRequest getObjectRequest){
+
+
         GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
-                .signatureDuration(Duration.ofMinutes(60))
+                .signatureDuration(Duration.ofMinutes(PRE_SIGNED_URL_VALIDITY))
                 .getObjectRequest(getObjectRequest)
                 .build();
 
 
         PresignedGetObjectRequest presignedGetObjectRequest = s3Presigner.presignGetObject(getObjectPresignRequest);
         String theUrl = presignedGetObjectRequest.url().toString();
-        System.out.println(theUrl);
-        S3UploadDocDetailsRecord s3UploadDocDetailsRecords= new S3UploadDocDetailsRecord(assessmentId,teacherId,studentId,theUrl);
-        return s3UploadDocDetailsRecords;
+        return theUrl;
+
     }
 
     public String getPresignedUrl(String bucketName,String key){

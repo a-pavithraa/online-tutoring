@@ -32,22 +32,29 @@ resource "aws_iam_policy" "student_policy" {
     "Statement": [
         {
             "Action": [
-                "s3:ListBucket",
-                "s3:GetObject",
-                "s3:PutObject"
+                "s3:ListBucket"
             ],
             "Effect": "Allow",
             "Resource": [
-                "arn:aws:s3:::${var.assessment_bucket_name}",
-                "arn:aws:s3:::${var.assessment_bucket_name}/*"
+                "arn:aws:s3:::${var.assessment_bucket_name}"
             ],
-             "Condition": {
+            "Condition": {
                 "StringLike": {
                     "s3:prefix": [
                         "$${cognito-identity.amazonaws.com:sub}/*"
                     ]
                 }
             }
+        },
+        {
+            "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::${var.assessment_bucket_name}/$${cognito-identity.amazonaws.com:sub}/*"
+            ]
         },
         {
             "Sid": "DescribeQueryScanStudentsTable",

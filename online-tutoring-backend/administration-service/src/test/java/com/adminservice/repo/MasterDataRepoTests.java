@@ -3,8 +3,8 @@ package com.adminservice.repo;
 import com.adminservice.entity.Teacher;
 import com.adminservice.entity.TeacherSubjectGradeId;
 import com.adminservice.entity.TeacherSubjectGradeMap;
-import com.adminservice.model.GradeAndSubjectMappingRecord;
-import com.adminservice.model.TeacherRecord;
+import com.adminservice.model.GradeAndSubjectMappingDetails;
+import com.adminservice.model.TeacherDetails;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,13 +77,13 @@ public class MasterDataRepoTests {
 
     @Test
     void getTeacherForGradeAndSubject(){
-        TeacherRecord teacherRecord =teacherSubjectGradeRepository.getTeacherForGradeAndSubject(1L,1L);
+        TeacherDetails teacherRecord =teacherSubjectGradeRepository.getTeacherForGradeAndSubject(1L,1L);
         Assertions.assertThat(teacherRecord).isNotNull();
 
     }
     @Test
     void shouldGetMappedGradeAndSubjects() {
-        List<GradeAndSubjectMappingRecord> mappings = teacherSubjectGradeRepository.getGradeAndSubjectMappingForTeacher(1L);
+        List<GradeAndSubjectMappingDetails> mappings = teacherSubjectGradeRepository.getGradeAndSubjectMappingForTeacher(1L);
         Assertions.assertThat(mappings).hasSize(1);
         Assertions.assertThat(mappings.get(0).gradeId()).isEqualTo(1L);
 

@@ -1,9 +1,11 @@
-package com.studentassessment.model;
+package com.studentassessment.model.s3;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +30,17 @@ public class S3EventNotification {
         private int size;
         private String eTag;
         private String sequencer;
+
+        public String getKey() {
+            String result = null;
+            try {
+                result = java.net.URLDecoder.decode(key, StandardCharsets.UTF_8.name());
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+
+            return result;
+        }
     }
     @Data
     @JsonIgnoreProperties(ignoreUnknown = true)

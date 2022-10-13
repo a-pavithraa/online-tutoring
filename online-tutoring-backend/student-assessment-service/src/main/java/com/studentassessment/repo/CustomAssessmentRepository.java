@@ -1,15 +1,14 @@
 package com.studentassessment.repo;
 
-import com.studentassessment.model.AssessmentDetailsForStudentNotification;
-import com.studentassessment.model.AssessmentDetailsRecord;
-import com.studentassessment.model.SearchAssessmentRequest;
-import com.studentassessment.model.SubmittedAssessmentsRecord;
+import com.studentassessment.model.assessment.AssessmentDetailsForStudentNotification;
+import com.studentassessment.model.assessment.AssessmentDetails;
+import com.studentassessment.model.assessment.SubmittedAssessments;
 
 import java.util.List;
 
 public interface CustomAssessmentRepository {
-     List<AssessmentDetailsRecord> getAssessments(Long teacherId, Long gradeId, Long subjectId);
-      List<SubmittedAssessmentsRecord> getAllSubmittedAssessments(long teacherId);
+     List<AssessmentDetails> getAssessments(Long teacherId, Long gradeId, Long subjectId);
+      List<SubmittedAssessments> getAllSubmittedAssessments(long teacherId);
 
      AssessmentDetailsForStudentNotification getAssessmentDetailsForStudentNotification(long assessmentId);
 }

@@ -4,22 +4,23 @@ Pandemic has brought a huge change in education system. Platforms such as Zoom, 
 
 It has also enabled many women to restart their career in teaching. The one thing that I felt is the channels in which the child's progress or any impending assignment/test is either through WhatsApp or Email.  The teacher is also not able to maintain the track record of the student .  
 
-This POC idea was born when one of my friends who is a private tutor felt that a website would be super useful for her in managing her classes . The main consideration I had is affordability. I didn't want her to incur huge costs in cloud bill.   So I used only the services that could come in free tier or where the charges would be very minimal. She has a decent configuration laptop which can be used for compute. During the initial phase, only the tutor would have access to the all the functionalities and the students could only upload their assessments.
+This POC idea was born when one of my friends who is a private tutor felt that having a website would reduce many of the overhead in managing her classes . The main consideration I had is affordability. I didn't want her to incur huge costs in cloud bill.   So I used only the services that could come in free tier or where the charges would be very minimal. She has a decent configuration laptop which can be used for compute. During the initial phase, only the tutor would have access to the all the functionalities and the students could only upload their assessments.
 
 
 
 **Approach:**
 
-Since this is a small application, I went for monolithic architecture with 3 containers -  Application Backend, Application Frontend ,MySQL database. Regular backups of the volumes can be taken and stored in S3.  I have also used S3 for teachers to upload question papers and students to upload answer sheets.  Following AWS Services are used:
+Initially I had three containers for application backend, application frontend ,MySQL database. Regular backups of the volumes can be taken and stored in S3.  I have also used S3 for teachers to upload question papers and students to upload answer sheets.  Following AWS Services are used:
 
 1. S3 for teachers to upload question papers and students to upload answer sheets
 2. DynamoDB for storing pending assessment details (to be displayed to students)
 3. SQS for asynchronous messaging
-4. Cognito User Pool and Identity Pool for authentication and authorization
+4. SES for email
+5. Cognito User Pool and Identity Pool for authentication and authorization
 
 Application flow:
 
-Teacher logs into the application. Authentication is done via Cognito
+Teacher logs into the application. Authentication is done via Cognito User Pool
 
 
 

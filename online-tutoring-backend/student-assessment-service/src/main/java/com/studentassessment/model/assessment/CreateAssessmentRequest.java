@@ -1,4 +1,4 @@
-package com.studentassessment.model;
+package com.studentassessment.model.assessment;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

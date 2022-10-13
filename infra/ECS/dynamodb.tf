@@ -3,9 +3,9 @@ resource "aws_dynamodb_table"  "dynamodb_table" {
   name     = var.dynamodb_table_name
   hash_key = "cognitoId"
   
-  billing_mode   = "PROVISIONED"
-  read_capacity  = 5
-  write_capacity = 5
+  billing_mode   = "PAY_PER_REQUEST"
+#read_capacity  = 20
+ # write_capacity = 20
    ttl {
     attribute_name = "ttl"
     enabled        = true

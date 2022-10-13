@@ -1,6 +1,6 @@
 package com.adminservice.repo;
 
-import com.adminservice.model.DropdownRecord;
+import com.adminservice.model.Dropdown;
 import com.vladmihalcea.spring.repository.HibernateRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -15,9 +15,9 @@ public interface SubjectRepository extends JpaRepository<Subject, Long>, Hiberna
     public List<Subject> findByIdIn(List<Long> ids);
 
     @Query("""
-            select new com.adminservice.model.DropdownRecord(id, name) from Subject 
+            select new com.adminservice.model.Dropdown(id, name) from Subject 
             """)
-    public List<DropdownRecord> getAllSubjects();
+    public List<Dropdown> getAllSubjects();
 
 	
 

@@ -1,6 +1,6 @@
-package com.studentassessment.model;
+package com.adminservice.model;
 
-public record StudentRecord(
+public record StudentDetails(
         long id,
         String userName,
         String fullName,

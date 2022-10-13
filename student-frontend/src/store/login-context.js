@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { STUDENT_GROUP, TEACHER_GROUP } from '../util/constants';
+import { COGNITO_ENDPOINT, IDENTITY_POOL_ID, REGION, STUDENT_GROUP, TEACHER_GROUP } from '../util/constants';
 
-
+import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
+import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
 let logoutTimer;
 
 const LoginContext = React.createContext({
@@ -11,6 +12,7 @@ const LoginContext = React.createContext({
   isLoggedIn: false, 
   userName: '',
   cognitoId:'',
+  cognitoIdPoolIdentity:'',
   
   login: (token) => { },
   logout: () => { }
@@ -58,6 +60,7 @@ export const LoginContextProvider = (props) => {
   const navigate=useNavigate();
   const [cognitoId,setCognitoId]=useState();
   const [loggedInUser,setLoggedInUser]=useState();
+  const[cognitoIdPoolIdentity,setcognitoIdPoolIdentity]=useState();
   
 
 
@@ -94,16 +97,30 @@ export const LoginContextProvider = (props) => {
   
 
   const loginHandler = async (idToken,accessToken, expirationTime) => {
-    setToken(idToken);
+    
     const tokenObject = parseToken(idToken);
     const userName = tokenObject["cognito:username"];
     const cognitoId = tokenObject["sub"];
+    const cognitoidentity = new CognitoIdentityClient({
+      credentials:  fromCognitoIdentityPool({
+        client: new CognitoIdentityClient({ region: REGION }),
+          identityPoolId: IDENTITY_POOL_ID,
+            logins: {
+                [COGNITO_ENDPOINT]:idToken
+            }
+      }),
+  });
+
+
+  var credentials = await cognitoidentity.config.credentials()
+  console.log(credentials)
     setLoggedInUser(userName);
     setCognitoId(cognitoId);
+    setcognitoIdPoolIdentity(credentials.identityId);
     const isStudent = !!tokenObject["cognito:groups"].find(x=>x===STUDENT_GROUP);
     console.log(isStudent);
     setIsStudent(isStudent);
-    
+    setToken(idToken);
    
     localStorage.setItem('jwtToken', accessToken);
    
@@ -132,6 +149,7 @@ export const LoginContextProvider = (props) => {
     login: loginHandler,
     logout: logoutHandler,  
     cognitoId:cognitoId,
+    cognitoIdPoolIdentity:cognitoIdPoolIdentity
    
 
 

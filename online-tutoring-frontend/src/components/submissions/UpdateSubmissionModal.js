@@ -17,7 +17,8 @@ import { TextInput } from "../ui/FormInputs";
 import * as Yup from "yup";
 import LoginContext from "../../store/login-context";
 import AddIcon from "@mui/icons-material/Add";
-
+import { LoadingButton } from "@mui/lab";
+import UploadIcon from "@mui/icons-material/UploadRounded";
 async function postQnPaper(formData) {
   await httpClient.post("/assessment/updateSubmittedAssessment", formData, {
     headers: {
@@ -102,16 +103,19 @@ const UpdateSubmissionModal = (props) => {
                     </ModalGridItem>
                     <ModalGridItem item xs={12}>
                       <Item sx={{ float: "left" }}>
-                        {
-                          <span
-                            style={{ fontWeight: "bold", paddingRight: "5px" }}
-                          >
-                           
-                            {props.values.file?.name}{" "}
-                          </span>
-                        }
-                        <label htmlFor="file">
+                        <span
+                          style={{ fontWeight: "bold", paddingRight: "5px" }}
+                        >
+                          {props.values.file?.name}{" "}
+                        </span>
+                        <Button
+                          component="label"
+                          sx={{ fontWeight: "bolder" }}
+                          startIcon={<UploadIcon />}
+                        >
+                          Corrected Paper
                           <input
+                            hidden
                             id="file"
                             name="file"
                             type="file"
@@ -121,20 +125,8 @@ const UpdateSubmissionModal = (props) => {
                                 event.currentTarget.files[0]
                               );
                             }}
-                            className="form-control"
-                            style={{ display: "none" }}
                           />
-
-                          <Fab
-                            color="primary"
-                            size="small"
-                            component="div"
-                            aria-label="add"
-                            variant="extended"
-                          >
-                            <AddIcon /> Upload Corrected Document
-                          </Fab>
-                        </label>
+                        </Button>
                       </Item>
                     </ModalGridItem>
                   </Grid>

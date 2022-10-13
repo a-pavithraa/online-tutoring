@@ -25,7 +25,7 @@ async function getRefData(urlSuffix) {
 }
 function mapperFn(data) {
   const mapObj = [];
-  data.gradeAndSubjectMappingRecords.forEach((x) => {
+  data.gradeAndSubjectMappingDetails.forEach((x) => {
     let subjectObj = { value: x.subjectId, label: x.subjectName };
     const collection = mapObj.find((obj) => x.gradeId == obj.grade.value)?.subjects;
 

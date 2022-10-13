@@ -54,17 +54,17 @@ public class AdminServiceController {
 	}
 
 	@GetMapping("/teachers")
-	public List<TeacherRecord> getAllTeachers(){
+	public List<TeacherDetails> getAllTeachers(){
 		return userService.getAllTeachers();
 	}
 
 	@GetMapping("/teacher")
-	public TeacherRecord getTeacherById(@RequestParam("id") long id){
+	public TeacherDetails getTeacherById(@RequestParam("id") long id){
 		return userService.getTeacherById(id);
 	}
 
 	@GetMapping("/teacher/{teacherName}")
-	public TeacherRecord getTeacherDetailsByName(@PathVariable("teacherName") String teacherName){
+	public TeacherDetails getTeacherDetailsByName(@PathVariable("teacherName") String teacherName){
 		return userService.getTeacherDetailsByName(teacherName);
 	}
 

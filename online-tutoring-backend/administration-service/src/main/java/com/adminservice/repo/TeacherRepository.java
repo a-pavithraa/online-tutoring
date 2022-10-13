@@ -1,7 +1,6 @@
 package com.adminservice.repo;
 
-import com.adminservice.model.StudentRecord;
-import com.adminservice.model.TeacherRecord;
+import com.adminservice.model.TeacherDetails;
 import com.vladmihalcea.spring.repository.HibernateRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -9,7 +8,6 @@ import com.adminservice.entity.Teacher;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +19,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, Hiberna
     public Optional<Long> findIdByUserName(@Param("name") String name);
 
     @Query("""
-    select new com.adminservice.model.TeacherRecord(
+    select new com.adminservice.model.TeacherDetails(
         t.id as id,
         t.fullName ,
         t.email 
@@ -29,11 +27,11 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, Hiberna
     FROM Teacher t
     
     """)
-    public List<TeacherRecord> getAllTeachers();
+    public List<TeacherDetails> getAllTeachers();
 
 
     @Query("""
-    select new com.adminservice.model.TeacherRecord(
+    select new com.adminservice.model.TeacherDetails(
         t.id as id,
         t.fullName ,
         t.email 
@@ -42,10 +40,10 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, Hiberna
     where id=:id
     
     """)
-    public Optional<TeacherRecord> findById(@Param("id") long teacherId);
+    public Optional<TeacherDetails> findById(@Param("id") long teacherId);
 
     @Query("""
-    select new com.adminservice.model.TeacherRecord(
+    select new com.adminservice.model.TeacherDetails(
         t.id as id,
         t.fullName ,
         t.email 
@@ -54,7 +52,7 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long>, Hiberna
     where user_name=:name
     
     """)
-    public Optional<TeacherRecord> findByName(@Param("name") String name);
+    public Optional<TeacherDetails> findByName(@Param("name") String name);
 
 
 

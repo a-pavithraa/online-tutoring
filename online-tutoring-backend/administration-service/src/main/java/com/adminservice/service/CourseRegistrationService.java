@@ -48,11 +48,11 @@ public class CourseRegistrationService {
     }
 
     @Transactional(readOnly = true)
-    public TeacherRecord getTeacherForSubjectAndGrade(long subjectId, long gradeId) {
+    public TeacherDetails getTeacherForSubjectAndGrade(long subjectId, long gradeId) {
        /* long teacherId = teacherSubjectGradeRepository.findBySubjectIdAndGradeId(subjectId,gradeId)
                             .orElseThrow();
         Teacher teacher = teacherRepository.findById(teacherId).orElseThrow();*/
-        TeacherRecord teacherRecord = teacherSubjectGradeRepository.getTeacherForGradeAndSubject(subjectId, gradeId);
+        TeacherDetails teacherRecord = teacherSubjectGradeRepository.getTeacherForGradeAndSubject(subjectId, gradeId);
         logger.debug("teacher id=={}", teacherRecord.name());
         return teacherRecord;
 
@@ -62,23 +62,23 @@ public class CourseRegistrationService {
     @Transactional(readOnly = true)
     public ListStudentsResponse getStudentsOfTeacher(Long teacherId, Long gradeId, Long subjectId) {
 
-        List<StudentRecord> studentRecords = studentRepository.getAllStudentsOfTeacher(teacherId, gradeId, subjectId);
+        List<StudentDetails> studentRecords = studentRepository.getAllStudentsOfTeacher(teacherId, gradeId, subjectId);
         ListStudentsResponse listStudentsResponse = new ListStudentsResponse(studentRecords);
         return listStudentsResponse;
     }
 
     @Transactional(readOnly = true)
-    public List<DropdownRecord> getAllSubjects() {
+    public List<Dropdown> getAllSubjects() {
 
-        List<DropdownRecord> subjects = subjectRepo.getAllSubjects();
+        List<Dropdown> subjects = subjectRepo.getAllSubjects();
         return subjects;
 
     }
 
     @Transactional(readOnly = true)
-    public List<DropdownRecord> getAllGrades() {
+    public List<Dropdown> getAllGrades() {
 
-        List<DropdownRecord> grades = gradeRepo.getAllGrades();
+        List<Dropdown> grades = gradeRepo.getAllGrades();
         return grades;
 
     }
@@ -86,7 +86,7 @@ public class CourseRegistrationService {
     @Transactional(readOnly = true)
     public GradeAndSubjectMappingResponse getGradesAndSubjectsOfTeacher(long teacherId) {
 
-        List<GradeAndSubjectMappingRecord> gradeAndSubjectMappingForTeacher = teacherSubjectGradeRepository.getGradeAndSubjectMappingForTeacher(teacherId);
+        List<GradeAndSubjectMappingDetails> gradeAndSubjectMappingForTeacher = teacherSubjectGradeRepository.getGradeAndSubjectMappingForTeacher(teacherId);
         GradeAndSubjectMappingResponse gradeAndSubjectMappingResponse = new GradeAndSubjectMappingResponse(gradeAndSubjectMappingForTeacher);
         return gradeAndSubjectMappingResponse;
 

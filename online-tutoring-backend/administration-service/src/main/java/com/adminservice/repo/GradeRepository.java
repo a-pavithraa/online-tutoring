@@ -1,6 +1,6 @@
 package com.adminservice.repo;
 
-import com.adminservice.model.DropdownRecord;
+import com.adminservice.model.Dropdown;
 import com.vladmihalcea.spring.repository.HibernateRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public interface GradeRepository extends JpaRepository<Grade, Long>,HibernateRepository<Grade> {
 
     @Query("""
-            select new com.adminservice.model.DropdownRecord(id, name) from Grade 
+            select new com.adminservice.model.Dropdown(id, name) from Grade 
             """)
-    List<DropdownRecord> getAllGrades();
+    List<Dropdown> getAllGrades();
 }

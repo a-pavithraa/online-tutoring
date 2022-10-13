@@ -13,5 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 public class GradeAndSubjectMappingResponse {
 
-    private List<GradeAndSubjectMappingRecord> gradeAndSubjectMappingRecords;
+    private List<GradeAndSubjectMappingDetails> gradeAndSubjectMappingDetails;
 }

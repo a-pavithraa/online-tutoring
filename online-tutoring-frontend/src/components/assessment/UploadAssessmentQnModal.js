@@ -13,7 +13,8 @@ import * as Yup from "yup";
 import moment from "moment/moment";
 import { getCurrentTime } from "../../util/functions";
 import LoginContext from "../../store/login-context";
-
+import { LoadingButton } from "@mui/lab";
+import UploadIcon from "@mui/icons-material/UploadRounded";
 
 async function postQnPaper(formData){
  
@@ -86,20 +87,31 @@ const UploadAssessmentQnModal = (props) => {
             <Grid container sx={{ paddingBottom: "10px" }} >
                         <Grid item xs={12} >
                             <Item>
-                            <input id="file" name="file" type="file" onChange={(event) => {
+                                <span
+                            style={{ fontWeight: "bold", paddingRight: "5px" }}>
+                           
+                            {props.values.file?.name}{" "}
+                          </span>
+                        
+                            <Button  component="label" sx={{fontWeight:"bolder"}} startIcon={<UploadIcon />}>
+                 Question Paper 
+  <input hidden id="file" name="file" type="file" onChange={(event) => {
                     props.setFieldValue("file", event.currentTarget.files[0]);
-                  }} className="form-control" />
+                  }} />
+</Button>
+                           
                             </Item>
                             </Grid>
                             </Grid>
                
-                   {isLoading?<CircularProgress/>:<Button  variant="contained"
+                  <LoadingButton  variant="contained"
+                   loading={isLoading}
                                 color="success"
                                 type="submit"
                                 sx={{ float: "right" }}>
-                                  Submit
+                                  Upload
                       
-                    </Button>} 
+                    </LoadingButton>
 </Form>)}
                 </Formik>
           </InputFieldsBox>

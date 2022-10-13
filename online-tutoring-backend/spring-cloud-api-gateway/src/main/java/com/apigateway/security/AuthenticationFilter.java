@@ -44,6 +44,7 @@ public class AuthenticationFilter implements GlobalFilter {
 		String groupName = null;
 		logger.info("Inside filter!!!!!!!!!!!");
 		try {
+
 			if (routerValidator.isSecured.test(request)) {
 				if (this.isAuthMissing(request)) {
 					logger.info("authorization is missing");

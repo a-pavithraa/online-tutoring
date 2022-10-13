@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 public class RouterValidator {
 
     public static final List<String> openApiEndpoints = List.of(
-            "**/health","**/mdm/actuator/**"
+            "**/health","/mdm/admin/teacher"
           
     );
 
@@ -18,5 +18,7 @@ public class RouterValidator {
             request -> openApiEndpoints
                     .stream()
                     .noneMatch(uri -> request.getURI().getPath().contains(uri));
+
+
 
 }

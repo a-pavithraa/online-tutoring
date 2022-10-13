@@ -1,6 +1,5 @@
 package com.adminservice.model;
 
-import com.adminservice.entity.Student;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 public class ListStudentsResponse {
 
-    private List<StudentRecord> studentRecords;
+    private List<StudentDetails> studentRecords;
 }

@@ -50,13 +50,9 @@ import UpdateSubmissionModal from "./UpdateSubmissionModal";
       setOpen(false);
     };
   
-    const refetchData=()=>{
-      refetch();
-     
-    }
+ 
     const updateSubmission = (rowData) => {
-        setRowData(rowData);
-    
+      setRowData(rowData);    
       setOpen(true);
     };
     const { data, isFetching, status,refetch } = useQuery(
@@ -89,7 +85,7 @@ import UpdateSubmissionModal from "./UpdateSubmissionModal";
           rowData={rowData}
           open={open}
           handleClose={handleClose}
-          refetch={refetchData}
+         
           setRefetchedData={setRefetchedData}
         />
       )}

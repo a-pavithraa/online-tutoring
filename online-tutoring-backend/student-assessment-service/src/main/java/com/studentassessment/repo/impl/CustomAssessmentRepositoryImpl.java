@@ -1,13 +1,14 @@
 package com.studentassessment.repo.impl;
 
-import com.studentassessment.model.*;
+import com.studentassessment.model.assessment.AssessmentDetailsForStudentNotification;
+import com.studentassessment.model.assessment.AssessmentDetails;
+import com.studentassessment.model.assessment.SubmittedAssessments;
 import com.studentassessment.repo.CustomAssessmentRepository;
 import com.vladmihalcea.hibernate.query.ListResultTransformer;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class CustomAssessmentRepositoryImpl implements CustomAssessmentRepository {
@@ -17,7 +18,7 @@ public class CustomAssessmentRepositoryImpl implements CustomAssessmentRepositor
     private static final ListResultTransformer transformer = (tuple, aliases) -> {
         int i = 0;
 
-        return new AssessmentDetailsRecord(
+        return new AssessmentDetails(
 
                 (String) tuple[i++],
                 (String) tuple[i++],
@@ -30,7 +31,7 @@ public class CustomAssessmentRepositoryImpl implements CustomAssessmentRepositor
     private static final ListResultTransformer submittedAssessmentTransformer = (tuple, aliases) -> {
         int i = 0;
         long id =tuple[i]==null?0: ((Number) tuple[i++]).longValue();
-        return new SubmittedAssessmentsRecord(
+        return new SubmittedAssessments(
                 id,
                 (String) tuple[i++],
                 tuple[i++].toString(),
@@ -56,7 +57,7 @@ public class CustomAssessmentRepositoryImpl implements CustomAssessmentRepositor
         );
     };
 
-    public List<AssessmentDetailsRecord> getAssessments(Long teacherId, Long gradeId, Long subjectId){
+    public List<AssessmentDetails> getAssessments(Long teacherId, Long gradeId, Long subjectId){
         StringBuilder whereClauseBuilder = new StringBuilder();
 
         if(gradeId!=null)
@@ -82,6 +83,7 @@ public class CustomAssessmentRepositoryImpl implements CustomAssessmentRepositor
                 	a.subject_id = s.id
                 	and a.grade_id = g.id
                 	and a.teacher_id = t.id %s
+                	order by assessment_date desc
                 """.formatted(whereClauseBuilder.toString());
         Query nativeQuery=entityManager.createNativeQuery(query);
         if(gradeId!=null)
@@ -90,7 +92,7 @@ public class CustomAssessmentRepositoryImpl implements CustomAssessmentRepositor
             nativeQuery.setParameter("subjectId", subjectId);
         if(teacherId!=null)
             nativeQuery.setParameter("teacherId",teacherId);
-        List<AssessmentDetailsRecord> assessmentDetailsRecords =nativeQuery
+        List<AssessmentDetails> assessmentDetailsRecords =nativeQuery
                 .unwrap(org.hibernate.query.NativeQuery.class)
                 .setResultTransformer(transformer).getResultList();
         return assessmentDetailsRecords;
@@ -98,7 +100,7 @@ public class CustomAssessmentRepositoryImpl implements CustomAssessmentRepositor
 
     }
 
-    public List<SubmittedAssessmentsRecord> getAllSubmittedAssessments(long teacherId){
+    public List<SubmittedAssessments> getAllSubmittedAssessments(long teacherId){
         String query = """
                 select
                 	a.id,
@@ -118,11 +120,12 @@ public class CustomAssessmentRepositoryImpl implements CustomAssessmentRepositor
                 	a.id = sa.assessment_id
                 	and s.id = sa.student_id
                 	and a.teacher_id =:teacherId
+                	order by assessment_date desc
                 """;
 
         Query nativeQuery=entityManager.createNativeQuery(query);
         nativeQuery.setParameter("teacherId",teacherId);
-        List<SubmittedAssessmentsRecord> assessmentDetailsRecords =nativeQuery
+        List<SubmittedAssessments> assessmentDetailsRecords =nativeQuery
                 .unwrap(org.hibernate.query.NativeQuery.class)
                 .setResultTransformer(submittedAssessmentTransformer).getResultList();
         return assessmentDetailsRecords;

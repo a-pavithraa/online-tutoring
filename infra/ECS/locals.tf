@@ -15,7 +15,7 @@ locals {
 
     }, {
     bucket_name = "${var.prefix}-answersheets",
-     s3_notification_prefix="Uploads/"
+     s3_notification_prefix=""
     lifecycle_rules = {
       prefix_policies = [{
         prefix          = "",

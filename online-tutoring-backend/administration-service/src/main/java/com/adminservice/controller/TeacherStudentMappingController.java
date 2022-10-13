@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +25,7 @@ public class TeacherStudentMappingController {
     }
 
     @GetMapping("/teacher/{subjectId}/{gradeId}")
-    public TeacherRecord getTeacherForSubjectAndGrade(@PathVariable("subjectId") long subjectId, @PathVariable("gradeId") long gradeId){
+    public TeacherDetails getTeacherForSubjectAndGrade(@PathVariable("subjectId") long subjectId, @PathVariable("gradeId") long gradeId){
         return courseRegistrationService.getTeacherForSubjectAndGrade(subjectId,gradeId);
     }
 

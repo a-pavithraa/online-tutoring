@@ -1,4 +1,4 @@
-package com.studentassessment.model;
+package com.studentassessment.model.mdm;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,5 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 public class ListStudentsResponse {
 
-    private List<StudentRecord> studentRecords;
+    private List<StudentDetails> studentRecords;
 }

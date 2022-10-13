@@ -1,4 +1,4 @@
-package com.studentassessment.model;
+package com.studentassessment.model.assessment;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,5 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SearchAssessmentResponse {
-    private List<AssessmentDetailsRecord> assessmentDetailsRecordList;
+    private List<AssessmentDetails> assessmentDetailsRecordList;
 }

@@ -23,6 +23,22 @@ public class StudentNotification {
     private String dueDate;
     private long ttl;
 
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
+
     @DynamoDbSortKey
     public long getAssessmentId() {
         return assessmentId;
