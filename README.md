@@ -4,7 +4,7 @@ Pandemic has brought a huge change in education system. Platforms such as Zoom, 
 
 It has also enabled many women to restart their career in teaching. The one thing that I felt is the channels in which the child's progress or any impending assignment/test is either through WhatsApp or Email.  The teacher is also not able to maintain the track record of the student .  
 
-This POC idea was born when one of my friends who is a private tutor felt that having a website would reduce many of the overhead in managing her classes . The main consideration I had is affordability. I didn't want her to incur huge costs in cloud bill.   So I used only the services that could come in free tier or where the charges would be very minimal. She has a decent configuration laptop which can be used for compute. During the initial phase, only the tutor would have access to the all the functionalities and the students could only upload their assessments.
+This POC idea was born when one of my friends who is a private tutor felt that having a website would reduce the overhead in managing her classes . The main consideration I had is affordability. I didn't want her to incur huge costs in cloud bill.   So I used only the services that could come in free tier or where the charges would be very minimal. She has a decent configuration laptop which can be used for compute. During the initial phase, only the tutor would have access to the all the functionalities and the students could only upload their assessments.
 
 
 
@@ -20,7 +20,7 @@ Initially I had three containers for application backend, application frontend ,
 
 Application flow:
 
-Teacher logs into the application. Authentication is done via Cognito User Pool
+Teacher logs into the application. Authentication is done via Cognito. Teacher can schedule classes
 
 
 
