@@ -12,10 +12,7 @@ locals {
 
 }
 
-output "pvc_name" {
-  value = kubernetes_persistent_volume_claim_v1.pvc.metadata.0.name
 
-}
 /**
 resource "helm_release" "mysql" {
   name       = "mysql"
@@ -32,9 +29,10 @@ resource "helm_release" "mysql" {
 
 
 resource "helm_release" "shikshaapp" {
+  count = var.use_helm ? 1 : 0
   name              = "shikshaapp"
   chart             = "${path.module}/shiksha-helm-chart"
   values            = [local.shikshaapp_custom_values]
   dependency_update = true
- depends_on = [module.service_account_roles]
+ 
 }

@@ -1,6 +1,3 @@
-data "aws_availability_zones" "available" {}
-
-
 
 
 module "vpc" {

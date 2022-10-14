@@ -1,19 +1,25 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 
-import { Alert, Grid } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
 
-import { InputFieldsBox, Item, ModalStyle } from "../ui/Theme";
-import { Form, Formik } from "formik";
+import { Header, InputFieldsBox, Item, ModalStyle } from "../ui/Theme";
+import { Field, FieldArray, Form, Formik } from "formik";
 
 import * as Yup from "yup";
 
 import LoginContext from "../../store/login-context";
 import { LoadingButton } from "@mui/lab";
 import UploadIcon from "@mui/icons-material/UploadRounded";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  ListObjectsCommand,
+  DeleteObjectCommand,
+  DeleteObjectsCommand,
+} from "@aws-sdk/client-s3";
 import {
   BUCKET_NAME,
   COGNITO_ENDPOINT,
@@ -22,65 +28,66 @@ import {
 } from "../../util/constants";
 import { CognitoIdentityClient } from "@aws-sdk/client-cognito-identity";
 import { fromCognitoIdentityPool } from "@aws-sdk/credential-provider-cognito-identity";
-import { useMutation } from "react-query";
-
-function delay(fn){
-  setTimeout(fn, 1000);
-}
+import { useMutation, useQueryClient } from "react-query";
 
 const UploadAssessmentAnswerSheetModal = (props) => {
-  const { token, cognitoIdPoolIdentity, cognitoId } = useContext(LoginContext);
-  const [errorMessage,setErrorMessage]=useState();
-
-  const { mutate, isLoading,isSuccess,isError } = useMutation(postAnswerSheet, {
-    onSuccess: (data) => {
+  const { token, cognitoIdPoolIdentity,cognitoId } = useContext(LoginContext);
+  const queryClient = useQueryClient();
+  const { mutate, isLoading } = useMutation(postAnswerSheet, {
+    onSuccess: data => {
+      
       props.setRefetchedData(true);
-      delay(props.handleClose);
-
+       alert('Document Uploaded');
+       
+  
+    props.handleClose();
+      
+ },
+   onError: () => {
+        alert("there was an error");
+        props.handleClose();
+ },
+   onSettled: () => {
+   // queryClient.invalidateQueries('assessmentDetails');
      
-    },
-    onError: (error) => {
-      delay(props.handleClose);
-      setErrorMessage(error);
-    },
-    onSettled: () => {
-      // queryClient.invalidateQueries('assessmentDetails');
-    },
+ }
+ });
+ async function postAnswerSheet(file) {
+
+  try {
+  const s3 = new S3Client({
+    region: REGION,
+    credentials: fromCognitoIdentityPool({
+      client: new CognitoIdentityClient({ region: REGION }),
+      identityPoolId: IDENTITY_POOL_ID,
+      logins: {
+        [COGNITO_ENDPOINT]: token,
+      },
+    }),
   });
-  async function postAnswerSheet(file) {
-    try {
-      const s3 = new S3Client({
-        region: REGION,
-        credentials: fromCognitoIdentityPool({
-          client: new CognitoIdentityClient({ region: REGION }),
-          identityPoolId: IDENTITY_POOL_ID,
-          logins: {
-            [COGNITO_ENDPOINT]: token,
-          },
-        }),
-      });
-
-      const { teacherId, assessmentId } = props;
-      let key = `${cognitoIdPoolIdentity}/Uploads/${teacherId}/${assessmentId}/${file.name}`;
-      console.log(key);
-      const uploadParams = {
-        Bucket: BUCKET_NAME,
-        Key: key,
-        Body: file,
-        Metadata: {
-          teacherid: teacherId,
-          assessmentid: assessmentId,
-          cognitoid: cognitoId,
-          cognitoIdPoolId: cognitoIdPoolIdentity,
-        },
-      };
-
-      await s3.send(new PutObjectCommand(uploadParams));
-    } catch (err) {
-      console.log(err);
-      throw err;
+  
+  const {teacherId,assessmentId}=props;
+  let key =  `${cognitoIdPoolIdentity}/Uploads/${teacherId}/${assessmentId}/${file.name}`;
+  console.log(key);
+  const uploadParams = {
+    Bucket: BUCKET_NAME,
+    Key: key,
+    Body: file,
+    Metadata: {
+      'teacherid': `${teacherId}`,
+      'assessmentid':`${assessmentId}`,
+      'cognitoid': cognitoId
     }
+  }; 
+  
+    await s3.send(new PutObjectCommand(uploadParams));
+    
+  } catch (err) {
+    console.log(err);
+   throw err;
   }
+
+}
 
   return (
     <Modal
@@ -101,14 +108,15 @@ const UploadAssessmentAnswerSheetModal = (props) => {
             </Button>
           </div>
           <InputFieldsBox sx={{ maxWidth: 1100 }}>
-          {isSuccess &&<Alert severity="success">Upload Successful!</Alert>}
-          {isError &&<Alert severity="error">{errorMessage}</Alert>}
             <Formik
               initialValues={{ file: null }}
-              onSubmit={async (values) => {
-                // Initialize the Amazon Cognito credentials provider
+              onSubmit={async(values) => {
+               
 
-                mutate(values.file);
+                // Initialize the Amazon Cognito credentials provider
+              
+               mutate(values.file);
+               
               }}
               validationSchema={Yup.object().shape({
                 file: Yup.mixed().required(),
@@ -152,7 +160,6 @@ const UploadAssessmentAnswerSheetModal = (props) => {
                     variant="contained"
                     loading={isLoading}
                     color="success"
-                    disabled={isSuccess}
                     type="submit"
                     sx={{ float: "right" }}
                   >

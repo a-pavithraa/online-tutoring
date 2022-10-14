@@ -3,9 +3,12 @@ kind: ConfigMap
 metadata:
   name: apigateway-config
 data:  
-    mdm_url: http://mdm.default.svc.cluster.local:{{.Values.ports.mdm}}/    
-    assessment_url: http://assessment.default.svc.cluster.local:{{.Values.ports.assessment}}/
-    user_pool_id: {{.Values.aws.cognito.userPoolId}}
+    mdm_url: http://mdm.default.svc.cluster.local:8090/    
+    assessment_url: http://assessment.default.svc.cluster.local:8088/
+    jwt.aws.userPoolId: us-east-1_d7gTXDzXK
+    REACT_APP_CLIENT_ID: 4d0rspobol474rft7nq57krjjq
+    REACT_APP_USER_POOL_ID: us-east-1_d7gTXDzXK
+    REACT_APP_SERVER_URL: shiksha.saaralkaatru.com
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -25,8 +28,9 @@ spec:
     spec:
       
       containers:
-      - image: {{.Values.image.repositoryName}}/spring-cloud-api-gateway:0.0.1
-        name: apigateway       
+      - image: pavithravasudevan/spring-cloud-gateway:0.0.1
+        name: apigateway
+       
         envFrom:
         - configMapRef:
             name: apigateway-config
@@ -43,7 +47,7 @@ metadata:
 spec:
   ports:
   - name: 9090-9090
-    port: {{.Values.ports.apigateway}}
+    port: 9090
     protocol: TCP
     targetPort: 9090
   selector:

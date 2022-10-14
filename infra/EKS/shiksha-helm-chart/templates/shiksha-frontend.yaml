@@ -6,6 +6,7 @@ data:
    
     REACT_APP_CLIENT_ID: {{.Values.aws.cognito.userPoolId}}
     REACT_APP_USER_POOL_ID: {{.Values.aws.cognito.appClientId}}
+    REACT_APP_SERVER_URL: shiksha.{{.Values.ingress.domainName}} 
 
 ---
 apiVersion: apps/v1
@@ -26,7 +27,7 @@ spec:
     spec:
       
       containers:
-      - image: pavithravasudevan/shiksha-frontend
+      - image: {{.Values.image.repositoryName}}/shiksha-frontend:0.0.1
         name: frontend       
         envFrom:
         - configMapRef:
@@ -44,7 +45,7 @@ metadata:
 spec:
   ports:
   - name: 80-80
-    port: {{.Values.ports.fronend}}
+    port: {{.Values.ports.frontend}}
     protocol: TCP
     targetPort: 80
   selector:

@@ -28,7 +28,7 @@ spec:
     spec:
       serviceAccountName: {{.Values.serviceAccountName.assessment}}
       containers:
-      - image: pavithravasudevan/student-assessment-service:0.0.1
+      - image: {{.Values.image.repositoryName}}/student-assessment-service:0.0.1
         name: assessment
         imagePullPolicy: Always
         envFrom:

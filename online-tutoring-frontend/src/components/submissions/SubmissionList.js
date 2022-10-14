@@ -128,7 +128,7 @@ import { StripedDataGrid } from "../ui/DataGridCustomization";
            headerName: 'Marks',
            type:'Number',
            headerClassName: 'DataGrid-Header',
-           minWidth: 60,
+           minWidth: 120,
          
            renderCell: ({row}) => {
                    if (row.marks === 0) {

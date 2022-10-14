@@ -45,4 +45,14 @@ spec:
                 name: kube-prometheus-stack-grafana
                 port: 
                   number: 80
+    - host: shikshapp.{{.Values.ingress.domainName}} 
+      http:
+        paths:                      
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port: 
+                  number: {{.Values.ports.frontend}}
          
