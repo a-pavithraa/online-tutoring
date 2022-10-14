@@ -75,7 +75,7 @@
 	<build>
 		<plugins>
 
-			<!-- mvn clean install && mvn jib:dockerBuild -->
+			<!-- mvn clean install && mvn spring-boot:build-image -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

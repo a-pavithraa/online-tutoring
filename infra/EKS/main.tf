@@ -50,8 +50,8 @@ module "eks" {
     # the VPC CNI fails to assign IPs and nodes cannot join the new cluster
     iam_role_attach_cni_policy = true
     instance_types             = [var.instance_type]
-    min_size=2
-    desired_size=2
+    min_size=1
+    desired_size=1
     max_size=2
     
   }

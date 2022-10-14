@@ -89,8 +89,7 @@ export const LoginContextProvider = (props) => {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace('-', '+').replace('_', '/');
     const jsonObj = JSON.parse(window.atob(base64));
-    console.log("parsing user name");
-    console.log(jsonObj);
+  
     return jsonObj;
   }
 
@@ -113,12 +112,12 @@ export const LoginContextProvider = (props) => {
 
 
   var credentials = await cognitoidentity.config.credentials()
-  console.log(credentials)
+
     setLoggedInUser(userName);
     setCognitoId(cognitoId);
     setcognitoIdPoolIdentity(credentials.identityId);
     const isStudent = !!tokenObject["cognito:groups"].find(x=>x===STUDENT_GROUP);
-    console.log(isStudent);
+
     setIsStudent(isStudent);
     setToken(idToken);
    

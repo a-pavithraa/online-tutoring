@@ -12,7 +12,7 @@ export const lightTheme = createTheme({
       main: '#3f51b5',
     },
     secondary: {
-      main: '#f50057',
+      main: '#007327',
     },
   },
 
@@ -31,7 +31,27 @@ export const lightTheme = createTheme({
         },
       },
     },
+    MuiListItemButton: {
+      root: {
+        '&.Mui-selected': {
+          color: '#5FBB7D',
+          backgroundColor: '#F0F3F3',
+        },
+      },
+    },
   
+    MuiListItem:{
+    
+        root:{
+          '&.Mui-selected': { // <-- mixing the two classes
+            backgroundColor: '#fff'
+          }
+
+        
+      
+      }
+
+    },
     MuiDialogContent: {
       styleOverrides: {
         root: {
@@ -46,6 +66,7 @@ export const lightTheme = createTheme({
         }
       }
     },
+    
 
     MuiDialogTitle: {
       styleOverrides: {

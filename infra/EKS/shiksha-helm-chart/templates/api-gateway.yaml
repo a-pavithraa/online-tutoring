@@ -5,7 +5,7 @@ metadata:
 data:  
     mdm_url: http://mdm.default.svc.cluster.local:{{.Values.ports.mdm}}/    
     assessment_url: http://assessment.default.svc.cluster.local:{{.Values.ports.assessment}}/
-    jwt.aws.userPoolId: {{.Values.aws.cognito.userPoolId}}
+    user_pool_id: {{.Values.aws.cognito.userPoolId}}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -25,7 +25,7 @@ spec:
     spec:
       
       containers:
-      - image: pavithravasudevan/spring-cloud-gateway:0.0.1
+      - image: pavithravasudevan/spring-cloud-api-gateway:0.0.1
         name: apigateway       
         envFrom:
         - configMapRef:

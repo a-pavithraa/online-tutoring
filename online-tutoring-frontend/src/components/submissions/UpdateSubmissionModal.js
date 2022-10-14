@@ -1,13 +1,12 @@
-import React, { useContext } from "react";
+import React, {  useState } from "react";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import httpClient from "../../util/http-client";
-import { Box, CircularProgress, Fab, Grid } from "@mui/material";
+import { Alert, Box, CircularProgress, Grid } from "@mui/material";
 import { useMutation, useQueryClient } from "react-query";
 import {
   InputFieldsBox,
   Item,
-  ModalBox,
   ModalGridItem,
   ModalStyle,
 } from "../ui/Theme";
@@ -15,10 +14,9 @@ import { Form, Formik } from "formik";
 import { TextInput } from "../ui/FormInputs";
 
 import * as Yup from "yup";
-import LoginContext from "../../store/login-context";
-import AddIcon from "@mui/icons-material/Add";
-import { LoadingButton } from "@mui/lab";
+
 import UploadIcon from "@mui/icons-material/UploadRounded";
+import { delay } from "../../util/functions";
 async function postQnPaper(formData) {
   await httpClient.post("/assessment/updateSubmittedAssessment", formData, {
     headers: {
@@ -27,20 +25,20 @@ async function postQnPaper(formData) {
   });
 }
 const UpdateSubmissionModal = (props) => {
-  const context = useContext(LoginContext);
+ 
   const queryClient = useQueryClient();
+  const [errorMessage,setErrorMessage]=useState();
 
-  const { mutate, isLoading } = useMutation(postQnPaper, {
+  const { mutate, isLoading,isSuccess,isError } = useMutation(postQnPaper, {
     onSuccess: (data) => {
-      const message = "success";
-      alert("Document Uploaded");
-      //  props.refetch();
+     
       props.setRefetchedData(true);
-      props.handleClose();
+      delay( props.handleClose,1000);   
     },
-    onError: () => {
-      alert("there was an error");
-      props.handleClose();
+    onError: (error) => {
+    setErrorMessage(error);
+      delay( props.handleClose,1000);   
+    
     },
     onSettled: () => {
       queryClient.invalidateQueries("create");
@@ -65,6 +63,8 @@ const UpdateSubmissionModal = (props) => {
             </Button>
           </div>
           <InputFieldsBox sx={{ maxWidth: 1100 }}>
+          {isSuccess &&<Alert severity="success">Update Successful!</Alert>}
+          {isError &&<Alert severity="error">{errorMessage}</Alert>}
             <Formik
               initialValues={{ file: null }}
               onSubmit={(values) => {
@@ -137,6 +137,7 @@ const UpdateSubmissionModal = (props) => {
                     <Button
                       variant="contained"
                       color="success"
+                      disabled={isSuccess}
                       type="submit"
                       sx={{ float: "right" }}
                     >

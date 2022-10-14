@@ -87,6 +87,7 @@ const PendingAssessmentList = (props) => {
         },
       };
      const data = await ddbDocClient.send(new GetCommand(params));
+     if(data.Item){
 
       const convertedData = [data.Item];
      /**
@@ -102,6 +103,8 @@ const PendingAssessmentList = (props) => {
  */
       console.log("Success :", data);
       return (convertedData.flatMap((x) => x));
+}
+
     } catch (err) {
       console.log("Error", err);
     }

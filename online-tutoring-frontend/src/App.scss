@@ -27,7 +27,14 @@
 }
 .MuiAppBar-colorPrimary {
   color: #fff;
-  background-color: #3f51b5!important;
+  background-color: #193a58!important;
+}
+.DataGrid-Header{
+ font-weight: bolder;
+ background-color: #314d65;
+ text-transform: uppercase;
+ color: white;
+ text-align: center;
 }
 .MuiButton-textPrimary {
   color: #fff;
@@ -56,7 +63,9 @@
   border-bottom-width: thick;
   margin-right:10px;
 }
-
+.MuiListItem-root.Mui-selected {
+  background-color: #818a91!important;
+}
 
 
 .MuiRadio-root.MuiRadio-colorPrimary{
@@ -107,4 +116,11 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+.SideDraw{
+  
+  box-shadow: 0 4px 18px 0 rgba(#041d37, 1);
+  background: linear-gradient(rgba(#314d65, 0.9), rgba(#314d65, 0.9)), url("./texture-background.png") !important;
+  margin: 10px;
+  font-weight: bolder;
 }

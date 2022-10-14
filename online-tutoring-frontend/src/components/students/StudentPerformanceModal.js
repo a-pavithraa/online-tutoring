@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import httpClient from "../../util/http-client";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useQuery } from "react-query";
 import {
   Header,
@@ -10,8 +10,7 @@ import {
   ModalStyle,
 } from "../ui/Theme";
 import {
-    AreaChart,
-    Area,
+   
     XAxis,
     YAxis,
     CartesianGrid,
@@ -21,7 +20,7 @@ import {
     LineChart,
     Line
   } from "recharts";
-  import { curveCardinal } from 'd3-shape';
+ 
 async function fetchStudentPerformance(studentId){
    
     const res = await httpClient.get(
@@ -32,7 +31,7 @@ async function fetchStudentPerformance(studentId){
 }
 
 const StudentPerformanceModal = (props)=>{
-    const { data, isFetching,status } = useQuery(
+    const { data} = useQuery(
         ["studentPerformance",props.studentId],
         () =>
         fetchStudentPerformance(props.studentId),
@@ -40,7 +39,7 @@ const StudentPerformanceModal = (props)=>{
           refetchOnWindowFocus: false,
         }
       );
-      const cardinal = curveCardinal.tension(0.2);
+     
       const dataLoaded = data && data.studentPerformanceList;
       return  <Modal
       hideBackdrop

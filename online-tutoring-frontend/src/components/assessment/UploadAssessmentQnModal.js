@@ -1,18 +1,15 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import httpClient from "../../util/http-client";
-import { CircularProgress, Grid } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Header, InputFieldsBox, Item, ModalStyle } from "../ui/Theme";
-import { Field, FieldArray, Form, Formik } from "formik";
-import {  DateField } from "../ui/FormInputs";
+import { Alert, Grid } from "@mui/material";
+import { useMutation, useQueryClient } from "react-query";
+import { InputFieldsBox, Item, ModalStyle } from "../ui/Theme";
+import { Form, Formik } from "formik";
 
 import * as Yup from "yup";
-import moment from "moment/moment";
-import { getCurrentTime } from "../../util/functions";
-import LoginContext from "../../store/login-context";
+import { delay } from "../../util/functions";
 import { LoadingButton } from "@mui/lab";
 import UploadIcon from "@mui/icons-material/UploadRounded";
 
@@ -27,22 +24,20 @@ async function postQnPaper(formData){
 
 }
 const UploadAssessmentQnModal = (props) => {
-  const context = useContext(LoginContext);
+ 
   const queryClient = useQueryClient();
+  const [errorMessage,setErrorMessage]=useState();
    
-  const { mutate, isLoading } = useMutation(postQnPaper, {
+  const { mutate, isLoading,isSuccess,isError } = useMutation(postQnPaper, {
      onSuccess: data => {
-       
-        const message = "success";
-        alert('Document Uploaded');
-     //  props.refetch();
+    
      props.setRefetchedData(true);
-     props.handleClose();
+     delay( props.handleClose,1000);   
        
   },
-    onError: () => {
-         alert("there was an error");
-         props.handleClose();
+    onError: (error) => {
+      delay( props.handleClose,1000);   
+      setErrorMessage(error);
   },
     onSettled: () => {
        queryClient.invalidateQueries('create')
@@ -67,6 +62,8 @@ const UploadAssessmentQnModal = (props) => {
             </Button>
           </div>
           <InputFieldsBox sx={{ maxWidth: 1100 }}>
+          {isSuccess &&<Alert severity="success">Upload Successful!</Alert>}
+          {isError &&<Alert severity="error">{errorMessage}</Alert>}
           <Formik
               initialValues={{ file: null }}
               onSubmit={(values) => {
@@ -108,6 +105,7 @@ const UploadAssessmentQnModal = (props) => {
                    loading={isLoading}
                                 color="success"
                                 type="submit"
+                                disabled={isSuccess}
                                 sx={{ float: "right" }}>
                                   Upload
                       

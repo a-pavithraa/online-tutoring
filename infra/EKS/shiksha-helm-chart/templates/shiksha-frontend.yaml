@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+data:  
+   
+    REACT_APP_CLIENT_ID: {{.Values.aws.cognito.userPoolId}}
+    REACT_APP_USER_POOL_ID: {{.Values.aws.cognito.appClientId}}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:  
+  labels:
+    app: frontend
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend  
+  template:
+    metadata:      
+      labels:
+        app: frontend
+    spec:
+      
+      containers:
+      - image: pavithravasudevan/shiksha-frontend
+        name: frontend       
+        envFrom:
+        - configMapRef:
+            name: frontend-config
+       
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  labels:
+    app: frontend
+  name: frontend
+  annotations:
+    alb.ingress.kubernetes.io/healthcheck-path: /
+spec:
+  ports:
+  - name: 80-80
+    port: {{.Values.ports.fronend}}
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: frontend
+  type: NodePort
+status:
+  loadBalancer: {}

@@ -1,17 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import httpClient from "../../util/http-client";
-import { Alert, CircularProgress, Grid } from "@mui/material";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Header, InputFieldsBox, Item, ModalStyle } from "../ui/Theme";
-import { Field, FieldArray, Form, Formik } from "formik";
+import { Alert, Grid } from "@mui/material";
+import { useMutation, useQueryClient } from "react-query";
+import { InputFieldsBox, Item, ModalStyle } from "../ui/Theme";
+import { Form, Formik } from "formik";
 import {  DateField } from "../ui/FormInputs";
 
-import * as Yup from "yup";
 import moment from "moment/moment";
-import { getCurrentTime } from "../../util/functions";
+import { delay, getCurrentTime } from "../../util/functions";
 import LoginContext from "../../store/login-context";
 import { LoadingButton } from "@mui/lab";
 
@@ -25,24 +24,20 @@ async function createAssessment(createAssessmentRequest){
 const ScheduleAssessmentModal = (props) => {
   const context = useContext(LoginContext);
   const queryClient = useQueryClient();
+  const [errorMessage,setErrorMessage]=useState();
    
   const { mutate, isLoading,isSuccess,isError } = useMutation(createAssessment, {
      onSuccess: data => {
-       
-      setTimeout(function () {
-       
-          props.handleClose();
-        
-    }, 2000);
+      delay( props.handleClose,1000);   
       
        
   },
-    onError: () => {
-         alert("there was an error");
-         props.handleClose();
+    onError: (error) => {
+        setErrorMessage(error);
+        delay( props.handleClose,1000);   
   },
     onSettled: () => {
-       queryClient.invalidateQueries('create')
+    queryClient.invalidateQueries('assessmentDetails')
   }
   });
   return (
@@ -66,7 +61,7 @@ const ScheduleAssessmentModal = (props) => {
           </div>
           <InputFieldsBox sx={{ maxWidth: 1100 }}>
           {isSuccess &&<Alert severity="success">Assessment Scheduled!</Alert>}
-          {isError &&<Alert severity="error">Error in scheduling!</Alert>}
+          {isError &&<Alert severity="error">{errorMessage}</Alert>}
           <Formik
                 initialValues={{assessmentDate: getCurrentTime() }}
                 onSubmit={async (values) =>{
@@ -103,6 +98,7 @@ const ScheduleAssessmentModal = (props) => {
                 <LoadingButton loading={isLoading}  variant="contained"
                                 color="success"
                                 type="submit"
+                                disabled={isSuccess}
                                 sx={{ float: "right" }}>
                                   Submit
                       

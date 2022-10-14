@@ -40,7 +40,7 @@ function MainContent(props) {
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth,background:blue[100] },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth,background:"#193a58",color:"#fff" },
           }}
         >
           <SideDraw />
@@ -49,7 +49,7 @@ function MainContent(props) {
           variant="permanent"
           sx={{
             display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, marginTop: '65px',background:blue[100],maxHeight:'80vh' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth, marginTop: '65px',background:"#193a58",color:"#fff",maxHeight:'80vh' },
           }}
           open
         >

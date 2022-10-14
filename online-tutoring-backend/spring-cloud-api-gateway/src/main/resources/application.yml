@@ -1,7 +1,7 @@
 server:
   port: 9090
-jwt.aws.userPoolId: us-east-1_d7gTXDzXK
-jwt.aws.region: us-east-1
+jwt.aws.userPoolId: ${user_pool_id}
+jwt.aws.region: ${region}
 ---
 spring:
   cloud:

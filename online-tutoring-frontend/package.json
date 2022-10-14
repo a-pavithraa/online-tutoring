@@ -6,8 +6,10 @@
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@mui/icons-material": "^5.8.4",
+    "@mui/lab": "latest",
     "@mui/material": "^5.9.3",
     "@mui/styled-engine-sc": "^5.9.3",
+    "@mui/x-data-grid": "^5.17.6",
     "@mui/x-date-pickers": "latest",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
@@ -28,8 +30,7 @@
     "recharts": "^2.1.14",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4",
-    "yup": "^0.32.11",
-    "@mui/lab": "latest"
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "react-scripts start",

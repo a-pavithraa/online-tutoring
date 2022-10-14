@@ -21,7 +21,7 @@ export const SideDraw = (props) => {
     navigate("/" + obj.text);
   };
   return (
-    <div style={{fontWeight:"bolder"}}>
+    <div className="SideDraw">
       <List>
         {[
           "Classes",
@@ -39,7 +39,7 @@ export const SideDraw = (props) => {
               onClick={(event) => displayPage(event, { index }, { text })}
             >
               <ListItemIcon>
-               <Grid3x3Icon/>
+               <Grid3x3Icon style={{color:"#fff"}}/>
               </ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>

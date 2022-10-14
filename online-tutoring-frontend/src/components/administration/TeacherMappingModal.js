@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import httpClient from "../../util/http-client";
-import { CircularProgress, Grid } from "@mui/material";
+import { Alert, Grid } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { Header, InputFieldsBox, Item, ModalBox, ModalStyle } from "../ui/Theme";
-import { Field, FieldArray, Form, Formik } from "formik";
+import { Header, InputFieldsBox, Item, ModalStyle } from "../ui/Theme";
+import { FieldArray, Form, Formik } from "formik";
 import { ComboBox } from "../ui/FormInputs";
 import moduleClasses from "./Registration.module.scss";
 import * as Yup from "yup";
 import { LoadingButton } from "@mui/lab";
+import { delay } from "../../util/functions";
 
 async function getSubjectsAndGrades(teacherId) {
   const { data } = await httpClient.get(
@@ -27,7 +28,7 @@ function mapperFn(data) {
   const mapObj = [];
   data.gradeAndSubjectMappingDetails.forEach((x) => {
     let subjectObj = { value: x.subjectId, label: x.subjectName };
-    const collection = mapObj.find((obj) => x.gradeId == obj.grade.value)?.subjects;
+    const collection = mapObj.find((obj) => x.gradeId === obj.grade.value)?.subjects;
 
     if (collection) {
       collection.push(subjectObj);
@@ -54,7 +55,7 @@ const validationSchema =Yup.object({
   ),
 })
 const TeacherMappingModal = (props) => {
-  const { status, data, error, isFetching } = useQuery(
+  const { status, data} = useQuery(
     "teacherMappingModel_" + props.id,
     () => getSubjectsAndGrades(props.id),
     {
@@ -63,19 +64,19 @@ const TeacherMappingModal = (props) => {
     }
   );
   const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation(mapTeacherToSubjectAndGrade, {
-    onSuccess: data => {
-       console.log(data);
-       const message = "success"
-       props.handleClose();
- },
-   onError: () => {
-        alert("there was an error")
+  const { mutate, isLoading,isSuccess,isError } = useMutation(mapTeacherToSubjectAndGrade, {
+    onSuccess: () => {
+      delay( props.handleClose,1000);   
+    },
+   onError: (error) => {
+    setErrorMessage(error);
+    delay( props.handleClose,1000);   
  },
    onSettled: () => {
       queryClient.invalidateQueries('create')
  }
  });
+ const [errorMessage,setErrorMessage]=useState();
   const {
    
     data: subjects   
@@ -101,6 +102,8 @@ const TeacherMappingModal = (props) => {
           <Button sx={{fontWeight:'bolder', color:'red', fontSize:14}} onClick={props.handleClose}>X</Button>
         </div>
           <InputFieldsBox sx={{ maxWidth: 1100 }}>
+          {isSuccess &&<Alert severity="success">Mapping successful!</Alert>}
+          {isError &&<Alert severity="error">{errorMessage}</Alert>}
             {status === "success" && (
               <Formik
                 initialValues={{ gradeSubjectMappings: data }}
@@ -244,6 +247,7 @@ const TeacherMappingModal = (props) => {
                                 variant="contained"
                                 color="success"
                                 type="submit"
+                                disabled={isSuccess}
                                 loading={isLoading}
                                 sx={{ float: "right" }}
                               >

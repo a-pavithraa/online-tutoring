@@ -8,12 +8,13 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    Typography,
   } from "@mui/material";
   import React, { useContext, useState } from "react";
   import { useQuery } from "react-query";
   
   import LoginContext from "../../store/login-context";
-  import { Header, InputFieldsBox, StyledTableCell, StyledTableRow } from "../ui/Theme";
+  import { Header, InputFieldsBox, StyledTableCell, StyledTableContainer, StyledTableRow } from "../ui/Theme";
   import httpClient from "../../util/http-client";
   import useQueryParam from "../../util/queryparam-hook";
   import useMediaQuery from "@mui/material/useMediaQuery";
@@ -23,6 +24,7 @@ import {
   
   import DownloadIcon from "@mui/icons-material/DownloadOutlined";
 import UpdateSubmissionModal from "./UpdateSubmissionModal";
+import { StripedDataGrid } from "../ui/DataGridCustomization";
   async function getAssessmentDetails(teacherId) {
    
     const res = await httpClient.get(
@@ -68,12 +70,91 @@ import UpdateSubmissionModal from "./UpdateSubmissionModal";
         refetchInterval: 0,
       }
     );
+    const dataLoaded = data && data.submittedAssessmentsRecords;
   
-    const [dialogOpen, setDialogOpen] = React.useState(false);
-    const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+    const columns = [
+   
   
-  
+      {
+        field: 'studentName',
+        headerName: 'Name',
+        flex:1,
+        headerClassName: 'DataGrid-Header',
+        minWidth: 200,
+       
+     
+      },
+      {
+        field: 'assessmentDate',
+        flex:1,
+        headerName: 'Assessment Date',
+        headerClassName: 'DataGrid-Header',
+        minWidth: 150,
+       
+       
+      },
+      {
+            field: 'answerSheet',
+            flex:1,
+            headerName: 'Answer Sheet',
+            headerClassName: 'DataGrid-Header',
+            minWidth: 200,
+           
+             sortable: false,
+           renderCell: (params) => (  <Button  color="primary" startIcon={<DownloadIcon />} onClick={()=>downloadFile(params.row.answerSheet)}>
+                      Answer Sheet
+                    </Button>)
+           
+      },
+      {
+        field: 'correctedAnswerSheet',
+        flex:1,
+        headerName: 'Corrected Answer Sheet',
+      
+        headerClassName: 'DataGrid-Header',
+        minWidth: 220,
+     
+         sortable: false,
+           renderCell: (params) => (  params.row.correctedAnswerSheet?<Button  color="secondary" startIcon={<DownloadIcon />} onClick={()=>downloadFile(params.row.correctedAnswerSheet)}>
+                      Corrected Sheet
+                    </Button>:'')
+      
+      
+       
+      },
+       {
+           field: 'marks',
+           flex:1,
+           headerName: 'Marks',
+           type:'Number',
+           headerClassName: 'DataGrid-Header',
+           minWidth: 60,
+         
+           renderCell: ({row}) => {
+                   if (row.marks === 0) {
+                     return 'NOT EVALUATED';
+                   }
+     
+                  
+                   return <Typography sx={{fontWeight: 'bolder'}}>{row.marks}</Typography>;
+              }
+          
+      },
+      {
+            field: 'evaluation',
+            headerName: 'Update',
+            flex:1,
+            headerClassName: 'DataGrid-Header',
+            minWidth: 120,
+           
+             sortable: false,
+               renderCell: (params) => (  params.row.correctedAnswerSheet?'':<Button sx={{color:'red'}} onClick={()=>updateSubmission(params.row)}>EVALUATE</Button>)
+          
+          
+           
+      }
+    ];
+    const theme = useTheme();  
    
   
   
@@ -89,64 +170,26 @@ import UpdateSubmissionModal from "./UpdateSubmissionModal";
           setRefetchedData={setRefetchedData}
         />
       )}
-        <TableContainer component={Paper} sx={{ maxWidth: "100%",maxHeight:440 }}>
+        
         <Header variant="h4" component="h2">
                 ASSESSMENT PAPER SUBMISSIONS
               </Header>
-          <Table stickyHeader  aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>Name</StyledTableCell>
-                <StyledTableCell>Assessment Date</StyledTableCell>
-                <StyledTableCell>Answer Sheet</StyledTableCell>
-                <StyledTableCell>Corrected Answer Sheet</StyledTableCell>
-                <StyledTableCell>Marks</StyledTableCell>
-                <StyledTableCell>&nbsp;</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {isFetching && (
-                <StyledTableRow>
-                  <StyledTableCell colSpan={4}>
-                    <CircularProgress />
-                  </StyledTableCell>
-                </StyledTableRow>
-              )}
-              {status === 'success' && data &&
-                data.submittedAssessmentsRecords &&
-                data.submittedAssessmentsRecords.map((row) => (
-                  <StyledTableRow
-                    key={row.assessmentId}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <StyledTableCell component="th" scope="row">
-                      {row.studentName}
-                    </StyledTableCell>
-                    <StyledTableCell component="th" scope="row">
-                      {row.assessmentDate}
-                    </StyledTableCell>
-                    <StyledTableCell><Button variant="contained" color="primary" startIcon={<DownloadIcon />} onClick={()=>downloadFile(row.answerSheet)}>
-                    Answer Sheet
-                  </Button></StyledTableCell>
-                    <StyledTableCell>{row.correctedAnswerSheet?<Button variant="contained" color="secondary" startIcon={<DownloadIcon />} onClick={()=>downloadFile(row.correctedAnswerSheet)}>
-                    Corrected Sheet
-                  </Button>:''}</StyledTableCell>
-                    <StyledTableCell>{row.correctedAnswerSheet?row.marks:"NOT EVALUATED"}</StyledTableCell>
-                    <StyledTableCell>
-                    {row.correctedAnswerSheet?'':<Button sx={{color:'red'}} onClick={()=>updateSubmission(row)}>EVALUATE</Button>}
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              {!isFetching && (!data || data.length == 0) && (
-                <StyledTableRow>
-                  <StyledTableCell colSpan={6}>
-                    No Submissions found
-                  </StyledTableCell>
-                </StyledTableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              <StyledTableContainer component={Paper} sx={{ height: 350, }}>
+       {dataLoaded && <StripedDataGrid
+        rows={data.submittedAssessmentsRecords}
+        columns={columns}
+        getRowId={(row) => row.assessmentId}
+        pageSize={5}
+       
+        getRowClassName={(params) =>
+          params.indexRelativeToCurrentPage % 2 === 0 ? 'even' : 'odd'
+        }
+        rowsPerPageOptions={[5]}        
+    
+      />}
+       
+      </StyledTableContainer>
+     
       </InputFieldsBox>
     );
   };
