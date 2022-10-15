@@ -72,7 +72,7 @@ const StudentsList = (props) => {
       field: 'email',
       headerName: 'E-Mail',
       headerClassName: 'DataGrid-Header',
-      minWidth: 160,
+      minWidth: 200,
       flex: 1
      
     },
@@ -135,7 +135,7 @@ const StudentsList = (props) => {
             {dataLoaded && <StripedDataGrid
         rows={data.studentRecords}
         columns={columns}
-        getRowId={(row) => row.subjectId+'-'+row.gradeId}
+        getRowId={(row) => row.fullName}
         pageSize={5}
        
         getRowClassName={(params) =>

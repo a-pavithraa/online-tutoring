@@ -33,6 +33,14 @@ spec:
       - image: {{.Values.image.repositoryName}}/administration-service:0.0.1
         name: mdm
         imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "700Mi"
+            cpu: "400m"
+          limits:
+            memory: "800Mi"
+            cpu: "400m"
+            
         envFrom:
         - configMapRef:
             name: mdm-config

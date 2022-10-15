@@ -5,6 +5,9 @@ locals {
   external_dns_service_account_name="external-dns"
   ebs_csi_service_account_name="ebs-csi-controller-sa"
   aws_lb_service_account_name="aws-load-balancer-controller"
+  question_paper_bucket_arn="arn:aws:s3:::${var.question_paper_bucket_name}"
+  answer_sheet_bucket_arn= "arn:aws:s3:::${var.answer_sheet_bucket_name}"
+  
 
   service_account_policies = [{
     name                      = "cognito_access_policy"
@@ -22,7 +25,7 @@ locals {
     service_account_namespace = "default"
     role_name                 = "${var.prefix}_sqs_sa_role"
     path                      = "/"
-    policy                    = templatefile("${path.module}/service_account_policies/sqs.json",{dynamodb_table_name=var.dynamodb_table_name})
+    policy                    = templatefile("${path.module}/service_account_policies/sqs_ses_ddb_s3.json",{question_paper_bucket=local.question_paper_bucket_arn,answer_sheet_bucket=local.answer_sheet_bucket_arn,dynamodb_table_arn="arn:aws:dynamodb:${var.region}:${var.account_id}:table/${var.dynamodb_table_name}"})
 
     }, {
     name                      = "externaldns_access_policy"

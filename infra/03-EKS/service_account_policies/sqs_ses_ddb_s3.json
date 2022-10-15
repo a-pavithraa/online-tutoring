@@ -9,13 +9,12 @@
             "Resource": "*"
         },
         {
+          
           "Effect" : "Allow",
           "Action" : [
             "s3:*"
           ],
-          "Resource" : [
-            "*"
-          ]
+          "Resource" : ["${question_paper_bucket}","${answer_sheet_bucket}"]
         },
         {
           "Effect" : "Allow",
@@ -30,7 +29,7 @@
 
           "Effect" : "Allow",
           "Action" : ["dynamodb:*"],
-          "Resource" : "arn:aws:dynamodb:::table/${dynamodb_table_name}"
+          "Resource" : "${dynamodb_table_arn}"
         }
     ]
 }

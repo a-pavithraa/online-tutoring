@@ -9,9 +9,13 @@ import java.util.function.Predicate;
 @Component
 public class RouterValidator {
 
+
+    //Uncomment this for unsecured access to create teacher
+    //public static final List<String> openApiEndpoints = List.of("**/health","/mdm/admin/teacher");
+
     public static final List<String> openApiEndpoints = List.of(
-            "**/health","/mdm/admin/teacher"
-          
+            "**/health"
+
     );
 
     public Predicate<ServerHttpRequest> isSecured =

@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   name: assessment-config
 data:  
-    spring.datasource.url: jdbc:mysql://{{.Values.dbConnectionStringParams.serviceName}}.default.svc.cluster.local:{{.Values.ports.mysql}}/{{.Values.dbConnectionStringParams.dbName}}?user={{.Values.dbConnectionStringParams.userName}}&password={{.Values.dbConnectionStringParams.password}}&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
-    restapi.mdm.url: http://mdm.default.svc.cluster.local:{{.Values.ports.mdm}}/
-    AWS_REGION: {{.Values.aws.region}}
+    spring.datasource.url: jdbc:mysql://mysql.default.svc.cluster.local:3306/shikshadb?user=testpass&password=testpass&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+    restapi.mdm.url: http://mdm.default.svc.cluster.local:8090/
+    AWS_REGION: us-east-1
     kubernetes.profile: "Y"
   
 
@@ -26,11 +26,18 @@ spec:
       labels:
         app: assessment
     spec:
-      serviceAccountName: {{.Values.serviceAccountName.assessment}}
+      serviceAccountName: sqs-access
       containers:
-      - image: {{.Values.image.repositoryName}}/student-assessment-service:0.0.1
+      - image: pavithravasudevan/student-assessment-service:0.0.1
         name: assessment
         imagePullPolicy: Always
+        resources:
+          requests:
+            memory: "700Mi"
+            cpu: "400m"
+          limits:
+            memory: "800Mi"
+            cpu: "500m"
         envFrom:
         - configMapRef:
             name: assessment-config

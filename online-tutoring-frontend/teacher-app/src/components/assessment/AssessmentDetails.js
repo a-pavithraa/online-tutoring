@@ -113,14 +113,16 @@ const AssessmentList = (props) => {
       field: 'teacher',
       headerName: 'Name',
       headerClassName: 'DataGrid-Header',
-      width: 180
+      width: 180,
+      flex:1
     
     },
     {
       field: 'subject',
       headerName: 'Subject',
       headerClassName: 'DataGrid-Header',
-      width: 150
+      width: 150,
+      flex:1
    
     },
     {
@@ -128,6 +130,7 @@ const AssessmentList = (props) => {
       headerName: 'Grade',
       headerClassName: 'DataGrid-Header',
       width: 140,
+      flex:1
      
     },
     {
@@ -136,6 +139,7 @@ const AssessmentList = (props) => {
       type: 'date',
       headerClassName: 'DataGrid-Header',
       width: 180,
+      flex:1,
       valueFormatter: params => 
       moment(params?.value).format("DD/MM/YYYY hh:mm A"),
      
@@ -147,6 +151,7 @@ const AssessmentList = (props) => {
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       width: 180,
+      flex:1,
       renderCell: (params) => ( params.row.qnPaperDocument?<Button  color="primary" startIcon={<DownloadIcon />} onClick={()=>downloadFile(params.row.qnPaperDocument)}>
       Download
     </Button>: checkWhetherTodayDate(params.row.assessmentDate)? <Button color="secondary" startIcon={<UploadIcon />} onClick={() => handleDialogOpen(params.row.assessmentId,params.row.assessmentDate)}>

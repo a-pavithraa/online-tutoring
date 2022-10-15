@@ -38,3 +38,11 @@ variable "use_helm" {
   default = false
   
 }
+variable "question_paper_bucket_name" {
+  default = "shiksha-questionpapers.bf56ce00"
+  
+}
+variable "answer_sheet_bucket_name" {
+  default = "shiksha-answersheets.612efef2"
+  
+}
