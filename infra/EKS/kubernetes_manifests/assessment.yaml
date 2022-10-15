@@ -28,7 +28,7 @@ spec:
     spec:
       serviceAccountName: sqs-access
       containers:
-      - image: pavithravasudevan/assessment-service:0.0.1
+      - image: pavithravasudevan/student-assessment-service:0.0.1
         name: assessment
         imagePullPolicy: Always
         envFrom:

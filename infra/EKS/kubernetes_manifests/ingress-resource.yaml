@@ -27,7 +27,7 @@ spec:
   ingressClassName: my-aws-ingress-class   # Ingress Class                  
   
   rules:
-    - host: pills.saaralkaatru.com
+    - host: shiksha.saaralkaatru.com
       http:
         paths:
           - path: /
@@ -45,6 +45,16 @@ spec:
             backend:
               service:
                 name: kube-prometheus-stack-grafana
+                port: 
+                  number: 80
+    - host: shikshapp.saaralkaatru.com
+      http:
+        paths:                      
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
                 port: 
                   number: 80
          

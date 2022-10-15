@@ -1,3 +1,4 @@
+/**
 locals {
  
   ebs_csi_values = templatefile(
@@ -12,12 +13,13 @@ locals {
 }
 
 resource "helm_release" "ebs_csi_driver" {
-  depends_on = [module.service_account_roles]
+
   name       = "aws-ebs-csi-driver"
   repository = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
   chart      = "aws-ebs-csi-driver"
   namespace = "kube-system"    
-  values     = [local.ebs_csi_values]
+  values =[local.ebs_csi_values]
+
     
 }
 
@@ -27,3 +29,4 @@ output "ebs_csi_helm_metadata" {
 }
 
 
+*/

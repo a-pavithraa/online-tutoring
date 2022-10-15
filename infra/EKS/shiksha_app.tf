@@ -13,8 +13,9 @@ locals {
 }
 
 
-/**
+
 resource "helm_release" "mysql" {
+  count = var.use_helm ? 0 : 1
   name       = "mysql"
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "mysql"
@@ -25,7 +26,7 @@ resource "helm_release" "mysql" {
   ]
 
 }
-*/
+
 
 
 resource "helm_release" "shikshaapp" {

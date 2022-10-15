@@ -1,14 +1,8 @@
-auth:
-  database: shikshadb
-  username: testpass
-  password: testpass
-  rootPassword: testpass
-volumePermissions:
-  enabled: true
-primary:
-  persistence:
-    size: 2Gi
-    existingClaim: ${pvc_claim}
 serviceAccountName:
   mdm: ${mdm_service_account}
   assessment: ${assessment_service_account}
+mysql:  
+  primary:
+    persistence:
+      size: 4Gi
+      existingClaim: ${pvc_claim}
