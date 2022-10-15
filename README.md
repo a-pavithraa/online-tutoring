@@ -34,6 +34,14 @@ This POC idea was born when one of my friends who is a private tutor felt that h
 
 ![image-20221015141433801](https://screenshotsshiksha.s3.amazonaws.com/image-20221015141433801.png)
 
+
+
+![](https://screenshotsshiksha.s3.amazonaws.com/Dashboard.PNG)
+
+
+
+![](https://screenshotsshiksha.s3.amazonaws.com/Loki.PNG)
+
 **Features:**
 
 1. Teachers Registration
