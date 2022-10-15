@@ -6,11 +6,19 @@ It has also empowered many women to restart their career in teaching.  Their wor
 
 This POC idea was born when one of my friends who is a private tutor felt that having a website would reduce the overhead in managing her classes . The main consideration I had is affordability. I didn't want teachers to incur huge costs in cloud bill.   So I used only the services that could come in free tier or the charges are minimal. She has a decent configuration laptop which can be used for compute. During the initial phase, only the tutor would have access to the all the functionalities .Students could only upload their assessments. When there is any assessment, teacher could schedule the same and upload the question paper to S3 via UI. An Email alert would be triggered to the students (SES). I also made use of S3 Event notification and SQS. Same process would be followed for Answer sheets upload also. Using S3 Event Notification and SQS , the  upload done by student can be tracked and status can be updated whenever the server is up.
 
+
+
 ![image-20221015140146757](C:\Users\apavithra\AppData\Roaming\Typora\typora-user-images\image-20221015140146757.png)
+
+
 
 ![image-20221015140719891](C:\Users\apavithra\AppData\Roaming\Typora\typora-user-images\image-20221015140719891.png)
 
+
+
 ![image-20221015141030648](C:\Users\apavithra\AppData\Roaming\Typora\typora-user-images\image-20221015141030648.png)
+
+
 
 ![image-20221015141106489](C:\Users\apavithra\AppData\Roaming\Typora\typora-user-images\image-20221015141106489.png)
 
