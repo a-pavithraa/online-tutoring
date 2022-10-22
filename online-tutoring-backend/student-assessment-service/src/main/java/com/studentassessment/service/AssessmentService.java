@@ -215,7 +215,15 @@ public class AssessmentService {
         return submittedAssessmentResponse;
     }
 
+    @Transactional
+    public void updateAnswerSheetSubmission(UpdateSubmittedAssessmentRequest answerSheetRequest,String key){
+        studentAssessmentMappingRepo.updateAnswerSheetSubmission(answerSheetRequest.getStudentId(), answerSheetRequest.getAssessmentId(),
+                key, answerSheetRequest.getMarks());
+
+    }
+
     // TODO: 12-10-2022 Cognito User Pool ID can't be used. This bug needs to be fixed. Need to modify to identity pool id
+
     @Transactional
     public void updateSubmittedAssessment(UpdateSubmittedAssessmentRequest answerSheetRequest) {
 
@@ -237,8 +245,7 @@ public class AssessmentService {
                 key.toString(),
                 metadataMap,
                 answerSheetRequest.getCorrectedDocument());
-        studentAssessmentMappingRepo.updateAnswerSheetSubmission(answerSheetRequest.getStudentId(), answerSheetRequest.getAssessmentId(),
-                key.toString(), answerSheetRequest.getMarks());
+        updateAnswerSheetSubmission(answerSheetRequest,key.toString());
 
     }
 

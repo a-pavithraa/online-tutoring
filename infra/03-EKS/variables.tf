@@ -13,7 +13,7 @@ variable "account_id" {
   description = "Account ID"
 }
 variable "instance_type" {
-  default = "t2.xlarge"
+  default = "t2.medium"
 }
 
 variable "vpc_cidr_block" {
